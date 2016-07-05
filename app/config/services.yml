@@ -7,3 +7,11 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    app.helper.pagination:
+        class: AppBundle\Helper\PaginationHelper
+        autowire: true
+
+    app.helper.flash_bag:
+        class: AppBundle\Helper\FlashBagHelper
+        autowire: true

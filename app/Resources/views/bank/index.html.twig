@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+
+            <h3 class="pull-left">
+                <i class="glyphicon glyphicon-list-alt"></i> {{ 'bank.title.list'|trans }}
+            </h3>
+
+            <div class="pull-right" style="padding-top: 20px;">
+                <a href="{{ path('bank_new') ~ pagination_helper.buildQuery }}" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-plus"></span> {{ 'bank.action.new_bank'|trans }}
+                </a>
+            </div>
+
+            <div class="clearfix"></div>
+
+        </div>
+
+        <form class="form-inline" role="search" method="get" action="{{ path('bank_index') }}">
+
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="{{ 'form.placeholder.search'|trans }}"
+                           name="search"
+                           value="{% if app.request.query.has('search') %}{{ app.request.query.get('search') }}{% endif %}">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" class="form-control col-md-4"
+                           placeholder="{{ 'form.placeholder.num_items'|trans }}"
+                           name="num_items"
+                           value="{{ app.request.query.get('num_items', pagination_helper.routeParams('num_items')) }}"
+                           min="5" max="500">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default form-control">{{ 'form.submit_actions.search'|trans }}</button>
+                </div>
+
+                <div class="form-group">
+                    <a href="{{ path('bank_index') }}"
+                       class="btn btn-default form-control">{{ 'form.submit_actions.reset'|trans }}</a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <hr>
+
+                {{ include('partials/alerts.html.twig') }}
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>
+                                <a href="{{ path('bank_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('description') }}">
+                                    {{ 'bank.fields.description'|trans }}
+                                </a>
+                            </th>
+                            <th>
+                                <a href="{{ path('bank_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('agency') }}">
+                                    {{ 'bank.fields.agency'|trans }}
+                                </a>
+                            </th>
+                            <th>
+                                <a href="{{ path('bank_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('account') }}">
+                                    {{ 'bank.fields.account'|trans }}
+                                </a>
+                            </th>
+                            <th>{{ 'table.actions'|trans }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for bank in banks %}
+                            <tr>
+                                <td>
+                                    {#<a href="{{ path('admin_profile_edit', {id: profile.id}) ~ pagination_helper.buildQuery }}">{{ profile.fullName }}</a>#}
+                                    <a href="#">{{ bank.description }}</a>
+                                </td>
+                                <td>{{ bank.agency }}</td>
+                                <td>{{ bank.account }}</td>
+                                <td>
+                                    <div class="item-actions">
+                                        <a href="#"
+                                           class="btn btn-sm btn-primary">
+                                            <i class="glyphicon glyphicon-edit"></i> {{ 'action.edit'|trans }}
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" align="center">{{ 'table.not_found'|trans }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="navigation text-center">
+                    {{ pagerfanta(banks, 'twitter_bootstrap3', { routeName: 'bank_index', routeParams: app.request.query.all }) }}
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}

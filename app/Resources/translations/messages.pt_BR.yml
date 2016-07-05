@@ -1,0 +1,47 @@
+######################## DEFAULT ############################
+
+flashbag:
+    success:
+        inserted: Registro inserido com sucesso
+        updated: Registro alterado com sucesso
+        deleted: Registro deletado com sucesso
+    error:
+        inserted: Houve um erro ao inserir o registro
+        updated: Houve um erro ao alterar o registro
+        deleted: Houve um erro ao deletar o registro
+
+form:
+    submit_actions:
+        save_and_new: Salvar e criar novo
+        save_and_keep: Salvar
+        save_and_close: Salvar e fechar
+        search: Buscar
+        reset: Limpar
+    link:
+        cancel: Cancelar
+        delete: Excluir
+    placeholder:
+        search: Digite sua busca
+        num_items: Items por página
+
+table:
+    actions: Ações
+    not_found: Nenhum registro encontrado
+
+action:
+    show: Exibir
+    edit: Editar
+
+############## BANK ################
+
+bank:
+    title:
+        list: Lista de Bancos
+        new: Novo Banco
+        edit: Editar Banco
+    fields:
+        description: Descrição
+        agency: Agência
+        account: Conta
+    action:
+        new_bank: Novo Banco

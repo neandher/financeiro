@@ -1,0 +1,14 @@
+{% block form_row -%}
+    <div class="form-group col-md-6{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        {{- form_label(form) -}}
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock form_row %}
+
+{% block checkbox_row -%}
+    <div class="form-group col-md-6{% if not valid %} has-error{% endif %}">
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock checkbox_row %}

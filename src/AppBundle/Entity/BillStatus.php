@@ -3,15 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Bank
+ * BillStatus
  *
- * @ORM\Table(name="bank")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\BankRepository")
+ * @ORM\Table(name="bill_status")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BillStatusRepository")
  */
-class Bank
+class BillStatus
 {
     /**
      * @var int
@@ -26,23 +25,15 @@ class Bank
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="agency", type="string", length=255)
+     * @ORM\Column(name="referency", type="string", length=255)
      */
-    private $agency;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="account", type="string", length=255)
-     */
-    private $account;
+    private $referency;
 
 
     /**
@@ -60,7 +51,7 @@ class Bank
      *
      * @param string $description
      *
-     * @return Bank
+     * @return BillStatus
      */
     public function setDescription($description)
     {
@@ -80,51 +71,27 @@ class Bank
     }
 
     /**
-     * Set agency
+     * Set referency
      *
-     * @param string $agency
+     * @param string $referency
      *
-     * @return Bank
+     * @return BillStatus
      */
-    public function setAgency($agency)
+    public function setReferency($referency)
     {
-        $this->agency = $agency;
+        $this->referency = $referency;
 
         return $this;
     }
 
     /**
-     * Get agency
+     * Get referency
      *
      * @return string
      */
-    public function getAgency()
+    public function getReferency()
     {
-        return $this->agency;
-    }
-
-    /**
-     * Set account
-     *
-     * @param string $account
-     *
-     * @return Bank
-     */
-    public function setAccount($account)
-    {
-        $this->account = $account;
-
-        return $this;
-    }
-
-    /**
-     * Get account
-     *
-     * @return string
-     */
-    public function getAccount()
-    {
-        return $this->account;
+        return $this->referency;
     }
 }
 

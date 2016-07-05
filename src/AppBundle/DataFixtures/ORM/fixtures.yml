@@ -1,0 +1,33 @@
+AppBundle\Entity\BillStatus:
+    billType_1:
+        description: 'Pago'
+        referency: 'pago'
+    billType_2:
+        description: 'Em Aberto'
+        referency: 'em_aberto'
+
+AppBundle\Entity\BillType:
+    billType_1:
+        description: 'Receita'
+        referency: 'receita'
+    billType_2:
+        description: 'Despesa'
+        referency: 'despesa'
+
+AppBundle\Entity\PaymentMethod:
+    paymentMethod_1:
+        description: 'A vista'
+    paymentMethod_2:
+        description: 'Boleto'
+    paymentMethod_3:
+        description: 'Cartao'
+    paymentMethod_4:
+        description: 'Cheque'
+    paymentMethod_5:
+        description: 'Deposito Bancario'
+
+#AppBundle\Entity\Bank:
+#    bank_{1..50}:
+#        description: <name()>
+#        agency: <randomNumber()>
+#        account: <randomNumber()>

@@ -1,13 +1,23 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ asset('plugins/bootstrap-3.3.6-dist/css/bootstrap.min.css') }}">
+</head>
+<body>
+
+{{ include('partials/navbar.html.twig') }}
+
+<div class="container-fluid">
+    {% block body %}{% endblock %}
+</div>
+
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('plugins/bootstrap-3.3.6-dist/js/bootstrap.min.js') }}"></script>
+
+{% block javascripts %}{% endblock %}
+
+</body>
 </html>
