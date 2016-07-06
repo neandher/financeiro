@@ -7,13 +7,24 @@
         <div class="panel-heading">
 
             <h3 class="pull-left">
-                <i class="glyphicon glyphicon-list-alt"></i> {{ 'billPlanType.title.new'|trans }}
+                <i class="glyphicon glyphicon-list-alt"></i> {{ 'bill.title.edit'|trans }}
             </h3>
 
             <div class="pull-right" style="padding-top: 20px;">
-                <a href="{{ path('bill_plan_type_index') ~ pagination_helper.buildQuery }}" class="btn btn-info">
+
+                {{ form_start(form_delete) }}
+                {{ form_widget(form_delete) }}
+
+                <button type="submit" class="btn btn-danger">
+                    <span class="glyphicon glyphicon glyphicon-trash"></span>
+                    {{ 'form.link.delete'|trans }}
+                </button>
+                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery }}" class="btn btn-info">
                     <span class="glyphicon glyphicon-circle-arrow-left"></span> {{ 'form.link.go_back'|trans }}
                 </a>
+
+                {{ form_end(form_delete) }}
+
             </div>
 
             <div class="clearfix"></div>
@@ -22,7 +33,7 @@
 
         <div class="panel-body">
 
-            {{ form_start(form, {'action': path('bill_plan_type_new') ~ pagination_helper.buildQuery, 'attr' : {'class' : '', 'novalidate': 'novalidate'}}) }}
+            {{ form_start(form, {'action': path('bill_edit', {id : bill.id}) ~ pagination_helper.buildQuery, 'attr' : {'class' : '', 'novalidate': 'novalidate'}}) }}
 
             {{ form_errors(form) }}
 
@@ -30,7 +41,7 @@
 
             <div class="row">
                 {{ form_row(form.description, {'attr': {'autofocus': true}}) }}
-                {{ form_row(form.billType) }}
+                {{ form_row(form.amount) }}
             </div>
 
             <hr>

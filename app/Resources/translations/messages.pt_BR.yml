@@ -81,3 +81,21 @@ billPlan:
         description: Descrição
     action:
         new: Novo Plano de Contas
+
+billType:
+    title:
+        menu: Tipo Conta
+
+bill:
+    title:
+        list: Listar Contas
+        new: Nova Conta
+        edit: Editar Conta
+        menu: Contas
+    fields:
+        description: Descrição
+        amount: Valor
+        note: Observações
+        createdAt: Data de Criação
+    action:
+        new: Nova Conta

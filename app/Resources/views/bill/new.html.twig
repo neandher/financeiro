@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+
+            <h3 class="pull-left">
+                <i class="glyphicon glyphicon-list-alt"></i> {{ 'bill.title.new'|trans }}
+            </h3>
+
+            <div class="pull-right" style="padding-top: 20px;">
+                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery }}" class="btn btn-info">
+                    <span class="glyphicon glyphicon-circle-arrow-left"></span> {{ 'form.link.go_back'|trans }}
+                </a>
+            </div>
+
+            <div class="clearfix"></div>
+
+        </div>
+
+        <div class="panel-body">
+
+            {{ form_start(form, {'action': path('bill_new') ~ pagination_helper.buildQuery, 'attr' : {'class' : '', 'novalidate': 'novalidate'}}) }}
+
+            {{ form_errors(form) }}
+
+            {{ include('partials/alerts.html.twig') }}
+
+            <div class="row">
+                {{ form_row(form.billType) }}
+                {{ form_row(form.description, {'attr': {'autofocus': true}}) }}
+                {{ form_row(form.amount) }}
+                {{ form_row(form.billPlan) }}
+                {{ form_row(form.bank) }}
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-md-12">
+                    {{ form_widget(form.buttons.save_and_keep, {'attr' : {'class' : 'btn-primary'}}) }}
+                    {{ form_widget(form.buttons.save_and_new, {'attr' : {'class' : 'btn-primary'}}) }}
+                    {{ form_widget(form.buttons.save_and_close, {'attr' : {'class' : 'btn-primary'}}) }}
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        $('#bill_billType').change(function () {
+
+            var billPlan = $('#bill_billPlan');
+
+            billPlan.children().remove();
+
+            billPlan.append($("<option></option>")
+                    .attr("value", 0)
+                    .text('carregando...'));
+
+            $.getJSON(Routing.generate("bill_plan_list_form_json", {"bill_plan_type_id": $(this).val()}), function (data) {
+
+                billPlan.children().remove();
+
+                $.each(data, function (key, value) {
+                    billPlan.append($("<option></option>")
+                            .attr("value", value.id)
+                            .text(value.billPlanType.description + ' - ' + value.description));
+                });
+            })
+        });
+    </script>
+
+{% endblock %}

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * BillPlanType
@@ -25,9 +26,17 @@ class BillPlanType
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $description;
 
+    /**
+     * @var BillType
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BillType")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $billType;
 
     /**
      * Get id
@@ -63,11 +72,22 @@ class BillPlanType
         return $this->description;
     }
 
-    function __toString()
+    /**
+     * @return BillType
+     */
+    public function getBillType()
     {
-        return $this->getDescription();
+        return $this->billType;
     }
 
-
+    /**
+     * @param BillType $billType
+     * @return BillPlanType
+     */
+    public function setBillType(BillType $billType)
+    {
+        $this->billType = $billType;
+        return $this;
+    }
 }
 

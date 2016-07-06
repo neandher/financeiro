@@ -45,4 +45,18 @@ class BillPlanRepository extends AbstractEntityRepository
 
         return $paginator;
     }
+
+    public function queryLatestForm($billPlanId)
+    {
+        return $this->createQueryBuilder('billPlan')
+            ->innerJoin('billPlan.billPlanType', 'billPlanType')
+            ->addSelect('billPlanType')
+            ->innerJoin('billPlanType.billType', 'billType')
+            ->addSelect('billType')
+            ->andWhere('billType.id = ' . $billPlanId . '')
+            ->orderBy('billPlanType.description', 'ASC')
+            ->addOrderBy('billPlan.description', 'ASC')
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

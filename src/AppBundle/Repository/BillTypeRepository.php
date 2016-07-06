@@ -10,4 +10,9 @@ namespace AppBundle\Repository;
  */
 class BillTypeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function queryLatestForm()
+    {
+        return $this->createQueryBuilder('billType')
+            ->orderBy('billType.description', 'ASC');
+    }
 }

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * BillPlan
@@ -25,6 +26,7 @@ class BillPlan
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $description;
 
@@ -35,7 +37,6 @@ class BillPlan
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $billPlanType;
-
 
     /**
      * Get id
@@ -86,5 +87,11 @@ class BillPlan
     {
         $this->billPlanType = $billPlanType;
     }
+
+    public function getStringSelectForm()
+    {
+        return $this->billPlanType->getDescription() . ' - ' . $this->getDescription();
+    }
+
 }
 

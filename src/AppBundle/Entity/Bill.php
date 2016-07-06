@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Bill
@@ -26,6 +27,7 @@ class Bill
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $description;
 
@@ -33,6 +35,7 @@ class Bill
      * @var float
      *
      * @ORM\Column(name="amount", type="float")
+     * @Assert\NotBlank()
      */
     private $amount;
 

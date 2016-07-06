@@ -16,18 +16,82 @@ AppBundle\Entity\BillType:
 
 AppBundle\Entity\PaymentMethod:
     paymentMethod_1:
-        description: 'A vista'
+        description: 'À vista'
     paymentMethod_2:
         description: 'Boleto'
     paymentMethod_3:
-        description: 'Cartao'
+        description: 'Cartão'
     paymentMethod_4:
         description: 'Cheque'
     paymentMethod_5:
-        description: 'Deposito Bancario'
+        description: 'Depósito Bancário'
 
 AppBundle\Entity\Bank:
     bank_{1..50}:
         description: <name()>
         agency: <randomNumber()>
         account: <randomNumber()>
+
+AppBundle\Entity\BillPlanType:
+    billPlanType1:
+        description: 'Custos e Depesas Variáveis'
+        billType: '@billType_2'
+    billPlanType2:
+        description: 'Custos e Depesas Fixas'
+        billType: '@billType_2'
+    billPlanType3:
+        description: 'Recebimentos'
+        billType: '@billType_1'
+
+AppBundle\Entity\BillPlan:
+    billPlan1:
+        description: 'Alimentação'
+        billPlanType: '@billPlanType1'
+    billPlan2:
+        description: 'Dividas e Parcelamentos'
+        billPlanType: '@billPlanType2'
+    billPlan3:
+        description: 'Carro'
+        billPlanType: '@billPlanType2'
+    billPlan4:
+        description: 'Despesas Bancárias'
+        billPlanType: '@billPlanType1'
+    billPlan5:
+        description: 'Lazer'
+        billPlanType: '@billPlanType1'
+    billPlan6:
+        description: 'Presentes'
+        billPlanType: '@billPlanType1'
+    billPlan7:
+        description: 'Telefonia, Energia , Água e TV'
+        billPlanType: '@billPlanType2'
+    billPlan8:
+        description: 'Vestuário'
+        billPlanType: '@billPlanType1'
+    billPlan9:
+        description: 'Dízimos e Ofertas'
+        billPlanType: '@billPlanType2'
+    billPlan10:
+        description: 'Taxas Bancárias'
+        billPlanType: '@billPlanType1'
+    billPlan11:
+        description: 'Outros'
+        billPlanType: '@billPlanType2'
+    billPlan12:
+        description: 'Moradia'
+        billPlanType: '@billPlanType2'
+    billPlan14:
+        description: 'Salários'
+        billPlanType: '@billPlanType3'
+    billPlan15:
+        description: 'Outros'
+        billPlanType: '@billPlanType3'
+    billPlan16:
+        description: 'Hinode'
+        billPlanType: '@billPlanType1'
+    billPlan17:
+        description: 'Hinode'
+        billPlanType: '@billPlanType3'
+    billPlan18:
+        description: 'Ticket Alimentação'
+        billPlanType: '@billPlanType3'

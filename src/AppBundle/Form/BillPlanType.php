@@ -3,7 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\BillPlan;
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Repository\BillPlanTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,9 +23,8 @@ class BillPlanType extends AbstractType
             ->add('billPlanType', EntityType::class,
                 [
                     'class' => \AppBundle\Entity\BillPlanType::class,
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('billPlanType')
-                            ->orderBy('billPlanType.description', 'ASC');
+                    'query_builder' => function (BillPlanTypeRepository $er) {
+                        return $er->queryLatestForm();
                     },
                     'choice_label' => 'description',
                     'label' => 'billPlanType.title.menu'

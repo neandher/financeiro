@@ -43,4 +43,10 @@ class BankRepository extends AbstractEntityRepository
 
         return $paginator;
     }
+
+    public function queryLatestForm()
+    {
+        return $this->createQueryBuilder('bank')
+            ->orderBy('bank.description', 'ASC');
+    }
 }

@@ -18,7 +18,9 @@ class BillPlanTypeRepository extends AbstractEntityRepository
     {
         $routeParams = $paginationHelper->getRouteParams();
 
-        $qb = $this->createQueryBuilder('billPlanType');
+        $qb = $this->createQueryBuilder('billPlanType')
+            ->innerJoin('billPlanType.billType', 'billType')
+            ->addSelect('billType');
 
         if (isset($routeParams['search'])) {
             $qb->andWhere('billPlanType.description LIKE :search')->setParameter('search', '%' . $routeParams['search'] . '%');
@@ -42,5 +44,11 @@ class BillPlanTypeRepository extends AbstractEntityRepository
         $paginator->setCurrentPage($routeParams['page']);
 
         return $paginator;
+    }
+
+    public function queryLatestForm()
+    {
+        return $this->createQueryBuilder('billPlanType')
+            ->orderBy('billPlanType.description', 'ASC');
     }
 }
