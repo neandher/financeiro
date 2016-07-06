@@ -19,7 +19,8 @@ form:
         reset: Limpar
     link:
         cancel: Cancelar
-        delete: Excluir
+        go_back: Voltar
+        delete: Excluir Registro
     placeholder:
         search: Digite sua busca
         num_items: Items por página
@@ -31,17 +32,52 @@ table:
 action:
     show: Exibir
     edit: Editar
+    delete: Excluir
 
-############## BANK ################
+############## ENTITIES ################
 
 bank:
     title:
-        list: Lista de Bancos
-        new: Novo Banco
+        list: Listar Bancos
+        new: Cadastrar Banco
         edit: Editar Banco
+        menu: Banco
     fields:
         description: Descrição
         agency: Agência
         account: Conta
     action:
-        new_bank: Novo Banco
+        new: Novo Banco
+
+paymentMethod:
+    title:
+        list: Listar Métodos de Pagamento
+        new: Novo Método de Pagamento
+        edit: Editar Método de Pagamento
+        menu: Métodos de Pagamento
+    fields:
+        description: Descrição
+    action:
+        new: Novo Método de Pagamento
+
+billPlanType:
+    title:
+        list: Listar Tipo Plano de Contas
+        new: Novo Tipo Plano de Contas
+        edit: Editar Tipo Plano de Contas
+        menu: Tipo Plano de Contas
+    fields:
+        description: Descrição
+    action:
+        new: Novo Tipo Plano de Contas
+
+billPlan:
+    title:
+        list: Listar Plano de Contas
+        new: Novo Plano de Contas
+        edit: Editar Plano de Contas
+        menu: Plano de Contas
+    fields:
+        description: Descrição
+    action:
+        new: Novo Plano de Contas

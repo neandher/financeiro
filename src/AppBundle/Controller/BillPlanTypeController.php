@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Bank;
+use AppBundle\Entity\BillPlanType;
 use AppBundle\Event\FlashBagEvents;
-use AppBundle\Form\BankType;
+use AppBundle\Form\BillPlanTypeType;
 use AppBundle\Form\SubmitActions;
 use AppBundle\Form\SubmitActionsType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -13,12 +13,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/bank")
+ * @Route("/billPlanType")
  */
-class BankController extends Controller
+class BillPlanTypeController extends Controller
 {
     /**
-     * @Route("/", name="bank_index")
+     * @Route("/", name="bill_plan_type_index")
      * @Method("GET")
      *
      * @param Request $request
@@ -26,20 +26,20 @@ class BankController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $paginationHelper = $this->get('app.helper.pagination')->handle($request, Bank::class);
+        $paginationHelper = $this->get('app.helper.pagination')->handle($request, BillPlanType::class);
 
-        $banks = $this->getDoctrine()->getRepository('AppBundle:Bank')->findLatest($paginationHelper);
+        $billPlanTypes = $this->getDoctrine()->getRepository('AppBundle:BillPlanType')->findLatest($paginationHelper);
 
-        return $this->render('bank/index.html.twig',
+        return $this->render('billPlanType/index.html.twig',
             [
-                'banks' => $banks,
+                'billPlanTypes' => $billPlanTypes,
                 'pagination_helper' => $paginationHelper
             ]
         );
     }
 
     /**
-     * @Route("/new", name="bank_new")
+     * @Route("/new", name="bill_plan_type_new")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -49,9 +49,9 @@ class BankController extends Controller
     {
         $paginationHelper = $this->get('app.helper.pagination')->handle($request);
 
-        $bank = new Bank();
+        $billPlanType = new BillPlanType();
 
-        $form = $this->createForm(BankType::class, $bank)
+        $form = $this->createForm(BillPlanTypeType::class, $billPlanType)
             ->add(
                 'buttons',
                 SubmitActionsType::class,
@@ -68,31 +68,31 @@ class BankController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($bank);
+            $em->persist($billPlanType);
             $em->flush();
 
             $this->get('app.helper.flash_bag')->newMessage(FlashBagEvents::MESSAGE_TYPE_SUCCESS, FlashBagEvents::MESSAGE_SUCCESS_INSERTED);
 
             if ($form->get('buttons')->get(SubmitActions::SAVE_AND_NEW)->isClicked()) {
-                return $this->redirectToRoute('bank_new', $paginationHelper->getRouteParams());
+                return $this->redirectToRoute('bill_plan_type_new', $paginationHelper->getRouteParams());
             }
             if ($form->get('buttons')->get(SubmitActions::SAVE_AND_KEEP)->isClicked()) {
                 return $this->redirectToRoute(
-                    'bank_edit',
+                    'bill_plan_type_edit',
                     array_merge(
-                        ['id' => $bank->getId()],
+                        ['id' => $billPlanType->getId()],
                         $paginationHelper->getRouteParams()
                     )
                 );
             }
 
-            return $this->redirectToRoute('bank_index', $paginationHelper->getRouteParams());
+            return $this->redirectToRoute('bill_plan_type_index', $paginationHelper->getRouteParams());
         }
 
         return $this->render(
-            'bank/new.html.twig',
+            'billPlanType/new.html.twig',
             [
-                'bank' => $bank,
+                'billPlanType' => $billPlanType,
                 'form' => $form->createView(),
                 'pagination_helper' => $paginationHelper
             ]
@@ -100,17 +100,17 @@ class BankController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit/", requirements={"id" : "\d+"}, name="bank_edit")
+     * @Route("/{id}/edit/", requirements={"id" : "\d+"}, name="bill_plan_type_edit")
      * @Method({"GET","POST"})
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, Bank $bank)
+    public function editAction(Request $request, BillPlanType $billPlanType)
     {
         $paginationHelper = $this->get('app.helper.pagination')->handle($request);
 
-        $form = $this->createForm(BankType::class, $bank)
+        $form = $this->createForm(BillPlanTypeType::class, $billPlanType)
             ->add(
                 'buttons',
                 SubmitActionsType::class,
@@ -122,7 +122,7 @@ class BankController extends Controller
                 ]
             );
 
-        $formDelete = $this->createDeleteForm($bank);
+        $formDelete = $this->createDeleteForm($billPlanType);
 
         $form->handleRequest($request);
 
@@ -134,25 +134,25 @@ class BankController extends Controller
             $this->get('app.helper.flash_bag')->newMessage(FlashBagEvents::MESSAGE_TYPE_SUCCESS, FlashBagEvents::MESSAGE_SUCCESS_UPDATED);
 
             if ($form->get('buttons')->get(SubmitActions::SAVE_AND_NEW)->isClicked()) {
-                return $this->redirectToRoute('bank_new', $paginationHelper->getRouteParams());
+                return $this->redirectToRoute('bill_plan_type_new', $paginationHelper->getRouteParams());
             }
             if ($form->get('buttons')->get(SubmitActions::SAVE_AND_KEEP)->isClicked()) {
                 return $this->redirectToRoute(
-                    'bank_edit',
+                    'bill_plan_type_edit',
                     array_merge(
-                        ['id' => $bank->getId()],
+                        ['id' => $billPlanType->getId()],
                         $paginationHelper->getRouteParams()
                     )
                 );
             }
 
-            return $this->redirectToRoute('bank_index', $paginationHelper->getRouteParams());
+            return $this->redirectToRoute('bill_plan_type_index', $paginationHelper->getRouteParams());
         }
 
         return $this->render(
-            'bank/edit.html.twig',
+            'billPlanType/edit.html.twig',
             [
-                'bank' => $bank,
+                'billPlanType' => $billPlanType,
                 'form' => $form->createView(),
                 'form_delete' => $formDelete->createView(),
                 'pagination_helper' => $paginationHelper
@@ -161,40 +161,40 @@ class BankController extends Controller
     }
 
     /**
-     * @Route("/{id}/", name="bank_delete")
+     * @Route("/{id}/", name="bill_plan_type_delete")
      * @Method("DELETE")
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(Request $request, Bank $bank)
+    public function deleteAction(Request $request, BillPlanType $billPlanType)
     {
-        $form = $this->createDeleteForm($bank);
+        $form = $this->createDeleteForm($billPlanType);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($bank);
+            $em->remove($billPlanType);
             $em->flush();
 
             $this->get('app.helper.flash_bag')->newMessage(FlashBagEvents::MESSAGE_TYPE_SUCCESS, FlashBagEvents::MESSAGE_SUCCESS_DELETED);
 
-            return $this->redirectToRoute('bank_index');
+            return $this->redirectToRoute('bill_plan_type_index');
         }
 
     }
 
     /**
-     * @param Bank $bank
+     * @param BillPlanType $billPlanType
      * @return \Symfony\Component\Form\Form
      */
-    private function createDeleteForm(Bank $bank)
+    private function createDeleteForm(BillPlanType $billPlanType)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('bank_delete', ['id' => $bank->getId()]))
+            ->setAction($this->generateUrl('bill_plan_type_delete', ['id' => $billPlanType->getId()]))
             ->setMethod('DELETE')
-            ->setData($bank)
+            ->setData($billPlanType)
             ->getForm();
     }
 }

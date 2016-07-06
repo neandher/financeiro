@@ -44,7 +44,7 @@ class BillPlanType
      *
      * @param string $description
      *
-     * @return BillTypePlan
+     * @return BillPlanType
      */
     public function setDescription($description)
     {
@@ -62,5 +62,12 @@ class BillPlanType
     {
         return $this->description;
     }
+
+    function __toString()
+    {
+        return $this->getDescription();
+    }
+
+
 }
 

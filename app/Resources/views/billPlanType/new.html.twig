@@ -7,11 +7,11 @@
         <div class="panel-heading">
 
             <h3 class="pull-left">
-                <i class="glyphicon glyphicon-list-alt"></i> {{ 'bank.title.new'|trans }}
+                <i class="glyphicon glyphicon-list-alt"></i> {{ 'billPlanType.title.new'|trans }}
             </h3>
 
             <div class="pull-right" style="padding-top: 20px;">
-                <a href="{{ path('bank_index') ~ pagination_helper.buildQuery }}" class="btn btn-info">
+                <a href="{{ path('bill_plan_type_index') ~ pagination_helper.buildQuery }}" class="btn btn-info">
                     <span class="glyphicon glyphicon-circle-arrow-left"></span> {{ 'form.link.go_back'|trans }}
                 </a>
             </div>
@@ -22,16 +22,14 @@
 
         <div class="panel-body">
 
-            {{ form_start(form, {'action': path('bank_new') ~ pagination_helper.buildQuery, 'attr' : {'class' : '', 'novalidate': 'novalidate'}}) }}
+            {{ form_start(form, {'action': path('bill_plan_type_new') ~ pagination_helper.buildQuery, 'attr' : {'class' : '', 'novalidate': 'novalidate'}}) }}
 
             {{ form_errors(form) }}
 
             {{ include('partials/alerts.html.twig') }}
 
             <div class="row">
-                {{ form_row(form.description, {'attr': {'autofocus': true}}) }}
-                {{ form_row(form.agency) }}
-                {{ form_row(form.account) }}
+                {{ form_row(form.description, {'attr': {'autofocus': true}}) }}}
             </div>
 
             <hr>

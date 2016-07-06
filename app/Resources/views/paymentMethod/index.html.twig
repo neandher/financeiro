@@ -7,12 +7,12 @@
         <div class="panel-heading">
 
             <h3 class="pull-left">
-                <i class="glyphicon glyphicon-list-alt"></i> {{ 'bank.title.list'|trans }}
+                <i class="glyphicon glyphicon-list-alt"></i> {{ 'paymentMethod.title.list'|trans }}
             </h3>
 
             <div class="pull-right" style="padding-top: 20px;">
-                <a href="{{ path('bank_new') ~ pagination_helper.buildQuery }}" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-plus"></span> {{ 'bank.action.new'|trans }}
+                <a href="{{ path('payment_method_new') ~ pagination_helper.buildQuery }}" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-plus"></span> {{ 'paymentMethod.action.new'|trans }}
                 </a>
             </div>
 
@@ -20,7 +20,7 @@
 
         </div>
 
-        <form class="form-inline" role="search" method="get" action="{{ path('bank_index') }}">
+        <form class="form-inline" role="search" method="get" action="{{ path('payment_method_index') }}">
 
             <div class="panel-body">
 
@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="form-group">
-                    <a href="{{ path('bank_index') }}"
+                    <a href="{{ path('payment_method_index') }}"
                        class="btn btn-default form-control">{{ 'form.submit_actions.reset'|trans }}</a>
                 </div>
 
@@ -58,34 +58,22 @@
                         <thead>
                         <tr>
                             <th>
-                                <a href="{{ path('bank_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('description') }}">
-                                    {{ 'bank.fields.description'|trans }}
-                                </a>
-                            </th>
-                            <th>
-                                <a href="{{ path('bank_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('agency') }}">
-                                    {{ 'bank.fields.agency'|trans }}
-                                </a>
-                            </th>
-                            <th>
-                                <a href="{{ path('bank_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('account') }}">
-                                    {{ 'bank.fields.account'|trans }}
+                                <a href="{{ path('payment_method_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('description') }}">
+                                    {{ 'paymentMethod.fields.description'|trans }}
                                 </a>
                             </th>
                             <th>{{ 'table.actions'|trans }}</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for bank in banks %}
+                        {% for paymentMethod in paymentMethods %}
                             <tr>
                                 <td>
-                                    <a href="{{ path('bank_edit', {id: bank.id}) ~ pagination_helper.buildQuery }}">{{ bank.description }}</a>
+                                    <a href="{{ path('payment_method_edit', {id: paymentMethod.id}) ~ pagination_helper.buildQuery }}">{{ paymentMethod.description }}</a>
                                 </td>
-                                <td>{{ bank.agency }}</td>
-                                <td>{{ bank.account }}</td>
                                 <td>
                                     <div class="item-actions">
-                                        <a href="{{ path('bank_edit', {id: bank.id}) ~ pagination_helper.buildQuery }}"
+                                        <a href="{{ path('payment_method_edit', {id: paymentMethod.id}) ~ pagination_helper.buildQuery }}"
                                            class="btn btn-sm btn-primary">
                                             <i class="glyphicon glyphicon-edit"></i> {{ 'action.edit'|trans }}
                                         </a>
@@ -102,7 +90,7 @@
                 </div>
 
                 <div class="navigation text-center">
-                    {{ pagerfanta(banks, 'twitter_bootstrap3', { routeName: 'bank_index', routeParams: app.request.query.all }) }}
+                    {{ pagerfanta(paymentMethods, 'twitter_bootstrap3', { routeName: 'payment_method_index', routeParams: app.request.query.all }) }}
                 </div>
 
             </div>

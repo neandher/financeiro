@@ -32,16 +32,16 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#">Plano de Conta</a>
+                            <a href="{{ path('bill_plan_index') }}">{{ 'billPlan.title.menu'|trans }}</a>
                         </li>
                         <li>
-                            <a href="#">Tipo Plano de Conta</a>
+                            <a href="{{ path('bill_plan_type_index') }}">{{ 'billPlanType.title.menu'|trans }}</a>
                         </li>
                         <li>
-                            <a href="{{ path('bank_index') }}">Banco</a>
+                            <a href="{{ path('bank_index') }}">{{ 'bank.title.menu'|trans }}</a>
                         </li>
                         <li>
-                            <a href="#">Tipo Cobran&ccedil;a</a>
+                            <a href="{{ path('payment_method_index') }}">{{ 'paymentMethod.title.menu'|trans }}</a>
                         </li>
                     </ul>
                 </li>

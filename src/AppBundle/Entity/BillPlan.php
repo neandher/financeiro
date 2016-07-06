@@ -29,7 +29,9 @@ class BillPlan
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BillPlan")
+     * @var BillPlanType
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BillPlanType")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $billPlanType;

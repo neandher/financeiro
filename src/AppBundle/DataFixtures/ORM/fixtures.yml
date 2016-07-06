@@ -26,8 +26,8 @@ AppBundle\Entity\PaymentMethod:
     paymentMethod_5:
         description: 'Deposito Bancario'
 
-#AppBundle\Entity\Bank:
-#    bank_{1..50}:
-#        description: <name()>
-#        agency: <randomNumber()>
-#        account: <randomNumber()>
+AppBundle\Entity\Bank:
+    bank_{1..50}:
+        description: <name()>
+        agency: <randomNumber()>
+        account: <randomNumber()>

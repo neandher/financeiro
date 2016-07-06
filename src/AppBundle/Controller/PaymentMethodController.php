@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Bank;
+use AppBundle\Entity\PaymentMethod;
 use AppBundle\Event\FlashBagEvents;
-use AppBundle\Form\BankType;
+use AppBundle\Form\PaymentMethodType;
 use AppBundle\Form\SubmitActions;
 use AppBundle\Form\SubmitActionsType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -13,12 +13,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/bank")
+ * @Route("/paymentMethod")
  */
-class BankController extends Controller
+class PaymentMethodController extends Controller
 {
     /**
-     * @Route("/", name="bank_index")
+     * @Route("/", name="payment_method_index")
      * @Method("GET")
      *
      * @param Request $request
@@ -26,20 +26,20 @@ class BankController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $paginationHelper = $this->get('app.helper.pagination')->handle($request, Bank::class);
+        $paginationHelper = $this->get('app.helper.pagination')->handle($request, PaymentMethod::class);
 
-        $banks = $this->getDoctrine()->getRepository('AppBundle:Bank')->findLatest($paginationHelper);
+        $paymentMethods = $this->getDoctrine()->getRepository('AppBundle:PaymentMethod')->findLatest($paginationHelper);
 
-        return $this->render('bank/index.html.twig',
+        return $this->render('paymentMethod/index.html.twig',
             [
-                'banks' => $banks,
+                'paymentMethods' => $paymentMethods,
                 'pagination_helper' => $paginationHelper
             ]
         );
     }
 
     /**
-     * @Route("/new", name="bank_new")
+     * @Route("/new", name="payment_method_new")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -49,9 +49,9 @@ class BankController extends Controller
     {
         $paginationHelper = $this->get('app.helper.pagination')->handle($request);
 
-        $bank = new Bank();
+        $paymentMethod = new PaymentMethod();
 
-        $form = $this->createForm(BankType::class, $bank)
+        $form = $this->createForm(PaymentMethodType::class, $paymentMethod)
             ->add(
                 'buttons',
                 SubmitActionsType::class,
@@ -68,31 +68,31 @@ class BankController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($bank);
+            $em->persist($paymentMethod);
             $em->flush();
 
             $this->get('app.helper.flash_bag')->newMessage(FlashBagEvents::MESSAGE_TYPE_SUCCESS, FlashBagEvents::MESSAGE_SUCCESS_INSERTED);
 
             if ($form->get('buttons')->get(SubmitActions::SAVE_AND_NEW)->isClicked()) {
-                return $this->redirectToRoute('bank_new', $paginationHelper->getRouteParams());
+                return $this->redirectToRoute('payment_method_new', $paginationHelper->getRouteParams());
             }
             if ($form->get('buttons')->get(SubmitActions::SAVE_AND_KEEP)->isClicked()) {
                 return $this->redirectToRoute(
-                    'bank_edit',
+                    'payment_method_edit',
                     array_merge(
-                        ['id' => $bank->getId()],
+                        ['id' => $paymentMethod->getId()],
                         $paginationHelper->getRouteParams()
                     )
                 );
             }
 
-            return $this->redirectToRoute('bank_index', $paginationHelper->getRouteParams());
+            return $this->redirectToRoute('payment_method_index', $paginationHelper->getRouteParams());
         }
 
         return $this->render(
-            'bank/new.html.twig',
+            'paymentMethod/new.html.twig',
             [
-                'bank' => $bank,
+                'paymentMethod' => $paymentMethod,
                 'form' => $form->createView(),
                 'pagination_helper' => $paginationHelper
             ]
@@ -100,17 +100,17 @@ class BankController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit/", requirements={"id" : "\d+"}, name="bank_edit")
+     * @Route("/{id}/edit/", requirements={"id" : "\d+"}, name="payment_method_edit")
      * @Method({"GET","POST"})
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, Bank $bank)
+    public function editAction(Request $request, PaymentMethod $paymentMethod)
     {
         $paginationHelper = $this->get('app.helper.pagination')->handle($request);
 
-        $form = $this->createForm(BankType::class, $bank)
+        $form = $this->createForm(PaymentMethodType::class, $paymentMethod)
             ->add(
                 'buttons',
                 SubmitActionsType::class,
@@ -122,7 +122,7 @@ class BankController extends Controller
                 ]
             );
 
-        $formDelete = $this->createDeleteForm($bank);
+        $formDelete = $this->createDeleteForm($paymentMethod);
 
         $form->handleRequest($request);
 
@@ -134,25 +134,25 @@ class BankController extends Controller
             $this->get('app.helper.flash_bag')->newMessage(FlashBagEvents::MESSAGE_TYPE_SUCCESS, FlashBagEvents::MESSAGE_SUCCESS_UPDATED);
 
             if ($form->get('buttons')->get(SubmitActions::SAVE_AND_NEW)->isClicked()) {
-                return $this->redirectToRoute('bank_new', $paginationHelper->getRouteParams());
+                return $this->redirectToRoute('payment_method_new', $paginationHelper->getRouteParams());
             }
             if ($form->get('buttons')->get(SubmitActions::SAVE_AND_KEEP)->isClicked()) {
                 return $this->redirectToRoute(
-                    'bank_edit',
+                    'payment_method_edit',
                     array_merge(
-                        ['id' => $bank->getId()],
+                        ['id' => $paymentMethod->getId()],
                         $paginationHelper->getRouteParams()
                     )
                 );
             }
 
-            return $this->redirectToRoute('bank_index', $paginationHelper->getRouteParams());
+            return $this->redirectToRoute('payment_method_index', $paginationHelper->getRouteParams());
         }
 
         return $this->render(
-            'bank/edit.html.twig',
+            'paymentMethod/edit.html.twig',
             [
-                'bank' => $bank,
+                'paymentMethod' => $paymentMethod,
                 'form' => $form->createView(),
                 'form_delete' => $formDelete->createView(),
                 'pagination_helper' => $paginationHelper
@@ -161,40 +161,40 @@ class BankController extends Controller
     }
 
     /**
-     * @Route("/{id}/", name="bank_delete")
+     * @Route("/{id}/", name="payment_method_delete")
      * @Method("DELETE")
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(Request $request, Bank $bank)
+    public function deleteAction(Request $request, PaymentMethod $paymentMethod)
     {
-        $form = $this->createDeleteForm($bank);
+        $form = $this->createDeleteForm($paymentMethod);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($bank);
+            $em->remove($paymentMethod);
             $em->flush();
 
             $this->get('app.helper.flash_bag')->newMessage(FlashBagEvents::MESSAGE_TYPE_SUCCESS, FlashBagEvents::MESSAGE_SUCCESS_DELETED);
 
-            return $this->redirectToRoute('bank_index');
+            return $this->redirectToRoute('payment_method_index');
         }
 
     }
 
     /**
-     * @param Bank $bank
+     * @param PaymentMethod $paymentMethod
      * @return \Symfony\Component\Form\Form
      */
-    private function createDeleteForm(Bank $bank)
+    private function createDeleteForm(PaymentMethod $paymentMethod)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('bank_delete', ['id' => $bank->getId()]))
+            ->setAction($this->generateUrl('payment_method_delete', ['id' => $paymentMethod->getId()]))
             ->setMethod('DELETE')
-            ->setData($bank)
+            ->setData($paymentMethod)
             ->getForm();
     }
 }
