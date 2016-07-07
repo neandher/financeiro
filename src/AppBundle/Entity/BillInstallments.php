@@ -26,6 +26,8 @@ class BillInstallments
      * @var \DateTime
      *
      * @ORM\Column(name="dueDateAt", type="date")
+     * @Assert\NotBlank()
+     * @Assert\Date()
      */
     private $dueDateAt;
 
@@ -33,20 +35,22 @@ class BillInstallments
      * @var \DateTime
      *
      * @ORM\Column(name="paymentDateAt", type="date", nullable=true)
+     * @Assert\Date()
      */
     private $paymentDateAt;
 
     /**
-     * @var float
+     * @var string
      *
-     * @ORM\Column(name="amount", type="float")
+     * @ORM\Column(name="amount", type="string")
+     * @Assert\NotBlank()
      */
     private $amount;
 
     /**
-     * @var float
+     * @var string
      *
-     * @ORM\Column(name="amountPaid", type="float", nullable=true)
+     * @ORM\Column(name="amountPaid", type="string", nullable=true)
      */
     private $amountPaid;
 
@@ -55,6 +59,7 @@ class BillInstallments
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PaymentMethod")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Assert\NotNull()
      */
     private $paymentMethod;
 
@@ -127,7 +132,7 @@ class BillInstallments
     /**
      * Set amount
      *
-     * @param float $amount
+     * @param string $amount
      *
      * @return BillInstallments
      */
@@ -141,7 +146,7 @@ class BillInstallments
     /**
      * Get amount
      *
-     * @return float
+     * @return string
      */
     public function getAmount()
     {
@@ -151,7 +156,7 @@ class BillInstallments
     /**
      * Set amountPaid
      *
-     * @param float $amountPaid
+     * @param string $amountPaid
      *
      * @return BillInstallments
      */
@@ -165,11 +170,37 @@ class BillInstallments
     /**
      * Get amountPaid
      *
-     * @return float
+     * @return string
      */
     public function getAmountPaid()
     {
         return $this->amountPaid;
+    }
+
+    /**
+     * @return PaymentMethod
+     */
+    public function getPaymentMethod()
+    {
+        return $this->paymentMethod;
+    }
+
+    /**
+     * @param PaymentMethod $paymentMethod
+     * @return BillInstallments
+     */
+    public function setPaymentMethod(PaymentMethod $paymentMethod)
+    {
+        $this->paymentMethod = $paymentMethod;
+        return $this;
+    }
+
+    /**
+     * @param Bill $bill
+     */
+    public function setBill(Bill $bill)
+    {
+        $this->bill = $bill;
     }
 }
 

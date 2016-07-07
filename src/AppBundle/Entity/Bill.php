@@ -32,9 +32,9 @@ class Bill
     private $description;
 
     /**
-     * @var float
+     * @var string
      *
-     * @ORM\Column(name="amount", type="float")
+     * @ORM\Column(name="amount", type="string")
      * @Assert\NotBlank()
      */
     private $amount;
@@ -42,7 +42,7 @@ class Bill
     /**
      * @var string
      *
-     * @ORM\Column(name="note", type="string", length=255)
+     * @ORM\Column(name="note", type="string", length=255, nullable=true)
      */
     private $note;
 
@@ -55,7 +55,7 @@ class Bill
 
     /**
      * @var BillStatus
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BillStatus")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
@@ -63,23 +63,25 @@ class Bill
 
     /**
      * @var BillPlan
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BillPlan")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Assert\NotNull()
      */
     private $billPlan;
 
     /**
      * @var BillType
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BillType")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Assert\NotNull()
      */
     private $billType;
 
     /**
      * @var Bank
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Bank")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
@@ -88,7 +90,7 @@ class Bill
     /**
      * @var BillInstallments
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BillInstallments", mappedBy="bill")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BillInstallments", mappedBy="bill", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $billInstallments;
@@ -138,7 +140,7 @@ class Bill
     /**
      * Set amount
      *
-     * @param float $amount
+     * @param string $amount
      *
      * @return Bill
      */
@@ -152,7 +154,7 @@ class Bill
     /**
      * Get amount
      *
-     * @return float
+     * @return string
      */
     public function getAmount()
     {
@@ -285,6 +287,17 @@ class Bill
     public function getBillInstallments()
     {
         return $this->billInstallments;
+    }
+
+    public function addBillInstallment(BillInstallments $billInstallment)
+    {
+        $billInstallment->setBill($this);
+        $this->billInstallments->add($billInstallment);
+    }
+
+    public function removeBillInstallment(BillInstallments $billInstallment)
+    {
+        $this->billInstallments->removeElement($billInstallment);
     }
 }
 

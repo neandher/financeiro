@@ -7,11 +7,9 @@ use AppBundle\Event\FlashBagEvents;
 use AppBundle\Form\BillPlanType;
 use AppBundle\Form\SubmitActions;
 use AppBundle\Form\SubmitActionsType;
-use AppBundle\Repository\BillPlanRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -184,7 +182,6 @@ class BillPlanController extends Controller
 
             return $this->redirectToRoute('bill_plan_index');
         }
-
     }
 
     /**
@@ -207,11 +204,11 @@ class BillPlanController extends Controller
     public function listFormJson(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return new JsonResponse(array('message' => 'You can access this only using Ajax!'), 400);
+            return $this->json(['message' => 'You can access this only using Ajax!'], 400);
         }
-
+        
         $result = $this->getDoctrine()->getRepository('AppBundle:BillPlan')->queryLatestForm($request->attributes->get('bill_plan_type_id'));
 
-        return $this->json($result);
+        return $this->json($result->getQuery()->getArrayResult());
     }
 }

@@ -82,7 +82,7 @@
                                     <a href="{{ path('bill_edit', {id: bill.id}) ~ pagination_helper.buildQuery }}">{{ bill.description }}</a>
                                 </td>
                                 <td>{{ bill.amount }}</td>
-                                <td>{{ bill.createdAt|date() }}</td>
+                                <td>{{ bill.createdAt|date('d/mY') }}</td>
                                 <td>
                                     <div class="item-actions">
                                         <a href="{{ path('bill_edit', {id: bill.id}) ~ pagination_helper.buildQuery }}"

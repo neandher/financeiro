@@ -28,12 +28,38 @@
 
             {{ include('partials/alerts.html.twig') }}
 
-            <div class="row">
-                {{ form_row(form.billType) }}
-                {{ form_row(form.description, {'attr': {'autofocus': true}}) }}
-                {{ form_row(form.amount) }}
-                {{ form_row(form.billPlan) }}
-                {{ form_row(form.bank) }}
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#dados" aria-controls="dados" role="tab" data-toggle="tab">Dados</a>
+                </li>
+                <li role="presentation">
+                    <a href="#parcelas" aria-controls="parcelas" role="tab" data-toggle="tab">Parcelas</a>
+                </li>
+            </ul>
+
+            <br>
+
+            <div class="tab-content">
+
+                <div role="tabpanel" class="tab-pane active" id="dados">
+
+                    <div class="row">
+                        {{ form_row(form.billType, {'attr': {'autofocus': true}}) }}
+                        {{ form_row(form.description) }}
+                        {{ form_row(form.amount) }}
+                        {{ form_row(form.billPlan) }}
+                        {{ form_row(form.bank) }}
+                    </div>
+
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="parcelas">
+
+                    <div id="installments" class="panel panel-default"
+                         data-prototype="{{ form_widget(form.billInstallments.vars.prototype)|e('html_attr') }}"></div>
+
+                </div>
+
             </div>
 
             <hr>
@@ -57,26 +83,8 @@
 {% block javascripts %}
 
     <script>
-        $('#bill_billType').change(function () {
-
-            var billPlan = $('#bill_billPlan');
-
-            billPlan.children().remove();
-
-            billPlan.append($("<option></option>")
-                    .attr("value", 0)
-                    .text('carregando...'));
-
-            $.getJSON(Routing.generate("bill_plan_list_form_json", {"bill_plan_type_id": $(this).val()}), function (data) {
-
-                billPlan.children().remove();
-
-                $.each(data, function (key, value) {
-                    billPlan.append($("<option></option>")
-                            .attr("value", value.id)
-                            .text(value.billPlanType.description + ' - ' + value.description));
-                });
-            })
+        jQuery(document).ready(function () {
+            installmentsInit();
         });
     </script>
 

@@ -55,8 +55,6 @@ class BillPlanRepository extends AbstractEntityRepository
             ->addSelect('billType')
             ->andWhere('billType.id = ' . $billPlanId . '')
             ->orderBy('billPlanType.description', 'ASC')
-            ->addOrderBy('billPlan.description', 'ASC')
-            ->getQuery()
-            ->getArrayResult();
+            ->addOrderBy('billPlan.description', 'ASC');
     }
 }

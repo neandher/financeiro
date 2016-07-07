@@ -42,4 +42,10 @@ class PaymentMethodRepository extends AbstractEntityRepository
 
         return $paginator;
     }
+
+    public function queryLatestForm()
+    {
+        return $this->createQueryBuilder('paymentMethod')
+            ->orderBy('paymentMethod.description', 'ASC');
+    }
 }

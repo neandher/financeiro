@@ -7,6 +7,7 @@ use AppBundle\Event\FlashBagEvents;
 use AppBundle\Form\BillType;
 use AppBundle\Form\SubmitActions;
 use AppBundle\Form\SubmitActionsType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -67,6 +68,8 @@ class BillController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $bill->setCreatedAt(new \DateTime('now'));
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($bill);
             $em->flush();
@@ -108,6 +111,12 @@ class BillController extends Controller
      */
     public function editAction(Request $request, Bill $bill)
     {
+        $originalBillInstallments = new ArrayCollection();
+
+        foreach ($bill->getBillInstallments() as $billInstallment) {
+            $originalBillInstallments->add($billInstallment);
+        }
+
         $paginationHelper = $this->get('app.helper.pagination')->handle($request);
 
         $form = $this->createForm(BillType::class, $bill)
@@ -129,6 +138,15 @@ class BillController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
+
+            foreach ($originalBillInstallments as $billInstallment) {
+                if (false === $bill->getBillInstallments()->contains($billInstallment)){
+                    $billInstallment->setBill(null);
+                    $em->remove($billInstallment);
+                }
+            }
+
+            $em->persist($bill);
             $em->flush();
 
             $this->get('app.helper.flash_bag')->newMessage(FlashBagEvents::MESSAGE_TYPE_SUCCESS, FlashBagEvents::MESSAGE_SUCCESS_UPDATED);

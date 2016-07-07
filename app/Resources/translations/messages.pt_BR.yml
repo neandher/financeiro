@@ -94,8 +94,20 @@ bill:
         menu: Contas
     fields:
         description: Descrição
-        amount: Valor
+        amount: Valor Total
         note: Observações
         createdAt: Data de Criação
     action:
         new: Nova Conta
+
+billInstallments:
+    title:
+        menu: Parcelas
+    fields:
+        dueDateAt: Data de Vencimento
+        paymentDateAt: Data de Pagamento
+        amount: Valor
+        amountPaid: Valor Pago
+    action:
+        new: Adicionar Parcela
+        remove: Remover Parcela
