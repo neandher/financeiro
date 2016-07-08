@@ -13,6 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class BillType
 {
+    const BILL_TYPE_DESPESA = 'despesa';
+    const BILL_TYPE_RECEITA = 'receita';
+    
     /**
      * @var int
      *

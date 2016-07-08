@@ -21,10 +21,37 @@ class BillInstallmentsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('dueDateAt', DateType::class, ['label' => 'billInstallments.fields.dueDateAt'])
-            ->add('paymentDateAt', DateType::class, ['label' => 'billInstallments.fields.paymentDateAt', 'required' => false])
-            ->add('amount', TextType::class, ['label' => 'billInstallments.fields.amount', 'required' => false])
-            ->add('amountPaid', TextType::class, ['label' => 'billInstallments.fields.amountPaid'])
+            ->add('dueDateAt', DateType::class,
+                [
+                    'label' => 'billInstallments.fields.dueDateAt',
+                    'widget' => 'single_text',
+                    'html5' => false,
+                    'format' => 'dd-MM-yyyy',
+                    'attr' => ['class' => 'js-datepicker', 'readonly' => true]
+                ]
+            )
+            ->add('amount', TextType::class,
+                [
+                    'label' => 'billInstallments.fields.amount', 'required' => false,
+                    'attr' => ['onkeydown' => 'Formata(this,20,event,2);']
+                ]
+            )
+            ->add('paymentDateAt', DateType::class,
+                [
+                    'label' => 'billInstallments.fields.paymentDateAt',
+                    'required' => false,
+                    'widget' => 'single_text',
+                    'html5' => false,
+                    'format' => 'dd-MM-yyyy',
+                    'attr' => ['class' => 'js-datepicker', 'readonly' => true]
+                ]
+            )
+            ->add('amountPaid', TextType::class,
+                [
+                    'label' => 'billInstallments.fields.amountPaid',
+                    'attr' => ['onkeydown' => 'Formata(this,20,event,2);']
+                ]
+            )
             ->add('paymentMethod', EntityType::class,
                 [
                     'class' => PaymentMethod::class,
@@ -34,7 +61,8 @@ class BillInstallmentsType extends AbstractType
                     'choice_label' => 'description',
                     'label' => 'paymentMethod.title.menu',
                 ]
-            );
+            )
+            ->add('description', TextType::class, ['label' => 'billInstallments.fields.description']);
     }
 
     /**

@@ -46,7 +46,6 @@
                     <div class="row">
                         {{ form_row(form.billType, {'attr': {'autofocus': true}}) }}
                         {{ form_row(form.description) }}
-                        {{ form_row(form.amount) }}
                         {{ form_row(form.billPlan) }}
                         {{ form_row(form.bank) }}
                     </div>
@@ -56,7 +55,15 @@
                 <div role="tabpanel" class="tab-pane" id="parcelas">
 
                     <div id="installments" class="panel panel-default"
-                         data-prototype="{{ form_widget(form.billInstallments.vars.prototype)|e('html_attr') }}"></div>
+                         data-prototype="{{ form_widget(form.billInstallments.vars.prototype)|e('html_attr') }}">
+                        {% if form.vars.submitted and form.vars.valid == false %}
+                            {% for billInstallment in form.billInstallments %}
+                                <div class="panel-body">
+                                    {{ form_widget(billInstallment) }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
 
                 </div>
 
@@ -84,7 +91,7 @@
 
     <script>
         jQuery(document).ready(function () {
-            installmentsInit();
+            installmentsInit(true);
         });
     </script>
 

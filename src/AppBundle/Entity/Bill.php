@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -34,8 +35,7 @@ class Bill
     /**
      * @var string
      *
-     * @ORM\Column(name="amount", type="string")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="amount", type="string", nullable=true)
      */
     private $amount;
 
@@ -92,6 +92,7 @@ class Bill
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\BillInstallments", mappedBy="bill", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
+     * @Assert\Count(min="1", minMessage="bill.validator.installments_count")
      */
     private $billInstallments;
 
@@ -221,7 +222,7 @@ class Bill
      * @param BillStatus $billStatus
      * @return Bill
      */
-    public function setBillStatus(BillStatus $billStatus)
+    public function setBillStatus($billStatus)
     {
         $this->billStatus = $billStatus;
         return $this;
@@ -239,7 +240,7 @@ class Bill
      * @param BillPlan $billPlan
      * @return Bill
      */
-    public function setBillPlan(BillPlan $billPlan)
+    public function setBillPlan($billPlan)
     {
         $this->billPlan = $billPlan;
         return $this;
@@ -257,7 +258,7 @@ class Bill
      * @param BillType $billType
      * @return Bill
      */
-    public function setBillType(BillType $billType)
+    public function setBillType($billType)
     {
         $this->billType = $billType;
         return $this;
@@ -275,7 +276,7 @@ class Bill
      * @param Bank $bank
      * @return Bill
      */
-    public function setBank(Bank $bank)
+    public function setBank($bank)
     {
         $this->bank = $bank;
         return $this;
@@ -298,6 +299,49 @@ class Bill
     public function removeBillInstallment(BillInstallments $billInstallment)
     {
         $this->billInstallments->removeElement($billInstallment);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDateOverDue()
+    {
+        $isDateOverDue = false;
+
+        foreach ($this->getBillInstallments() as $billInstallment) {
+            if ($billInstallment->getPaymentDateAt() === null && $billInstallment->getDueDateAt() < (new \DateTime())) {
+                $isDateOverDue = true;
+                break;
+            }
+        }
+        return $isDateOverDue;
+    }
+
+    public function getInstallmentNextPayment()
+    {
+        $installmentNextPayment = null;
+
+        $criteria = Criteria::create()->orderBy(['dueDateAt' => Criteria::ASC]);
+
+        foreach ($this->getBillInstallments()->matching($criteria) as $billInstallment) {
+            if ($billInstallment->getPaymentDateAt() === null) {
+                $installmentNextPayment = $billInstallment;
+                break;
+            }
+        }
+
+        return $installmentNextPayment;
+    }
+
+    public function getTotalInstallmentsPaid()
+    {
+        $i = 0;
+        foreach ($this->getBillInstallments() as $billInstallment) {
+            if ($billInstallment->getPaymentDateAt() !== null) {
+                $i++;
+            }
+        }
+        return $i;
     }
 }
 

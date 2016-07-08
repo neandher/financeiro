@@ -1,8 +1,8 @@
 AppBundle\Entity\BillStatus:
-    billType_1:
+    billStatus_1:
         description: 'Pago'
         referency: 'pago'
-    billType_2:
+    billStatus_2:
         description: 'Em Aberto'
         referency: 'em_aberto'
 
@@ -26,11 +26,17 @@ AppBundle\Entity\PaymentMethod:
     paymentMethod_5:
         description: 'Depósito Bancário'
 
+#AppBundle\Entity\Bank:
+#    bank_{1..50}:
+#        description: <name()>
+#        agency: <randomNumber()>
+#        account: <randomNumber()>
+
 AppBundle\Entity\Bank:
-    bank_{1..50}:
-        description: <name()>
-        agency: <randomNumber()>
-        account: <randomNumber()>
+    bank_1:
+        description: 'Santander'
+        agency: 'xxxx'
+        account: 'xxxx'
 
 AppBundle\Entity\BillPlanType:
     billPlanType1:
@@ -76,7 +82,7 @@ AppBundle\Entity\BillPlan:
         billPlanType: '@billPlanType1'
     billPlan11:
         description: 'Outros'
-        billPlanType: '@billPlanType2'
+        billPlanType: '@billPlanType1'
     billPlan12:
         description: 'Moradia'
         billPlanType: '@billPlanType2'
@@ -95,3 +101,6 @@ AppBundle\Entity\BillPlan:
     billPlan18:
         description: 'Ticket Alimentação'
         billPlanType: '@billPlanType3'
+    billPlan18:
+        description: 'Cartão de Crédito'
+        billPlanType: '@billPlanType1'

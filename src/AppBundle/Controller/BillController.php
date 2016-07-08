@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Bill;
+use AppBundle\Entity\BillStatus;
 use AppBundle\Event\FlashBagEvents;
 use AppBundle\Form\BillType;
 use AppBundle\Form\SubmitActions;
@@ -68,6 +69,8 @@ class BillController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $this->setAmount($bill);
+            $this->setBillStatus($bill);
             $bill->setCreatedAt(new \DateTime('now'));
 
             $em = $this->getDoctrine()->getManager();
@@ -111,6 +114,8 @@ class BillController extends Controller
      */
     public function editAction(Request $request, Bill $bill)
     {
+        $this->setAmountInverse($bill);
+
         $originalBillInstallments = new ArrayCollection();
 
         foreach ($bill->getBillInstallments() as $billInstallment) {
@@ -137,10 +142,13 @@ class BillController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $this->setAmount($bill);
+            $this->setBillStatus($bill);
+
             $em = $this->getDoctrine()->getManager();
 
             foreach ($originalBillInstallments as $billInstallment) {
-                if (false === $bill->getBillInstallments()->contains($billInstallment)){
+                if (false === $bill->getBillInstallments()->contains($billInstallment)) {
                     $billInstallment->setBill(null);
                     $em->remove($billInstallment);
                 }
@@ -214,5 +222,69 @@ class BillController extends Controller
             ->setMethod('DELETE')
             ->setData($bill)
             ->getForm();
+    }
+
+    /**
+     * @param Bill $bill
+     */
+    private function setAmount(Bill $bill)
+    {
+        $billTypeReference = $bill->getBillType()->getReferency();
+
+        $operator = '';
+
+        if ($billTypeReference == \AppBundle\Entity\BillType::BILL_TYPE_DESPESA) {
+            $operator = '-';
+        }
+
+        $amountFull = 0;
+
+        foreach ($bill->getBillInstallments() as $billInstallment) {
+
+            $amountFull += (float)str_replace(['-','.', ','], ['','', '.'], $billInstallment->getAmount());
+
+            $newInstallmentAmount = $operator . $billInstallment->getAmount();
+            $billInstallment->setAmount($newInstallmentAmount);
+
+            if (!is_null($billInstallment->getAmountPaid())) {
+                $newInstallmentAmountPaid = $operator . $billInstallment->getAmountPaid();
+                $billInstallment->setAmountPaid($newInstallmentAmountPaid);
+            }
+        }
+
+        $newAmount = $operator . number_format($amountFull, 2, ',', '.');
+        $bill->setAmount($newAmount);
+    }
+
+    /**
+     * @param Bill $bill
+     */
+    private function setAmountInverse(Bill $bill)
+    {
+        $newAmount = str_replace('-', '', $bill->getAmount());
+        $bill->setAmount($newAmount);
+
+        foreach ($bill->getBillInstallments() as $billInstallment) {
+            $newInstallmentAmount = str_replace('-', '', $billInstallment->getAmount());
+            $billInstallment->setAmount($newInstallmentAmount);
+
+            if (!is_null($billInstallment->getAmountPaid())) {
+                $newInstallmentAmountPaid = str_replace('-', '', $billInstallment->getAmountPaid());
+                $billInstallment->setAmountPaid($newInstallmentAmountPaid);
+            }
+        }
+    }
+
+    private function setBillStatus(Bill $bill)
+    {
+        $status = BillStatus::BILL_STATUS_PAGO;
+
+        foreach ($bill->getBillInstallments() as $billInstallment) {
+            if ($billInstallment->getPaymentDateAt() === null && $billInstallment->getAmountPaid() === null) {
+                $status = BillStatus::BILL_STATUS_EM_ABERTO;
+                break;
+            }
+        }
+        $bill->setBillStatus($this->getDoctrine()->getRepository(BillStatus::class)->findOneByReferency($status));
     }
 }

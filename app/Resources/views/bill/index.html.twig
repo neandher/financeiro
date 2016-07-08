@@ -31,6 +31,20 @@
                 </div>
 
                 <div class="form-group">
+                    <input type="text" class="form-control js-datepicker"
+                           placeholder="{{ 'form.placeholder.date_start'|trans }}"
+                           name="date_start"
+                           value="{% if app.request.query.has('date_start') %}{{ app.request.query.get('date_start') }}{% endif %}">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control js-datepicker"
+                           placeholder="{{ 'form.placeholder.date_end'|trans }}"
+                           name="date_end"
+                           value="{% if app.request.query.has('date_end') %}{{ app.request.query.get('date_end') }}{% endif %}">
+                </div>
+
+                <div class="form-group">
                     <input type="number" class="form-control col-md-4"
                            placeholder="{{ 'form.placeholder.num_items'|trans }}"
                            name="num_items"
@@ -39,7 +53,8 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-default form-control">{{ 'form.submit_actions.search'|trans }}</button>
+                    <button type="submit"
+                            class="btn btn-default form-control">{{ 'form.submit_actions.search'|trans }}</button>
                 </div>
 
                 <div class="form-group">
@@ -58,6 +73,11 @@
                         <thead>
                         <tr>
                             <th>
+                                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('createdAt') }}">
+                                    {{ 'bill.fields.createdAt'|trans }}
+                                </a>
+                            </th>
+                            <th>
                                 <a href="{{ path('bill_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('description') }}">
                                     {{ 'bill.fields.description'|trans }}
                                 </a>
@@ -68,8 +88,14 @@
                                 </a>
                             </th>
                             <th>
-                                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('createdAt') }}">
-                                    {{ 'bill.fields.createdAt'|trans }}
+                                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('billStatus.description') }}">
+                                    {{ 'billStatus.title.menu'|trans }}
+                                </a>
+                            </th>
+                            <th>{{ 'billInstallments.title.next_payment'|trans }}</th>
+                            <th>
+                                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('bank.description') }}">
+                                    {{ 'bank.title.menu'|trans }}
                                 </a>
                             </th>
                             <th>{{ 'table.actions'|trans }}</th>
@@ -77,12 +103,41 @@
                         </thead>
                         <tbody>
                         {% for bill in bills %}
-                            <tr>
+
+                            <tr {% if bill.isDateOverDue %}class="warning text-danger"
+                                style="font-weight: bold"{% endif %}>
+                                <td>{{ bill.createdAt|date('d/m/Y') }}</td>
                                 <td>
                                     <a href="{{ path('bill_edit', {id: bill.id}) ~ pagination_helper.buildQuery }}">{{ bill.description }}</a>
                                 </td>
                                 <td>{{ bill.amount }}</td>
-                                <td>{{ bill.createdAt|date('d/mY') }}</td>
+                                <td>{{ bill.billStatus.description }}</td>
+                                <td>
+
+                                    {% if bill.billStatus.referency == 'em_aberto' %}
+                                        {% set installmentNextPayment = bill.getInstallmentNextPayment %}
+                                        {{ installmentNextPayment.dueDateAt|date('d/m/Y') }} R$: {{ installmentNextPayment.amount|number_format('2',',','.') }} -
+                                        {% set installment_number = bill.getTotalInstallmentsPaid + 1 %}
+                                        {{ installment_number }} / {{ bill.billInstallments|length }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+
+                                    {#{% set paid = true %}
+                                    {% set installment_number = 1 %}
+
+                                    {% for installment in bill.billInstallments| if paid %}
+                                        {% if installment.paymentDateAt is null %}
+                                            {% set paid = false %}
+                                            {{ installment.dueDateAt|date('d/m/Y') }} R$: {{ installment.amount|number_format('2',',','.') }} -
+                                            {{ installment_number }} / {{ bill.billInstallments|length }}
+                                        {% endif %}
+                                        {% set installment_number = installment_number + 1 %}
+                                    {% endfor %}
+
+                                    {% if paid %}-{% endif %}#}
+                                </td>
+                                <td>{% if bill.bank %} {{ bill.bank.description }} {% else %}-{% endif %}</td>
                                 <td>
                                     <div class="item-actions">
                                         <a href="{{ path('bill_edit', {id: bill.id}) ~ pagination_helper.buildQuery }}"
@@ -94,7 +149,7 @@
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="4" align="center">{{ 'table.not_found'|trans }}</td>
+                                <td colspan="6" align="center">{{ 'table.not_found'|trans }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>

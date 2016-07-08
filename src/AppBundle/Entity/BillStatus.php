@@ -13,6 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class BillStatus
 {
+    const BILL_STATUS_EM_ABERTO = 'em_aberto';
+    const BILL_STATUS_PAGO = 'pago';
+
     /**
      * @var int
      *

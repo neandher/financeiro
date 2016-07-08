@@ -29,7 +29,6 @@ class BillType extends AbstractType
     {
         $builder
             ->add('description', TextType::class, ['label' => 'bill.fields.description'])
-            ->add('amount', TextType::class, ['label' => 'bill.fields.amount'])
             ->add('billType', EntityType::class,
                 [
                     'class' => \AppBundle\Entity\BillType::class,
@@ -56,7 +55,9 @@ class BillType extends AbstractType
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
-                    'label_format' => ' '
+                    'label' => 'billInstallments.title.menu',
+                    'label_attr' => ['class' => 'hide'],
+                    'attr' => ['class' => 'hide'],
                 ]
             );
 

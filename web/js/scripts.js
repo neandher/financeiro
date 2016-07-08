@@ -2,21 +2,27 @@ $('#bill_billType').change(function () {
 
     var billPlan = $('#bill_billPlan');
 
-    billPlan.html($("<option></option>").attr("value", 0).text('carregando...'));
+    if ($(this).val().length > 0) {
 
-    $.getJSON(Routing.generate("bill_plan_list_form_json", {"bill_plan_type_id": $(this).val()}), function (data) {
+        billPlan.html($("<option></option>").attr("value", 0).text('carregando...'));
 
-        billPlan.children().remove();
+        $.getJSON(Routing.generate("bill_plan_list_form_json", {"bill_plan_type_id": $(this).val()}), function (data) {
 
-        $.each(data, function (key, value) {
-            billPlan.append($("<option></option>")
-                .attr("value", value.id)
-                .text(value.billPlanType.description + ' - ' + value.description));
-        });
-    })
+            billPlan.children().remove();
+
+            $.each(data, function (key, value) {
+                billPlan.append($("<option></option>")
+                    .attr("value", value.id)
+                    .text(value.billPlanType.description + ' - ' + value.description));
+            });
+        })
+    }
+    else {
+        billPlan.html($("<option></option>"));
+    }
 });
 
-function installmentsInit() {
+function installmentsInit(defaultInstallment) {
 
     var $collectionHolder;
 
@@ -45,6 +51,10 @@ function installmentsInit() {
         // add a new installment form (see next code block)
         addInstallmentForm($collectionHolder, $newLinkLi);
     });
+
+    if (defaultInstallment) {
+        addInstallmentForm($collectionHolder, $newLinkLi);
+    }
 }
 
 function addInstallmentForm($collectionHolder, $newLinkLi) {
@@ -64,6 +74,11 @@ function addInstallmentForm($collectionHolder, $newLinkLi) {
     // Display the form in the page in an li, before the "Add a installment" link li
     var $newFormLi = $('<div class="panel-body"></div>').append(newForm);
     $newLinkLi.before($newFormLi);
+
+    $('.js-datepicker').datepicker({
+        format: 'dd-mm-yyyy',
+        language: 'pt-BR'
+    });
 
     addInstallmentFormDeleteLink($newFormLi);
 }

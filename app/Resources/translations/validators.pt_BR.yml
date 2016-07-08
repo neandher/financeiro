@@ -1,0 +1,3 @@
+bill:
+    validator:
+        installments_count: Favor adicionar pelo menos uma parcela a conta

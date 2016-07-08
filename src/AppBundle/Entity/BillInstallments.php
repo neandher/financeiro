@@ -23,6 +23,13 @@ class BillInstallments
     private $id;
 
     /**
+     * @var string
+     * 
+     * @ORM\Column(name="description", type="string", nullable=true)
+     */
+    private $description;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="dueDateAt", type="date")
@@ -79,6 +86,24 @@ class BillInstallments
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return BillInstallments
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
     }
 
     /**
@@ -189,7 +214,7 @@ class BillInstallments
      * @param PaymentMethod $paymentMethod
      * @return BillInstallments
      */
-    public function setPaymentMethod(PaymentMethod $paymentMethod)
+    public function setPaymentMethod($paymentMethod)
     {
         $this->paymentMethod = $paymentMethod;
         return $this;
@@ -198,7 +223,7 @@ class BillInstallments
     /**
      * @param Bill $bill
      */
-    public function setBill(Bill $bill)
+    public function setBill($bill)
     {
         $this->bill = $bill;
     }

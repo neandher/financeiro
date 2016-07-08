@@ -24,6 +24,8 @@ form:
     placeholder:
         search: Digite sua busca
         num_items: Items por página
+        date_start: Data Inicial
+        date_end: Data Final
 
 table:
     actions: Ações
@@ -54,7 +56,7 @@ paymentMethod:
         list: Listar Métodos de Pagamento
         new: Novo Método de Pagamento
         edit: Editar Método de Pagamento
-        menu: Métodos de Pagamento
+        menu: Método de Pagamento
     fields:
         description: Descrição
     action:
@@ -86,6 +88,10 @@ billType:
     title:
         menu: Tipo Conta
 
+billStatus:
+    title:
+        menu: Status
+
 bill:
     title:
         list: Listar Contas
@@ -103,11 +109,13 @@ bill:
 billInstallments:
     title:
         menu: Parcelas
+        next_payment: Próximo Vencimento
     fields:
         dueDateAt: Data de Vencimento
         paymentDateAt: Data de Pagamento
         amount: Valor
         amountPaid: Valor Pago
+        description: Descrição
     action:
         new: Adicionar Parcela
         remove: Remover Parcela

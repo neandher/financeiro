@@ -57,7 +57,6 @@
                     <div class="row">
                         {{ form_row(form.billType, {'attr': {'autofocus': true}}) }}
                         {{ form_row(form.description) }}
-                        {{ form_row(form.amount) }}
                         {{ form_row(form.billPlan) }}
                         {{ form_row(form.bank) }}
                     </div>
@@ -69,11 +68,7 @@
                     <div id="installments" class="panel panel-default" data-prototype="{{ form_widget(form.billInstallments.vars.prototype)|e('html_attr') }}">
                         {% for billInstallment in form.billInstallments %}
                             <div class="panel-body">
-                                {{ form_row(billInstallment.dueDateAt) }}
-                                {{ form_row(billInstallment.paymentDateAt) }}
-                                {{ form_row(billInstallment.amount) }}
-                                {{ form_row(billInstallment.amountPaid) }}
-                                {{ form_row(billInstallment.paymentMethod) }}
+                                {{ form_widget(billInstallment) }}
                             </div>
                         {% endfor %}
                     </div>
