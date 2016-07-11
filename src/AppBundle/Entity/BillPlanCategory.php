@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * BillPlanType
+ * BillPlanCategory
  *
- * @ORM\Table(name="bill_plan_type")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\BillPlanTypeRepository")
+ * @ORM\Table(name="bill_plan_category")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BillPlanCategoryRepository")
  */
-class BillPlanType
+class BillPlanCategory
 {
     /**
      * @var int
@@ -31,12 +31,12 @@ class BillPlanType
     private $description;
 
     /**
-     * @var BillType
+     * @var BillCategory
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BillType")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BillCategory")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $billType;
+    private $billCategory;
 
     /**
      * Get id
@@ -53,7 +53,7 @@ class BillPlanType
      *
      * @param string $description
      *
-     * @return BillPlanType
+     * @return BillPlanCategory
      */
     public function setDescription($description)
     {
@@ -73,20 +73,20 @@ class BillPlanType
     }
 
     /**
-     * @return BillType
+     * @return BillCategory
      */
-    public function getBillType()
+    public function getBillCategory()
     {
-        return $this->billType;
+        return $this->billCategory;
     }
 
     /**
-     * @param BillType $billType
-     * @return BillPlanType
+     * @param BillCategory $billCategory
+     * @return BillPlanCategory
      */
-    public function setBillType(BillType $billType)
+    public function setBillCategory(BillCategory $billCategory)
     {
-        $this->billType = $billType;
+        $this->billCategory = $billCategory;
         return $this;
     }
 }

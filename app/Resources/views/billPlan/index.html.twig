@@ -63,8 +63,8 @@
                                 </a>
                             </th>
                             <th>
-                                <a href="{{ path('bill_plan_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('billPlanType.description') }}">
-                                    {{ 'billPlanType.title.menu'|trans }}
+                                <a href="{{ path('bill_plan_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('billPlanCategory.description') }}">
+                                    {{ 'billPlanCategory.title.menu'|trans }}
                                 </a>
                             </th>
 
@@ -77,7 +77,7 @@
                                 <td>
                                     <a href="{{ path('bill_plan_edit', {id: billPlan.id}) ~ pagination_helper.buildQuery }}">{{ billPlan.description }}</a>
                                 </td>
-                                <td>{{ billPlan.billPlanType.description }}</td>
+                                <td>{{ billPlan.billPlanCategory.description }}</td>
                                 <td>
                                     <div class="item-actions">
                                         <a href="{{ path('bill_plan_edit', {id: billPlan.id}) ~ pagination_helper.buildQuery }}"

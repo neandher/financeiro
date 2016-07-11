@@ -71,13 +71,13 @@ class Bill
     private $billPlan;
 
     /**
-     * @var BillType
+     * @var BillCategory
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BillType")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BillCategory")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\NotNull()
      */
-    private $billType;
+    private $billCategory;
 
     /**
      * @var Bank
@@ -248,20 +248,20 @@ class Bill
     }
 
     /**
-     * @return BillType
+     * @return BillCategory
      */
-    public function getBillType()
+    public function getBillCategory()
     {
-        return $this->billType;
+        return $this->billCategory;
     }
 
     /**
-     * @param BillType $billType
+     * @param BillCategory $billCategory
      * @return Bill
      */
-    public function setBillType($billType)
+    public function setBillCategory($billCategory)
     {
-        $this->billType = $billType;
+        $this->billCategory = $billCategory;
         return $this;
     }
 
@@ -310,7 +310,7 @@ class Bill
         $isDateOverDue = false;
 
         foreach ($this->getBillInstallments() as $billInstallment) {
-            if ($billInstallment->getPaymentDateAt() === null && $billInstallment->getDueDateAt() < (new \DateTime())) {
+            if ($billInstallment->getPaymentDateAt() === null && $billInstallment->getDueDateAt() < (new \DateTime(date('y-m-d')))) {
                 $isDateOverDue = true;
                 break;
             }

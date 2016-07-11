@@ -6,11 +6,11 @@ AppBundle\Entity\BillStatus:
         description: 'Em Aberto'
         referency: 'em_aberto'
 
-AppBundle\Entity\BillType:
-    billType_1:
+AppBundle\Entity\BillCategory:
+    billCategory_1:
         description: 'Receita'
         referency: 'receita'
-    billType_2:
+    billCategory_2:
         description: 'Despesa'
         referency: 'despesa'
 
@@ -38,69 +38,69 @@ AppBundle\Entity\Bank:
         agency: 'xxxx'
         account: 'xxxx'
 
-AppBundle\Entity\BillPlanType:
-    billPlanType1:
+AppBundle\Entity\BillPlanCategory:
+    billPlanCategory1:
         description: 'Custos e Depesas Variáveis'
-        billType: '@billType_2'
-    billPlanType2:
+        billCategory: '@billCategory_2'
+    billPlanCategory2:
         description: 'Custos e Depesas Fixas'
-        billType: '@billType_2'
-    billPlanType3:
+        billCategory: '@billCategory_2'
+    billPlanCategory3:
         description: 'Recebimentos'
-        billType: '@billType_1'
+        billCategory: '@billCategory_1'
 
 AppBundle\Entity\BillPlan:
     billPlan1:
         description: 'Alimentação'
-        billPlanType: '@billPlanType1'
+        billPlanCategory: '@billPlanCategory1'
     billPlan2:
         description: 'Dividas e Parcelamentos'
-        billPlanType: '@billPlanType2'
+        billPlanCategory: '@billPlanCategory2'
     billPlan3:
         description: 'Carro'
-        billPlanType: '@billPlanType2'
+        billPlanCategory: '@billPlanCategory2'
     billPlan4:
         description: 'Despesas Bancárias'
-        billPlanType: '@billPlanType1'
+        billPlanCategory: '@billPlanCategory1'
     billPlan5:
         description: 'Lazer'
-        billPlanType: '@billPlanType1'
+        billPlanCategory: '@billPlanCategory1'
     billPlan6:
         description: 'Presentes'
-        billPlanType: '@billPlanType1'
+        billPlanCategory: '@billPlanCategory1'
     billPlan7:
         description: 'Telefonia, Energia , Água e TV'
-        billPlanType: '@billPlanType2'
+        billPlanCategory: '@billPlanCategory2'
     billPlan8:
         description: 'Vestuário'
-        billPlanType: '@billPlanType1'
+        billPlanCategory: '@billPlanCategory1'
     billPlan9:
         description: 'Dízimos e Ofertas'
-        billPlanType: '@billPlanType2'
+        billPlanCategory: '@billPlanCategory2'
     billPlan10:
         description: 'Taxas Bancárias'
-        billPlanType: '@billPlanType1'
+        billPlanCategory: '@billPlanCategory1'
     billPlan11:
         description: 'Outros'
-        billPlanType: '@billPlanType1'
+        billPlanCategory: '@billPlanCategory1'
     billPlan12:
         description: 'Moradia'
-        billPlanType: '@billPlanType2'
+        billPlanCategory: '@billPlanCategory2'
     billPlan14:
         description: 'Salários'
-        billPlanType: '@billPlanType3'
+        billPlanCategory: '@billPlanCategory3'
     billPlan15:
         description: 'Outros'
-        billPlanType: '@billPlanType3'
+        billPlanCategory: '@billPlanCategory3'
     billPlan16:
         description: 'Hinode'
-        billPlanType: '@billPlanType1'
+        billPlanCategory: '@billPlanCategory1'
     billPlan17:
         description: 'Hinode'
-        billPlanType: '@billPlanType3'
+        billPlanCategory: '@billPlanCategory3'
     billPlan18:
         description: 'Ticket Alimentação'
-        billPlanType: '@billPlanType3'
-    billPlan18:
+        billPlanCategory: '@billPlanCategory3'
+    billPlan19:
         description: 'Cartão de Crédito'
-        billPlanType: '@billPlanType1'
+        billPlanCategory: '@billPlanCategory1'

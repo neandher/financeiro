@@ -20,7 +20,7 @@
                     <a href="{{ path('index') }}">Painel</a>
                 </li>
                 <li>
-                    <a href="#">Fluxo de Caixa</a>
+                    <a href="{{ path('cash_flow_index') }}">{{ 'cashFlow.title.menu'|trans }}</a>
                 </li>
                 <li>
                     <a href="{{ path('bill_index') }}">{{ 'bill.title.menu'|trans }}</a>
@@ -35,7 +35,7 @@
                             <a href="{{ path('bill_plan_index') }}">{{ 'billPlan.title.menu'|trans }}</a>
                         </li>
                         <li>
-                            <a href="{{ path('bill_plan_type_index') }}">{{ 'billPlanType.title.menu'|trans }}</a>
+                            <a href="{{ path('bill_plan_category_index') }}">{{ 'billPlanCategory.title.menu'|trans }}</a>
                         </li>
                         <li>
                             <a href="{{ path('bank_index') }}">{{ 'bank.title.menu'|trans }}</a>

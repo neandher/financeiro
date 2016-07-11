@@ -31,12 +31,12 @@ class BillPlan
     private $description;
 
     /**
-     * @var BillPlanType
+     * @var BillPlanCategory
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BillPlanType")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BillPlanCategory")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $billPlanType;
+    private $billPlanCategory;
 
     /**
      * Get id
@@ -73,24 +73,24 @@ class BillPlan
     }
 
     /**
-     * @return BillPlanType
+     * @return BillPlanCategory
      */
-    public function getBillPlanType()
+    public function getBillPlanCategory()
     {
-        return $this->billPlanType;
+        return $this->billPlanCategory;
     }
 
     /**
-     * @param BillPlanType $billPlanType
+     * @param BillPlanCategory $billPlanCategory
      */
-    public function setBillPlanType(BillPlanType $billPlanType)
+    public function setBillPlanCategory(BillPlanCategory $billPlanCategory)
     {
-        $this->billPlanType = $billPlanType;
+        $this->billPlanCategory = $billPlanCategory;
     }
 
-    public function getStringSelectForm()
+    public function getDescriptionWithPlanCategory()
     {
-        return $this->billPlanType->getDescription() . ' - ' . $this->getDescription();
+        return $this->billPlanCategory->getDescription() . ' - ' . $this->getDescription();
     }
 
 }

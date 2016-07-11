@@ -4,9 +4,11 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Bank;
 use AppBundle\Entity\Bill;
+use AppBundle\Entity\BillCategory;
 use AppBundle\Entity\BillInstallments;
 use AppBundle\Entity\BillPlan;
 use AppBundle\Repository\BankRepository;
+use AppBundle\Repository\BillCategoryRepository;
 use AppBundle\Repository\BillPlanRepository;
 use AppBundle\Repository\BillTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -29,14 +31,14 @@ class BillType extends AbstractType
     {
         $builder
             ->add('description', TextType::class, ['label' => 'bill.fields.description'])
-            ->add('billType', EntityType::class,
+            ->add('billCategory', EntityType::class,
                 [
-                    'class' => \AppBundle\Entity\BillType::class,
-                    'query_builder' => function (BillTypeRepository $er) {
+                    'class' => BillCategory::class,
+                    'query_builder' => function (BillCategoryRepository $er) {
                         return $er->queryLatestForm();
                     },
                     'choice_label' => 'description',
-                    'label' => 'billType.title.menu',
+                    'label' => 'billCategory.title.menu',
                     'placeholder' => '',
                 ]
             )
@@ -53,16 +55,16 @@ class BillType extends AbstractType
                 ]
             );
 
-        $formModifier = function (FormInterface $form, \AppBundle\Entity\BillType $billType = null) {
+        $formModifier = function (FormInterface $form, BillCategory $billCategory = null) {
 
-            if ($billType === null) {
+            if ($billCategory === null) {
                 $billPlanOptions = [
                     'choices' => []
                 ];
             } else {
                 $billPlanOptions = [
-                    'query_builder' => function (BillPlanRepository $er) use ($billType) {
-                        return $er->queryLatestForm($billType->getId());
+                    'query_builder' => function (BillPlanRepository $er) use ($billCategory) {
+                        return $er->queryLatestForm($billCategory->getId());
                     }
                 ];
             }
@@ -71,7 +73,7 @@ class BillType extends AbstractType
                 array_merge(
                     [
                         'class' => BillPlan::class,
-                        'choice_label' => 'getStringSelectForm',
+                        'choice_label' => 'getDescriptionWithPlanCategory',
                         'label' => 'billPlan.title.menu',
                         'placeholder' => '',
                     ],
@@ -85,15 +87,15 @@ class BillType extends AbstractType
             function (FormEvent $event) use ($formModifier) {
                 /** @var Bill $data */
                 $data = $event->getData();
-                $formModifier($event->getForm(), $data->getBillType());
+                $formModifier($event->getForm(), $data->getBillCategory());
             }
         );
 
-        $builder->get('billType')->addEventListener(
+        $builder->get('billCategory')->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) use ($formModifier) {
-                $billType = $event->getForm()->getData();
-                $formModifier($event->getForm()->getParent(), $billType);
+                $billCategory = $event->getForm()->getData();
+                $formModifier($event->getForm()->getParent(), $billCategory);
             }
         );
     }

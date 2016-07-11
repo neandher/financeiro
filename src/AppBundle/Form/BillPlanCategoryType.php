@@ -2,16 +2,16 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\BillPlanType as BillPlanTypeEntity;
-use AppBundle\Entity\BillType;
-use AppBundle\Repository\BillTypeRepository;
+use AppBundle\Entity\BillCategory;
+use AppBundle\Entity\BillPlanCategory as BillPlanCategoryEntity;
+use AppBundle\Repository\BillCategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BillPlanTypeType extends AbstractType
+class BillPlanCategoryType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -20,15 +20,15 @@ class BillPlanTypeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description', TextType::class, ['label' => 'billPlanType.fields.description'])
-            ->add('billType', EntityType::class,
+            ->add('description', TextType::class, ['label' => 'billPlanCategory.fields.description'])
+            ->add('billCategory', EntityType::class,
                 [
-                    'class' => BillType::class,
-                    'query_builder' => function (BillTypeRepository $er) {
+                    'class' => BillCategory::class,
+                    'query_builder' => function (BillCategoryRepository $er) {
                         return $er->queryLatestForm();
                     },
                     'choice_label' => 'description',
-                    'label' => 'billType.title.menu'
+                    'label' => 'billCategory.title.menu'
                 ]);;
     }
 
@@ -38,7 +38,7 @@ class BillPlanTypeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => BillPlanTypeEntity::class
+            'data_class' => BillPlanCategoryEntity::class
         ]);
     }
 }

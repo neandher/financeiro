@@ -19,8 +19,8 @@ class BillPlanRepository extends AbstractEntityRepository
         $routeParams = $paginationHelper->getRouteParams();
 
         $qb = $this->createQueryBuilder('billPlan')
-            ->innerJoin('billPlan.billPlanType', 'billPlanType')
-            ->addSelect('billPlanType');
+            ->innerJoin('billPlan.billPlanCategory', 'billPlanCategory')
+            ->addSelect('billPlanCategory');
 
         if (isset($routeParams['search'])) {
             $qb->andWhere('billPlan.description LIKE :search')->setParameter('search', '%' . $routeParams['search'] . '%');
@@ -49,12 +49,26 @@ class BillPlanRepository extends AbstractEntityRepository
     public function queryLatestForm($billPlanId)
     {
         return $this->createQueryBuilder('billPlan')
-            ->innerJoin('billPlan.billPlanType', 'billPlanType')
-            ->addSelect('billPlanType')
-            ->innerJoin('billPlanType.billType', 'billType')
-            ->addSelect('billType')
-            ->andWhere('billType.id = ' . $billPlanId . '')
-            ->orderBy('billPlanType.description', 'ASC')
+            ->innerJoin('billPlan.billPlanCategory', 'billPlanCategory')
+            ->addSelect('billPlanCategory')
+            ->innerJoin('billPlanCategory.billCategory', 'billCategory')
+            ->addSelect('billCategory')
+            ->andWhere('billCategory.id = ' . $billPlanId . '')
+            ->orderBy('billPlanCategory.description', 'ASC')
             ->addOrderBy('billPlan.description', 'ASC');
+    }
+
+    public function listBillPlans()
+    {
+        return $this->createQueryBuilder('billPlan')
+            ->innerJoin('billPlan.billPlanCategory', 'billPlanCategory')
+            ->addSelect('billPlanCategory')
+            ->innerJoin('billPlanCategory.billCategory', 'billCategory')
+            ->addSelect('billCategory')
+            ->orderBy('billCategory.description', 'DESC')
+            ->orderBy('billPlanCategory.description', 'ASC')
+            ->addOrderBy('billPlan.description', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 }

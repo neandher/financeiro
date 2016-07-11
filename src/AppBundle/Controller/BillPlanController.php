@@ -198,7 +198,7 @@ class BillPlanController extends Controller
     }
 
     /**
-     * @Route("/{bill_plan_type_id}/listFormJson/", requirements={"id" : "\d+"}, name="bill_plan_list_form_json", options={"expose"=true})
+     * @Route("/{bill_category_id}/listFormJson/", requirements={"id" : "\d+"}, name="bill_plan_list_form_json", options={"expose"=true})
      * @Method("GET")
      */
     public function listFormJson(Request $request)
@@ -207,7 +207,7 @@ class BillPlanController extends Controller
             return $this->json(['message' => 'You can access this only using Ajax!'], 400);
         }
         
-        $result = $this->getDoctrine()->getRepository('AppBundle:BillPlan')->queryLatestForm($request->attributes->get('bill_plan_type_id'));
+        $result = $this->getDoctrine()->getRepository('AppBundle:BillPlan')->queryLatestForm($request->attributes->get('bill_category_id'));
 
         return $this->json($result->getQuery()->getArrayResult());
     }

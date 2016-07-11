@@ -62,16 +62,16 @@ paymentMethod:
     action:
         new: Novo Método de Pagamento
 
-billPlanType:
+billPlanCategory:
     title:
-        list: Listar Tipo Plano de Contas
-        new: Novo Tipo Plano de Contas
-        edit: Editar Tipo Plano de Contas
-        menu: Tipo Plano de Contas
+        list: Listar Categoria Plano de Contas
+        new: Novo Categoria Plano de Contas
+        edit: Editar Categoria Plano de Contas
+        menu: Categoria Plano de Contas
     fields:
         description: Descrição
     action:
-        new: Novo Tipo Plano de Contas
+        new: Novo Categoria Plano de Contas
 
 billPlan:
     title:
@@ -84,13 +84,14 @@ billPlan:
     action:
         new: Novo Plano de Contas
 
-billType:
+billCategory:
     title:
-        menu: Tipo Conta
+        menu: Lançamento
 
 billStatus:
     title:
         menu: Status
+    dateOverDue: Vencido
 
 bill:
     title:
@@ -119,3 +120,7 @@ billInstallments:
     action:
         new: Adicionar Parcela
         remove: Remover Parcela
+
+cashFlow:
+    title:
+        menu: Fluxo de Caixa

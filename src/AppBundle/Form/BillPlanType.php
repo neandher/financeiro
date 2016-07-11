@@ -3,7 +3,8 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\BillPlan;
-use AppBundle\Repository\BillPlanTypeRepository;
+use AppBundle\Entity\BillPlanCategory;
+use AppBundle\Repository\BillPlanCategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -20,14 +21,14 @@ class BillPlanType extends AbstractType
     {
         $builder
             ->add('description', TextType::class, ['label' => 'billPlan.fields.description'])
-            ->add('billPlanType', EntityType::class,
+            ->add('billPlanCategory', EntityType::class,
                 [
-                    'class' => \AppBundle\Entity\BillPlanType::class,
-                    'query_builder' => function (BillPlanTypeRepository $er) {
+                    'class' => BillPlanCategory::class,
+                    'query_builder' => function (BillPlanCategoryRepository $er) {
                         return $er->queryLatestForm();
                     },
                     'choice_label' => 'description',
-                    'label' => 'billPlanType.title.menu'
+                    'label' => 'billPlanCategory.title.menu'
                 ]);
     }
 

@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\BillPlanType;
+use AppBundle\Entity\BillPlanCategory;
 use AppBundle\Event\FlashBagEvents;
-use AppBundle\Form\BillPlanTypeType;
+use AppBundle\Form\BillPlanCategoryType;
 use AppBundle\Form\SubmitActions;
 use AppBundle\Form\SubmitActionsType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -13,12 +13,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/billPlanType")
+ * @Route("/billPlanCategory")
  */
-class BillPlanTypeController extends Controller
+class BillPlanCategoryController extends Controller
 {
     /**
-     * @Route("/", name="bill_plan_type_index")
+     * @Route("/", name="bill_plan_category_index")
      * @Method("GET")
      *
      * @param Request $request
@@ -26,20 +26,20 @@ class BillPlanTypeController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $paginationHelper = $this->get('app.helper.pagination')->handle($request, BillPlanType::class);
+        $paginationHelper = $this->get('app.helper.pagination')->handle($request, BillPlanCategory::class);
 
-        $billPlanTypes = $this->getDoctrine()->getRepository('AppBundle:BillPlanType')->findLatest($paginationHelper);
+        $billPlanCategorys = $this->getDoctrine()->getRepository('AppBundle:BillPlanCategory')->findLatest($paginationHelper);
 
-        return $this->render('billPlanType/index.html.twig',
+        return $this->render('billPlanCategory/index.html.twig',
             [
-                'billPlanTypes' => $billPlanTypes,
+                'billPlanCategorys' => $billPlanCategorys,
                 'pagination_helper' => $paginationHelper
             ]
         );
     }
 
     /**
-     * @Route("/new", name="bill_plan_type_new")
+     * @Route("/new", name="bill_plan_category_new")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -49,9 +49,9 @@ class BillPlanTypeController extends Controller
     {
         $paginationHelper = $this->get('app.helper.pagination')->handle($request);
 
-        $billPlanType = new BillPlanType();
+        $billPlanCategory = new BillPlanCategory();
 
-        $form = $this->createForm(BillPlanTypeType::class, $billPlanType)
+        $form = $this->createForm(BillPlanCategoryType::class, $billPlanCategory)
             ->add(
                 'buttons',
                 SubmitActionsType::class,
@@ -68,31 +68,31 @@ class BillPlanTypeController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($billPlanType);
+            $em->persist($billPlanCategory);
             $em->flush();
 
             $this->get('app.helper.flash_bag')->newMessage(FlashBagEvents::MESSAGE_TYPE_SUCCESS, FlashBagEvents::MESSAGE_SUCCESS_INSERTED);
 
             if ($form->get('buttons')->get(SubmitActions::SAVE_AND_NEW)->isClicked()) {
-                return $this->redirectToRoute('bill_plan_type_new', $paginationHelper->getRouteParams());
+                return $this->redirectToRoute('bill_plan_category_new', $paginationHelper->getRouteParams());
             }
             if ($form->get('buttons')->get(SubmitActions::SAVE_AND_KEEP)->isClicked()) {
                 return $this->redirectToRoute(
-                    'bill_plan_type_edit',
+                    'bill_plan_category_edit',
                     array_merge(
-                        ['id' => $billPlanType->getId()],
+                        ['id' => $billPlanCategory->getId()],
                         $paginationHelper->getRouteParams()
                     )
                 );
             }
 
-            return $this->redirectToRoute('bill_plan_type_index', $paginationHelper->getRouteParams());
+            return $this->redirectToRoute('bill_plan_category_index', $paginationHelper->getRouteParams());
         }
 
         return $this->render(
-            'billPlanType/new.html.twig',
+            'billPlanCategory/new.html.twig',
             [
-                'billPlanType' => $billPlanType,
+                'billPlanCategory' => $billPlanCategory,
                 'form' => $form->createView(),
                 'pagination_helper' => $paginationHelper
             ]
@@ -100,17 +100,17 @@ class BillPlanTypeController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit/", requirements={"id" : "\d+"}, name="bill_plan_type_edit")
+     * @Route("/{id}/edit/", requirements={"id" : "\d+"}, name="bill_plan_category_edit")
      * @Method({"GET","POST"})
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, BillPlanType $billPlanType)
+    public function editAction(Request $request, BillPlanCategory $billPlanCategory)
     {
         $paginationHelper = $this->get('app.helper.pagination')->handle($request);
 
-        $form = $this->createForm(BillPlanTypeType::class, $billPlanType)
+        $form = $this->createForm(BillPlanCategoryType::class, $billPlanCategory)
             ->add(
                 'buttons',
                 SubmitActionsType::class,
@@ -122,7 +122,7 @@ class BillPlanTypeController extends Controller
                 ]
             );
 
-        $formDelete = $this->createDeleteForm($billPlanType);
+        $formDelete = $this->createDeleteForm($billPlanCategory);
 
         $form->handleRequest($request);
 
@@ -134,25 +134,25 @@ class BillPlanTypeController extends Controller
             $this->get('app.helper.flash_bag')->newMessage(FlashBagEvents::MESSAGE_TYPE_SUCCESS, FlashBagEvents::MESSAGE_SUCCESS_UPDATED);
 
             if ($form->get('buttons')->get(SubmitActions::SAVE_AND_NEW)->isClicked()) {
-                return $this->redirectToRoute('bill_plan_type_new', $paginationHelper->getRouteParams());
+                return $this->redirectToRoute('bill_plan_category_new', $paginationHelper->getRouteParams());
             }
             if ($form->get('buttons')->get(SubmitActions::SAVE_AND_KEEP)->isClicked()) {
                 return $this->redirectToRoute(
-                    'bill_plan_type_edit',
+                    'bill_plan_category_edit',
                     array_merge(
-                        ['id' => $billPlanType->getId()],
+                        ['id' => $billPlanCategory->getId()],
                         $paginationHelper->getRouteParams()
                     )
                 );
             }
 
-            return $this->redirectToRoute('bill_plan_type_index', $paginationHelper->getRouteParams());
+            return $this->redirectToRoute('bill_plan_category_index', $paginationHelper->getRouteParams());
         }
 
         return $this->render(
-            'billPlanType/edit.html.twig',
+            'billPlanCategory/edit.html.twig',
             [
-                'billPlanType' => $billPlanType,
+                'billPlanCategory' => $billPlanCategory,
                 'form' => $form->createView(),
                 'form_delete' => $formDelete->createView(),
                 'pagination_helper' => $paginationHelper
@@ -161,40 +161,40 @@ class BillPlanTypeController extends Controller
     }
 
     /**
-     * @Route("/{id}/", name="bill_plan_type_delete")
+     * @Route("/{id}/", name="bill_plan_category_delete")
      * @Method("DELETE")
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(Request $request, BillPlanType $billPlanType)
+    public function deleteAction(Request $request, BillPlanCategory $billPlanCategory)
     {
-        $form = $this->createDeleteForm($billPlanType);
+        $form = $this->createDeleteForm($billPlanCategory);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($billPlanType);
+            $em->remove($billPlanCategory);
             $em->flush();
 
             $this->get('app.helper.flash_bag')->newMessage(FlashBagEvents::MESSAGE_TYPE_SUCCESS, FlashBagEvents::MESSAGE_SUCCESS_DELETED);
 
-            return $this->redirectToRoute('bill_plan_type_index');
+            return $this->redirectToRoute('bill_plan_category_index');
         }
 
     }
 
     /**
-     * @param BillPlanType $billPlanType
+     * @param BillPlanCategory $billPlanCategory
      * @return \Symfony\Component\Form\Form
      */
-    private function createDeleteForm(BillPlanType $billPlanType)
+    private function createDeleteForm(BillPlanCategory $billPlanCategory)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('bill_plan_type_delete', ['id' => $billPlanType->getId()]))
+            ->setAction($this->generateUrl('bill_plan_category_delete', ['id' => $billPlanCategory->getId()]))
             ->setMethod('DELETE')
-            ->setData($billPlanType)
+            ->setData($billPlanCategory)
             ->getForm();
     }
 }

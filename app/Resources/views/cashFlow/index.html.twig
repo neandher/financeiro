@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+
+            <thead>
+            <th>&nbsp;</th>
+            {% for i in 1..12 %}
+                <th>{{ i |date(date('Y')|date('Y') ~ '-' ~ i ~ '-' ~ date('d')|date('d')) |date('M') }}</th>
+            {% endfor %}
+            </thead>
+
+            <thead>
+            <th>Saldo Final</th>
+            {% for i in 1..12 %}
+                <th>&nbsp;</th>
+            {% endfor %}
+            </thead>
+
+            <thead>
+            <th>Saldo M&ecirc;s Anterior</th>
+
+            {% for i in 1..12 %}
+                <th>{% if i == 1 %}{{ previous_balance|number_format(2,',','.') }}{% else %}&nbsp;{% endif %}</th>
+            {% endfor %}
+            </thead>
+
+            <thead>
+            <th>Gera&ccedil;&atilde;o de Caixa</th>
+
+            {% for i in 1..12 %}
+                <th>0</th>
+            {% endfor %}
+            </thead>
+
+            {% set totalBillCategoryPaid = [] %}
+            {% set totalBillCategoryPaidNotPago = [] %}
+
+            {% set totalPaid = [] %}
+            {% set totalNotPaid = [] %}
+
+            {% set bcaIds = [] %}
+            {% set bpcIds = [] %}
+            {% set bplIds = [] %}
+
+            {% for plan in bill_plans %}
+
+                {% if plan.billPlanCategory.billCategory.id not in bcaIds %}
+
+                    {% set bcaIds = bcaIds|merge([plan.billPlanCategory.billCategory.id]) %}
+
+                    <thead>
+                    <th>{{ plan.billPlanCategory.billCategory.description }}</th>
+
+                    {% for i in 1..12 %}
+                        <th>&nbsp;</th>
+                    {% endfor %}
+                    </thead>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </table>
+    </div>
+
+{% endblock %}

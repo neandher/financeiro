@@ -6,7 +6,18 @@ function datepicker() {
     });
 }
 
-$('#bill_billType').change(function () {
+function showTabError() {
+
+    var $tab_content = $(".tab-content");
+
+    $tab_content.find("div.tab-pane:has(div.has-error)").each(function (index, tab) {
+        var id = $(tab).attr("id");
+        $('a[href="#' + id + '"]').tab('show');
+        return false;
+    });
+}
+
+$('#bill_billCategory').change(function () {
 
     var billPlan = $('#bill_billPlan');
 
@@ -14,14 +25,16 @@ $('#bill_billType').change(function () {
 
         billPlan.html($("<option></option>").attr("value", 0).text('carregando...'));
 
-        $.getJSON(Routing.generate("bill_plan_list_form_json", {"bill_plan_type_id": $(this).val()}), function (data) {
+        $.getJSON(Routing.generate("bill_plan_list_form_json", {"bill_category_id": $(this).val()}), function (data) {
 
             billPlan.children().remove();
+
+            billPlan.html($("<option></option>"));
 
             $.each(data, function (key, value) {
                 billPlan.append($("<option></option>")
                     .attr("value", value.id)
-                    .text(value.billPlanType.description + ' - ' + value.description));
+                    .text(value.billPlanCategory.description + ' - ' + value.description));
             });
         })
     }

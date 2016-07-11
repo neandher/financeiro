@@ -45,11 +45,21 @@
                 </div>
 
                 <div class="form-group">
-                    <select class="form-control" name="bill_type" id="bill_type" onchange="submit();">
-                        <option value=""></option>
-                        {% for type in bill_type %}
+                    <select class="form-control" name="bill_category" id="bill_category" onchange="submit();">
+                        <option value="">{{ 'billCategory.title.menu'|trans }}</option>
+                        {% for type in bill_category %}
                             <option value="{{ type.id }}"
-                                    {% if app.request.query.has('bill_type') %}{% if app.request.query.get('bill_type') == type.id %}selected{% endif %}{% endif %}>{{ type.description }}</option>
+                                    {% if app.request.query.has('bill_category') %}{% if app.request.query.get('bill_category') == type.id %}selected{% endif %}{% endif %}>{{ type.description }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <select class="form-control" name="bill_status" id="bill_status" onchange="submit();">
+                        <option value="">{{ 'billStatus.title.menu'|trans }}</option>
+                        {% for status in bill_status %}
+                            <option value="{{ status.id }}"
+                                    {% if app.request.query.has('bill_status') %}{% if app.request.query.get('bill_status') == status.id %}selected{% endif %}{% endif %}>{{ status.description }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -64,12 +74,12 @@
 
                 <div class="form-group">
                     <button type="submit"
-                            class="btn btn-default form-control">{{ 'form.submit_actions.search'|trans }}</button>
+                            class="btn btn-primary form-control">{{ 'form.submit_actions.search'|trans }}</button>
                 </div>
 
                 <div class="form-group">
                     <a href="{{ path('bill_index') }}"
-                       class="btn btn-default form-control">{{ 'form.submit_actions.reset'|trans }}</a>
+                       class="btn btn-primary form-control">{{ 'form.submit_actions.reset'|trans }}</a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -79,7 +89,7 @@
                 {{ include('partials/alerts.html.twig') }}
 
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover">
+                    <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
                             <th>
@@ -93,21 +103,25 @@
                                 </a>
                             </th>
                             <th>
+                                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('billCategory.description') }}">
+                                    {{ 'billCategory.title.menu'|trans }}
+                                </a>
+                            </th>
+                            <th>
                                 <a href="{{ path('bill_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('amount') }}">
                                     {{ 'bill.fields.amount'|trans }}
                                 </a>
                             </th>
-                            <th>
-                                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('billType.description') }}">
-                                    {{ 'billType.title.menu'|trans }}
-                                </a>
-                            </th>
+                            <th>{{ 'billInstallments.title.next_payment'|trans }}</th>
                             <th>
                                 <a href="{{ path('bill_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('billStatus.description') }}">
                                     {{ 'billStatus.title.menu'|trans }}
                                 </a>
                             </th>
-                            <th>{{ 'billInstallments.title.next_payment'|trans }}</th>
+                            <th>
+                                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('billPlan.description') }}">
+                                    {{ 'billPlan.title.menu'|trans }}
+                                </a>
                             <th>
                                 <a href="{{ path('bill_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('bank.description') }}">
                                     {{ 'bank.title.menu'|trans }}
@@ -119,27 +133,56 @@
                         <tbody>
                         {% for bill in bills %}
 
-                            <tr {% if bill.isDateOverDue %}class="warning text-danger"
-                                style="font-weight: bold"{% endif %}>
+                            <tr
+                                    {% if bill.billCategory.referency == 'despesa' and bill.isDateOverDue and bill.billstatus.referency == 'em_aberto' %}
+                                        class="warning text-danger"
+                                        style="font-weight: bold"
+                                    {% endif %}
+                            >
                                 <td>{{ bill.createdAt|date('d/m/Y') }}</td>
                                 <td>
                                     <a href="{{ path('bill_edit', {id: bill.id}) ~ pagination_helper.buildQuery }}">{{ bill.description }}</a>
                                 </td>
-                                <td>{{ bill.amount }}</td>
-                                <td>{{ bill.billType.description }}</td>
-                                <td>{{ bill.billStatus.description }}</td>
+                                <td
+                                        {% if bill.billCategory.referency == 'despesa' %}
+                                            class="text-danger"
+                                        {% elseif bill.billCategory.referency == 'receita' %}
+                                            class="text-success"
+                                        {% endif %}
+                                >{{ bill.billCategory.description }}</td>
+                                <td
+                                        {% if bill.billCategory.referency == 'despesa' %}
+                                            class="text-danger"
+                                        {% elseif bill.billCategory.referency == 'receita' %}
+                                            class="text-success"
+                                        {% endif %}
+                                >{{ bill.amount }}</td>
                                 <td>
-
                                     {% if bill.billStatus.referency == 'em_aberto' %}
                                         {% set installmentNextPayment = bill.getInstallmentNextPayment %}
-                                        {{ installmentNextPayment.dueDateAt|date('d/m/Y') }} R$: {{ installmentNextPayment.amount|number_format('2',',','.') }} -
-                                        {% set installment_number = bill.getTotalInstallmentsPaid + 1 %}
-                                        {{ installment_number }} / {{ bill.billInstallments|length }}
+                                        {% if installmentNextPayment %}
+                                            {{ installmentNextPayment.dueDateAt|date('d/m/Y') }} R$: {{ installmentNextPayment.amount|number_format('2',',','.') }} -
+                                            {% set installment_number = bill.getTotalInstallmentsPaid + 1 %}
+                                            {{ installment_number }} / {{ bill.billInstallments|length }}
+                                        {% endif %}
                                     {% else %}
                                         -
                                     {% endif %}
-
                                 </td>
+                                <td
+                                        {% if bill.billStatus.referency == 'em_aberto' %}
+                                            class="text-danger"
+                                        {% elseif bill.billStatus.referency == 'pago' %}
+                                            class="text-success"
+                                        {% endif %}
+                                >
+                                    {% if bill.isDateOverDue %}
+                                        {{ 'billStatus.dateOverDue'|trans }}
+                                    {% else %}
+                                        {{ bill.billStatus.description }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ bill.billPlan.descriptionWithPlanCategory }}</td>
                                 <td>{% if bill.bank %} {{ bill.bank.description }} {% else %}-{% endif %}</td>
                                 <td>
                                     <div class="item-actions">
@@ -152,7 +195,7 @@
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="7" align="center">{{ 'table.not_found'|trans }}</td>
+                                <td colspan="8" align="center">{{ 'table.not_found'|trans }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>

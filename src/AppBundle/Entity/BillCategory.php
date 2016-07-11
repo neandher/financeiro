@@ -6,15 +6,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * BillType
+ * BillCategory
  *
- * @ORM\Table(name="bill_type")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\BillTypeRepository")
+ * @ORM\Table(name="bill_category")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BillCategoryRepository")
  */
-class BillType
+class BillCategory
 {
-    const BILL_TYPE_DESPESA = 'despesa';
-    const BILL_TYPE_RECEITA = 'receita';
+    const BILL_CATEGORY_DESPESA = 'despesa';
+    const BILL_CATEGORY_RECEITA = 'receita';
     
     /**
      * @var int
@@ -56,7 +56,7 @@ class BillType
      *
      * @param string $description
      *
-     * @return BillType
+     * @return BillCategory
      */
     public function setDescription($description)
     {
@@ -80,7 +80,7 @@ class BillType
      *
      * @param string $referency
      *
-     * @return BillType
+     * @return BillCategory
      */
     public function setReferency($referency)
     {

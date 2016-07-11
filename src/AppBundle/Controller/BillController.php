@@ -3,10 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Bill;
+use AppBundle\Entity\BillCategory;
 use AppBundle\Entity\BillStatus;
 use AppBundle\Event\FlashBagEvents;
 use AppBundle\Form\BillType;
-use AppBundle\Form\BillTypeTypeChoices;
 use AppBundle\Form\SubmitActions;
 use AppBundle\Form\SubmitActionsType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -31,14 +31,15 @@ class BillController extends Controller
     {
         $paginationHelper = $this->get('app.helper.pagination')->handle($request, Bill::class);
 
-        $bills = $this->getDoctrine()->getRepository('AppBundle:Bill')->findLatest($paginationHelper);
-
-        $billType = $this->getDoctrine()->getRepository(\AppBundle\Entity\BillType::class)->findAll();
+        $bills = $this->getDoctrine()->getRepository(Bill::class)->findLatest($paginationHelper);
+        $billCategory = $this->getDoctrine()->getRepository(BillCategory::class)->findAll();
+        $billstatus = $this->getDoctrine()->getRepository(BillStatus::class)->findAll();
         
         return $this->render('bill/index.html.twig',
             [
                 'bills' => $bills,
-                'bill_type' => $billType,
+                'bill_category' => $billCategory,
+                'bill_status' => $billstatus,
                 'pagination_helper' => $paginationHelper
             ]
         );
@@ -233,11 +234,11 @@ class BillController extends Controller
      */
     private function setAmount(Bill $bill)
     {
-        $billTypeReference = $bill->getBillType()->getReferency();
+        $billCategoryReference = $bill->getBillCategory()->getReferency();
 
         $operator = '';
 
-        if ($billTypeReference == \AppBundle\Entity\BillType::BILL_TYPE_DESPESA) {
+        if ($billCategoryReference == BillCategory::BILL_CATEGORY_DESPESA) {
             $operator = '-';
         }
 
