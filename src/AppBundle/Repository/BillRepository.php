@@ -111,6 +111,6 @@ class BillRepository extends AbstractEntityRepository
         $stmt = $conn->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetch();
+        return $stmt->fetchAll();
     }
 }

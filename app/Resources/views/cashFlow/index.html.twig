@@ -45,19 +45,54 @@
             {% set bpcIds = [] %}
             {% set bplIds = [] %}
 
-            {% for plan in bill_plans %}
+            {% for bca_val in bill_plans %}
 
-                {% if plan.billPlanCategory.billCategory.id not in bcaIds %}
+                {% if bca_val.billPlanCategory.billCategory.id not in bcaIds %}
 
-                    {% set bcaIds = bcaIds|merge([plan.billPlanCategory.billCategory.id]) %}
+                    {% set bcaIds = bcaIds|merge([bca_val.billPlanCategory.billCategory.id]) %}
 
-                    <thead>
-                    <th>{{ plan.billPlanCategory.billCategory.description }}</th>
+                    <thead class="bg-info">
+                    <th>{{ bca_val.billPlanCategory.billCategory.description }}</th>
 
                     {% for i in 1..12 %}
                         <th>&nbsp;</th>
                     {% endfor %}
                     </thead>
+
+                    {% for bpc_val in bill_plans %}
+
+                        {% if bpc_val.billPlanCategory.id not in bpcIds and bpc_val.billPlanCategory.id == bca_val.billPlanCategory.id %}
+
+                            {% set bpcIds = bpcIds|merge([bpc_val.billPlanCategory.id]) %}
+
+                            <thead>
+                            <th>{{ bpc_val.billPlanCategory.description }}</th>
+
+                            {% for i in 1..12 %}
+
+                                {% set installment_paid = 0 %}
+                                {% set installment_not_paid = 0 %}
+
+                                {% for flow in cash_flow %}
+
+                                    {% if flow.biplc_id == bpc_val.billPlanCategory.id and i == flow.dueDateAt|date('n') and flow.dueDateAt|date('Y') == '2016' %}
+                                        {% if flow.referency == 'pago' %}
+                                            {% set installment_paid = installment_paid + flow.cf_amount_paid %}
+                                        {% else %}
+                                            {% set installment_not_paid = installment_not_paid + flow.cf_amount %}
+                                        {% endif %}
+                                    {% endif %}
+
+                                {% endfor %}
+
+                                <th>&nbsp;</th>
+
+                            {% endfor %}
+                            </thead>
+
+                        {% endif %}
+
+                    {% endfor %}
 
                 {% endif %}
 
