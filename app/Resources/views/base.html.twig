@@ -27,9 +27,13 @@
 
 <script>
     $(document).ready(function () {
-        $('.js-datepicker').datepicker({
-            format: 'dd-mm-yyyy',
-            language: 'pt-BR'
+
+        datepicker();
+
+        //só pega hidden
+        $(".tab-content").find("div.tab-pane:hidden:has(div.has-error)").each(function (index, tab) {
+            var id = $(tab).attr("id");
+            $('a[href="#' + id + '"]').tab('show');
         });
     });
 </script>

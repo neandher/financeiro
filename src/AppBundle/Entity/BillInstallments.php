@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * BillInstallments
@@ -24,7 +25,7 @@ class BillInstallments
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(name="description", type="string", nullable=true)
      */
     private $description;
@@ -72,7 +73,7 @@ class BillInstallments
 
     /**
      * @var Bill
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Bill", inversedBy="billInstallments")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
@@ -226,6 +227,24 @@ class BillInstallments
     public function setBill($bill)
     {
         $this->bill = $bill;
+    }
+
+    /**
+     * @Assert\Callback()
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        if ($this->getPaymentDateAt() === null && $this->getAmountPaid() !== null) {
+            $context->buildViolation('billInstallments.validator.paymentDateAt')
+                ->atPath('paymentDateAt')
+                ->addViolation();
+        }
+
+        if ($this->getAmountPaid() === null && $this->getPaymentDateAt() !== null) {
+            $context->buildViolation('billInstallments.validator.amountPaid')
+                ->atPath('amountPaid')
+                ->addViolation();
+        }
     }
 }
 

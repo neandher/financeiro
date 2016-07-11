@@ -1,3 +1,11 @@
+function datepicker() {
+    $('.js-datepicker').datepicker({
+        format: 'dd-mm-yyyy',
+        language: 'pt-BR',
+        clearBtn: true
+    });
+}
+
 $('#bill_billType').change(function () {
 
     var billPlan = $('#bill_billPlan');
@@ -22,7 +30,7 @@ $('#bill_billType').change(function () {
     }
 });
 
-function installmentsInit(defaultInstallment) {
+function installmentsInit() {
 
     var $collectionHolder;
 
@@ -51,10 +59,6 @@ function installmentsInit(defaultInstallment) {
         // add a new installment form (see next code block)
         addInstallmentForm($collectionHolder, $newLinkLi);
     });
-
-    if (defaultInstallment) {
-        addInstallmentForm($collectionHolder, $newLinkLi);
-    }
 }
 
 function addInstallmentForm($collectionHolder, $newLinkLi) {
@@ -75,10 +79,7 @@ function addInstallmentForm($collectionHolder, $newLinkLi) {
     var $newFormLi = $('<div class="panel-body"></div>').append(newForm);
     $newLinkLi.before($newFormLi);
 
-    $('.js-datepicker').datepicker({
-        format: 'dd-mm-yyyy',
-        language: 'pt-BR'
-    });
+    datepicker();
 
     addInstallmentFormDeleteLink($newFormLi);
 }

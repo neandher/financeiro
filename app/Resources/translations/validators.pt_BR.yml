@@ -1,3 +1,8 @@
 bill:
     validator:
         installments_count: Favor adicionar pelo menos uma parcela a conta
+
+billInstallments:
+    validator:
+        paymentDateAt: Este campo deve ser preenchido
+        amountPaid: Este campo deve ser preenchido

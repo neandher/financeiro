@@ -6,6 +6,7 @@ use AppBundle\Entity\Bill;
 use AppBundle\Entity\BillStatus;
 use AppBundle\Event\FlashBagEvents;
 use AppBundle\Form\BillType;
+use AppBundle\Form\BillTypeTypeChoices;
 use AppBundle\Form\SubmitActions;
 use AppBundle\Form\SubmitActionsType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -32,9 +33,12 @@ class BillController extends Controller
 
         $bills = $this->getDoctrine()->getRepository('AppBundle:Bill')->findLatest($paginationHelper);
 
+        $billType = $this->getDoctrine()->getRepository(\AppBundle\Entity\BillType::class)->findAll();
+        
         return $this->render('bill/index.html.twig',
             [
                 'bills' => $bills,
+                'bill_type' => $billType,
                 'pagination_helper' => $paginationHelper
             ]
         );

@@ -93,6 +93,7 @@ class Bill
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\BillInstallments", mappedBy="bill", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      * @Assert\Count(min="1", minMessage="bill.validator.installments_count")
+     * @Assert\Valid()
      */
     private $billInstallments;
 

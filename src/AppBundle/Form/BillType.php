@@ -40,15 +40,7 @@ class BillType extends AbstractType
                     'placeholder' => '',
                 ]
             )
-            ->add('bank', EntityType::class, [
-                    'class' => Bank::class,
-                    'query_builder' => function (BankRepository $er) {
-                        return $er->queryLatestForm();
-                    },
-                    'choice_label' => 'description',
-                    'label' => 'bank.title.menu'
-                ]
-            )
+            ->add('choices', BankTypeChoices::class)
             ->add('billInstallments', CollectionType::class,
                 [
                     'entry_type' => BillInstallmentsType::class,
