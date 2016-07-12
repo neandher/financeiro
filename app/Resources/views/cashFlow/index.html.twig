@@ -8,7 +8,7 @@
             <thead>
             <th>&nbsp;</th>
             {% for i in 1..12 %}
-                <th>{{ i |date(date('Y')|date('Y') ~ '-' ~ i ~ '-' ~ date('d')|date('d')) |date('M') }}</th>
+                <th>{{ i |date("now"|date('Y') ~ '-' ~ i ~ '-' ~ "now"|date('d')) |date('M') }}</th>
             {% endfor %}
             </thead>
 
@@ -36,7 +36,7 @@
             </thead>
 
             {% set totalBillCategoryPaid = [] %}
-            {% set totalBillCategoryPaidNotPago = [] %}
+            {% set totalBillCategoryNotPaid = [] %}
 
             {% set totalPaid = [] %}
             {% set totalNotPaid = [] %}
@@ -47,11 +47,13 @@
 
             {% for bca_val in bill_plans %}
 
-                {% if bca_val.billPlanCategory.billCategory.id not in bcaIds %}
+                {% set bill_category_id = bca_val.billPlanCategory.billCategory.id %}
 
-                    {% set bcaIds = bcaIds|merge([bca_val.billPlanCategory.billCategory.id]) %}
+                {% if bill_category_id not in bcaIds %}
 
-                    <thead class="bg-info">
+                    {% set bcaIds = bcaIds|merge([bill_category_id]) %}
+
+                    <thead class="bg-success">
                     <th>{{ bca_val.billPlanCategory.billCategory.description }}</th>
 
                     {% for i in 1..12 %}
@@ -66,28 +68,76 @@
                             {% set bpcIds = bpcIds|merge([bpc_val.billPlanCategory.id]) %}
 
                             <thead>
-                            <th>{{ bpc_val.billPlanCategory.description }}</th>
-
-                            {% for i in 1..12 %}
+                            <tr>
+                                <th>{{ bpc_val.billPlanCategory.description }}</th>
 
                                 {% set installment_paid = 0 %}
                                 {% set installment_not_paid = 0 %}
 
-                                {% for flow in cash_flow %}
+                                {% for i in 1..12 %}
 
-                                    {% if flow.biplc_id == bpc_val.billPlanCategory.id and i == flow.dueDateAt|date('n') and flow.dueDateAt|date('Y') == '2016' %}
-                                        {% if flow.referency == 'pago' %}
-                                            {% set installment_paid = installment_paid + flow.cf_amount_paid %}
-                                        {% else %}
-                                            {% set installment_not_paid = installment_not_paid + flow.cf_amount %}
+                                    {% for flow in cash_flow %}
+
+                                        {% if flow.biplc_id == bpc_val.billPlanCategory.id and i == flow.dueDateAt|date('n') and flow.dueDateAt|date('Y') == params.year %}
+                                            {% if flow.referency == 'pago' %}
+                                                {% set installment_paid = installment_paid + flow.cf_amount_paid %}
+                                            {% else %}
+                                                {% set installment_not_paid = installment_not_paid + flow.cf_amount %}
+                                            {% endif %}
                                         {% endif %}
+
+                                    {% endfor %}
+
+                                    {% set paid_option = '' %}
+
+                                    {% if "now"|date('n') == i and "now"|date('Y') == params.year %}
+                                        {% set paid_option = 'PAID_AND_NOT_PAID' %}
+                                    {% elseif i > "now"|date('n') and "now"|date('Y') == params.year %}
+                                        {% set paid_option = 'NOT_PAID' %}
+                                    {% elseif i < "now"|date('n') and "now"|date('Y') == params.year %}
+                                        {% set paid_option = 'PAID' %}
+                                    {% elseif params.year < "now"|date('Y') %}
+                                        {% set paid_option = 'PAID' %}
+                                    {% elseif params.year > "now"|date('Y') %}
+                                        {% set paid_option = 'NOT_PAID' %}
+                                    {% endif %}
+
+                                    {% if totalBillCategoryPaid[('_'~i)][(bill_category_id)] is not defined %}
+                                        {% set totalBillCategoryPaid = totalBillCategoryPaid|merge({('_'~i) : {(bill_category_id) : 0}}) %}
+                                    {% endif %}
+
+                                    {% if paid_option == 'PAID' or paid_option == 'PAID_AND_NOT_PAID' %}
+                                        {% set new_increment_value = totalBillCategoryPaid[('_'~i)][(bill_category_id)] %}
+                                        {% set totalBillCategoryPaid = totalBillCategoryPaid|merge({('_'~i) : {(bill_category_id) : (new_increment_value + installment_paid)}})  %}
+                                    {% endif %}
+
+                                    {% if totalBillCategoryNotPaid[('_'~i)][(bill_category_id)] is not defined %}
+                                        {% set totalBillCategoryNotPaid = totalBillCategoryNotPaid|merge({('_'~i) : {(bill_category_id) : 0}}) %}
+                                    {% endif %}
+
+                                    {% if paid_option == 'NOT_PAID' %}
+                                        {% set new_increment_value = totalBillCategoryNotPaid[('_'~i)][(bill_category_id)] %}
+                                        {% set totalBillCategoryNotPaid = totalBillCategoryNotPaid|merge({('_'~i) : {(bill_category_id) : (new_increment_value + installment_not_paid)}})  %}
+                                    {% endif %}
+
+                                    {% if installment_paid is not empty or installment_not_paid is not empty %}
+                                        <th>
+                                            {% if paid_option == 'PAID_AND_NOT_PAID' %}
+                                                {{ installment_paid|number_format('2',',','.') }}
+                                                <hr>
+                                                {{ installment_not_paid|number_format('2',',','.') }}
+                                            {% elseif paid_option == 'PAID' %}
+                                                {{ installment_paid|number_format('2',',','.') }}
+                                            {% elseif paid_option == 'NOT_PAID' %}
+                                                {{ installment_not_paid|number_format('2',',','.') }}
+                                            {% endif %}
+                                        </th>
+                                    {% else %}
+                                        <th>&nbsp;</th>
                                     {% endif %}
 
                                 {% endfor %}
-
-                                <th>&nbsp;</th>
-
-                            {% endfor %}
+                            </tr>
                             </thead>
 
                         {% endif %}

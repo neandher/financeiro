@@ -20,18 +20,26 @@ class CashFlowController extends Controller
      */
     public function indexAction(Request $request)
     {
+
+        $params['year'] = date('Y');
+        
+        if ($request->query->has('date') && !empty($request->query->get('date'))) {
+            $params['year'] = $request->query->get('date');
+        }
+
         $billPlans = $this->getDoctrine()->getRepository(BillPlan::class)->listBillPlans();
 
-        $previousBalance = $this->getDoctrine()->getRepository(Bill::class)->balancePreviousMonth();
-        $previousBalance = empty($previousBalance['previous_balance']) || is_null($previousBalance['previous_balance'])?0:$previousBalance['previous_balance'];
-        
-        $cashFlow = $this->getDoctrine()->getRepository(Bill::class)->cashFlow();
-        
+        $previousBalance = $this->getDoctrine()->getRepository(Bill::class)->balancePreviousMonth($params);
+        $previousBalance = empty($previousBalance['previous_balance']) || is_null($previousBalance['previous_balance']) ? 0 : $previousBalance['previous_balance'];
+
+        $cashFlow = $this->getDoctrine()->getRepository(Bill::class)->cashFlow($params);
+
         return $this->render('cashFlow/index.html.twig',
             [
                 'bill_plans' => $billPlans,
                 'previous_balance' => $previousBalance,
-                'cash_flow' => $cashFlow
+                'cash_flow' => $cashFlow,
+                'params' => $params
             ]
         );
     }
