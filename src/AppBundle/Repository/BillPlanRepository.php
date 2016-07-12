@@ -65,8 +65,8 @@ class BillPlanRepository extends AbstractEntityRepository
             ->addSelect('billPlanCategory')
             ->innerJoin('billPlanCategory.billCategory', 'billCategory')
             ->addSelect('billCategory')
-            ->orderBy('billCategory.description', 'DESC')
-            ->orderBy('billPlanCategory.description', 'ASC')
+            ->orderBy('billCategory.description', 'ASC')
+            ->addOrderBy('billPlanCategory.description', 'ASC')
             ->addOrderBy('billPlan.description', 'ASC')
             ->getQuery()
             ->getResult();

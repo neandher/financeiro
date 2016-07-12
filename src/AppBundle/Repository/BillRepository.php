@@ -106,7 +106,7 @@ class BillRepository extends AbstractEntityRepository
                 inner join bill_installments as bins on bins.bill_id = bill.id
                 WHERE YEAR(bins.dueDateAt) = '".$params['year']."'
                 GROUP BY bill.id,bill.description,bipl.id,bipl.description,biplc.id,bica.id,bins.dueDateAt,bist.referency
-                ORDER BY bins.dueDateAt ASC";
+                ORDER BY bins.dueDateAt ASC,biplc.description ASC,bipl.description ASC";
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();

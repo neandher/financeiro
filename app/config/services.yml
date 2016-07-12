@@ -15,3 +15,9 @@ services:
     app.helper.flash_bag:
         class: AppBundle\Helper\FlashBagHelper
         autowire: true
+
+    app.extension.cash_flow:
+        class: AppBundle\Twig\CashFlowExtension
+        public: false
+        tags:
+            - { name: twig.extension }
