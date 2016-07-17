@@ -15,6 +15,10 @@ class CashFlowExtension extends \Twig_Extension
             new \Twig_SimpleFunction('paidOption', [
                 $this,
                 'paidOptionFunction'
+            ]),
+            new \Twig_SimpleFunction('billCategoryStyle', [
+                $this,
+                'billCategoryStyleFunction'
             ])
         ];
     }
@@ -34,7 +38,17 @@ class CashFlowExtension extends \Twig_Extension
         }
         return false;
     }
-
+    
+    public function billCategoryStyleFunction($amount)
+    {
+        if(strstr($amount,'-')){
+            return 'text-danger';
+        }
+        else{
+            return 'text-success';
+        }
+    }
+    
     /**
      * Returns the name of the extension.
      *

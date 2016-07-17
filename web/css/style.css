@@ -1,3 +1,4 @@
+/*
 .container .col-lg-12 h3{
     padding-bottom: 25px;
     border-bottom: 1px solid #f4f4f4
@@ -5,4 +6,32 @@
 
 .container #form_gerenciar .form-group{
     margin-bottom: 25px;
+}
+*/
+
+.bold {
+    font-weight: bold;
+}
+
+table.cash-flow-table td {
+    text-align: center;
+}
+
+table.cash-flow-table hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 1px solid #ccc;
+}
+
+table.cash-flow-table td, table.cash-flow-table th{
+    vertical-align: middle !important;
+}
+
+table.cash-flow-table>tbody>tr>td{
+    background-color: #fff !important;
+}
+
+div#installments hr{
+    border-top: 1px dotted #337ab7;
 }

@@ -48,7 +48,7 @@ function installmentsInit() {
     var $collectionHolder;
 
     var $addInstallmentLink = $('<a href="#" class="btn btn-info"><span class="glyphicon glyphicon-plus"></span> Adicionar Parcela</a>');
-    var $newLinkLi = $('<div class="panel-footer"></div>').append($addInstallmentLink);
+    var $newLinkLi = $('<div class="panel-footer"></div>').append('&nbsp;').append($addInstallmentLink);
 
     // Get the ul that holds the collection of installments
     $collectionHolder = $('div#installments');
@@ -74,6 +74,8 @@ function installmentsInit() {
     });
 }
 
+var newDueDateAt = null;
+
 function addInstallmentForm($collectionHolder, $newLinkLi) {
     // Get the data-prototype explained earlier
     var prototype = $collectionHolder.data('prototype');
@@ -81,9 +83,27 @@ function addInstallmentForm($collectionHolder, $newLinkLi) {
     // get the new index
     var index = $collectionHolder.data('index');
 
+    var totalCollectionHolder = $collectionHolder.find('div.panel-body').length;
+
+    var htmlGenerateInstallments = '<div class="form-group col-md-12"><hr></div>';
+
+    var $addMultiInstallmentLink = $('<a href="#" class="btn btn-info col-md-2">Gerar Multiplas Parcelas</a>');
+
+    if (totalCollectionHolder == 0) {
+
+        $newLinkLi.append($addMultiInstallmentLink);
+
+        htmlGenerateInstallments = '<div class="form-group col-md-6"><label class="control-label" for="qtd_installment">Quantidade Parcelas</label>';
+        htmlGenerateInstallments += '<input name="qtd_installment" id="qtd_installment" class="form-control"></div>';
+        htmlGenerateInstallments += '<div class="form-group col-md-6">&nbsp;</div>';
+        htmlGenerateInstallments += '<div class="form-group col-md-12"><hr></div>';
+    }
+
     // Replace '__name__' in the prototype's HTML to
     // instead be a number based on how many items we have
     var newForm = prototype.replace(/__name__/g, index);
+
+    newForm = htmlGenerateInstallments + newForm;
 
     // increase the index with one for the next item
     $collectionHolder.data('index', index + 1);
@@ -92,12 +112,49 @@ function addInstallmentForm($collectionHolder, $newLinkLi) {
     var $newFormLi = $('<div class="panel-body"></div>').append(newForm);
     $newLinkLi.before($newFormLi);
 
+    if (totalCollectionHolder == 0) {
+        var $amount = $('#bill_billInstallments_' + index + '_amount');
+        var $dueDateAt = $('#bill_billInstallments_' + index + '_dueDateAt');
+    }
+
     datepicker();
 
-    addInstallmentFormDeleteLink($newFormLi);
+    addInstallmentFormDeleteLink($newFormLi, $collectionHolder, $addMultiInstallmentLink);
+
+    $addMultiInstallmentLink.on('click', function (e) {
+
+        e.preventDefault();
+
+        var qtd_installment = $('#qtd_installment').val();
+
+        var dueDatAtVal;
+
+        if (qtd_installment > 0) {
+            for (i = 1; i <= qtd_installment; i++) {
+
+                var current_index = addInstallmentForm($collectionHolder, $newLinkLi);
+
+                if (newDueDateAt == null) {
+                    dueDatAtVal = $dueDateAt.val();
+                }
+                else {
+                    dueDatAtVal = newDueDateAt;
+                }
+
+                var dueDateAtSplit = dueDatAtVal.split('-');
+
+                newDueDateAt = moment([dueDateAtSplit[2], parseInt(dueDateAtSplit[1]) - 1, dueDateAtSplit[0]]).add(1, 'months').format('DD-MM-YYYY');
+
+                $('#bill_billInstallments_' + current_index + '_amount').val($amount.val());
+                $('#bill_billInstallments_' + current_index + '_dueDateAt').val(newDueDateAt);
+            }
+        }
+    });
+
+    return index;
 }
 
-function addInstallmentFormDeleteLink($installmentFormLi) {
+function addInstallmentFormDeleteLink($installmentFormLi, $collectionHolder, $addMultiInstallmentLink) {
     var $removeFormA = $('<div class="form-group col-md-6"><label class="control-label">&nbsp;</label><a href="#" class="btn btn-danger form-control"><span class="glyphicon glyphicon-remove"></span> Remover Parcela</a></div>');
     $installmentFormLi.append($removeFormA);
 
@@ -107,5 +164,15 @@ function addInstallmentFormDeleteLink($installmentFormLi) {
 
         // remove the li for the installment form
         $installmentFormLi.remove();
+
+        var totalCollectionHolder = $collectionHolder.find('div.panel-body').length;
+
+        if (totalCollectionHolder == 0) {
+            $addMultiInstallmentLink.remove();
+        }
+
+        var dueDateAtSplit = newDueDateAt.split('-');
+
+        newDueDateAt = moment([dueDateAtSplit[2], parseInt(dueDateAtSplit[1]) - 1, dueDateAtSplit[0]]).subtract(1, 'months').format('DD-MM-YYYY');
     });
 }

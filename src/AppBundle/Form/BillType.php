@@ -14,6 +14,7 @@ use AppBundle\Repository\BillTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -31,6 +32,7 @@ class BillType extends AbstractType
     {
         $builder
             ->add('description', TextType::class, ['label' => 'bill.fields.description'])
+            ->add('note', TextareaType::class, ['label' => 'bill.fields.note'])
             ->add('billCategory', EntityType::class,
                 [
                     'class' => BillCategory::class,

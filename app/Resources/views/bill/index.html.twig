@@ -89,7 +89,7 @@
                 {{ include('partials/alerts.html.twig') }}
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-condensed table-bordered table-hover">
                         <thead>
                         <tr>
                             <th>
@@ -134,27 +134,33 @@
                         {% for bill in bills %}
 
                             <tr
-                                    {% if bill.billCategory.referency == 'despesa' and bill.isDateOverDue and bill.billstatus.referency == 'em_aberto' %}
+                                    {#{% if bill.billCategory.referency == 'despesa' and bill.isDateOverDue and bill.billstatus.referency == 'em_aberto' %}
                                         class="warning text-danger"
                                         style="font-weight: bold"
+                                    {% endif %}#}
+                                    {% if bill.billStatus.referency == 'em_aberto' %}
+                                        class="bg-warning text-danger"
+                                    {% elseif bill.billStatus.referency == 'pago' %}
+                                        class="text-success"
                                     {% endif %}
                             >
                                 <td>{{ bill.createdAt|date('d/m/Y') }}</td>
                                 <td>
-                                    <a href="{{ path('bill_edit', {id: bill.id}) ~ pagination_helper.buildQuery }}">{{ bill.description }}</a>
+                                    {#<a href="{{ path('bill_edit', {id: bill.id}) ~ pagination_helper.buildQuery }}">{{ bill.description }}</a>#}
+                                    {{ bill.description }}
                                 </td>
                                 <td
                                         {% if bill.billCategory.referency == 'despesa' %}
-                                            class="text-danger"
+                                            class="_text-danger"
                                         {% elseif bill.billCategory.referency == 'receita' %}
-                                            class="text-success"
+                                            class="_text-success"
                                         {% endif %}
                                 >{{ bill.billCategory.description }}</td>
                                 <td
                                         {% if bill.billCategory.referency == 'despesa' %}
-                                            class="text-danger"
+                                            class="_text-danger"
                                         {% elseif bill.billCategory.referency == 'receita' %}
-                                            class="text-success"
+                                            class="_text-success"
                                         {% endif %}
                                 >{{ bill.amount }}</td>
                                 <td>
@@ -171,9 +177,9 @@
                                 </td>
                                 <td
                                         {% if bill.billStatus.referency == 'em_aberto' %}
-                                            class="text-danger"
+                                            class="_text-danger"
                                         {% elseif bill.billStatus.referency == 'pago' %}
-                                            class="text-success"
+                                            class="_text-success"
                                         {% endif %}
                                 >
                                     {% if bill.isDateOverDue %}
