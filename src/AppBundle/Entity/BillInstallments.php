@@ -75,7 +75,7 @@ class BillInstallments
      * @var Bill
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Bill", inversedBy="billInstallments")
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\JoinColumn(name="bill_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $bill;
 

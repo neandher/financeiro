@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Helper\PaginationHelper;
+use Doctrine\ORM\Query\Expr;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 
@@ -30,7 +31,8 @@ class BillRepository extends AbstractEntityRepository
             ->innerJoin('bill.billCategory', 'billCategory')
             ->addSelect('billCategory')
             ->leftJoin('bill.billInstallments', 'billInstallments')
-            ->addSelect('billInstallments');
+            /*->addSelect('billInstallments')*/
+            ->groupBy('bill.id');
 
         if (!empty($routeParams['search'])) {
             $qb->andWhere('bill.description LIKE :search')->setParameter('search', '%' . $routeParams['search'] . '%');
@@ -81,7 +83,7 @@ class BillRepository extends AbstractEntityRepository
         $sql = "SELECT SUM( CAST( replace( replace( bins.amountPaid,'.','' ),',','.' )  AS DECIMAL( 13,2 ) ) ) as previous_balance
                 FROM bill 
                 inner join bill_installments as bins
-                WHERE YEAR(bins.dueDateAt) < '".$params['year']."' AND bins.amountPaid IS NOT NULL ORDER BY bins.dueDateAt ASC";
+                WHERE YEAR(bins.dueDateAt) < '" . $params['year'] . "' AND bins.amountPaid IS NOT NULL ORDER BY bins.dueDateAt ASC";
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -104,7 +106,7 @@ class BillRepository extends AbstractEntityRepository
                 inner join bill_category as bica on bica.id = bill.bill_category_id
                 inner join bill_status as bist on bist.id = bill.bill_status_id
                 inner join bill_installments as bins on bins.bill_id = bill.id
-                WHERE YEAR(bins.dueDateAt) = '".$params['year']."'
+                WHERE YEAR(bins.dueDateAt) = '" . $params['year'] . "'
                 GROUP BY bill.id,bill.description,bipl.id,bipl.description,biplc.id,bica.id,bins.dueDateAt,bist.referency
                 ORDER BY bins.dueDateAt ASC,biplc.description ASC,bipl.description ASC";
 

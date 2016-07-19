@@ -89,7 +89,7 @@
                 {{ include('partials/alerts.html.twig') }}
 
                 <div class="table-responsive">
-                    <table class="table table-condensed table-bordered table-hover">
+                    <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
                             <th>
@@ -134,13 +134,13 @@
                         {% for bill in bills %}
 
                             <tr
-                                    {#{% if bill.billCategory.referency == 'despesa' and bill.isDateOverDue and bill.billstatus.referency == 'em_aberto' %}
-                                        class="warning text-danger"
-                                        style="font-weight: bold"
-                                    {% endif %}#}
-                                    {% if bill.billStatus.referency == 'em_aberto' %}
-                                        class="bg-warning text-danger"
-                                    {% elseif bill.billStatus.referency == 'pago' %}
+                                    {% if bill.billCategory.referency == 'despesa' and bill.isDateOverDue and bill.billstatus.referency == 'em_aberto' %}
+                                        class="warning text-danger bold"
+                                    {% endif %}
+                                    {% if bill.billCategory.referency == 'despesa' %}
+                                        {#class="bg-warning text-danger"#}
+                                        class="text-danger"
+                                    {% elseif bill.billCategory.referency == 'receita' %}
                                         class="text-success"
                                     {% endif %}
                             >
@@ -167,9 +167,9 @@
                                     {% if bill.billStatus.referency == 'em_aberto' %}
                                         {% set installmentNextPayment = bill.getInstallmentNextPayment %}
                                         {% if installmentNextPayment %}
-                                            {{ installmentNextPayment.dueDateAt|date('d/m/Y') }} R$: {{ installmentNextPayment.amount|number_format('2',',','.') }} -
+                                            {{ installmentNextPayment.dueDateAt|date('d/m/Y') }} R$: {{ installmentNextPayment.amount }} -
                                             {% set installment_number = bill.getTotalInstallmentsPaid + 1 %}
-                                            {{ installment_number }} / {{ bill.billInstallments|length }}
+                                            {{ installment_number }}/{{ bill.billInstallments.count }}
                                         {% endif %}
                                     {% else %}
                                         -

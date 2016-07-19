@@ -130,7 +130,7 @@ function addInstallmentForm($collectionHolder, $newLinkLi) {
         var dueDatAtVal;
 
         if (qtd_installment > 0) {
-            for (i = 1; i <= qtd_installment; i++) {
+            for (i = 1; i < qtd_installment; i++) {
 
                 var current_index = addInstallmentForm($collectionHolder, $newLinkLi);
 
