@@ -1,16 +1,6 @@
-/*
-.container .col-lg-12 h3{
-    padding-bottom: 25px;
-    border-bottom: 1px solid #f4f4f4
-}
-
-.container #form_gerenciar .form-group{
-    margin-bottom: 25px;
-}
-*/
-
-.bold {
-    font-weight: bold;
+.page-header.navbar .page-logo .logo-default {
+    margin: 15px 0 0;
+    color: #fff;
 }
 
 table.cash-flow-table td {
@@ -34,4 +24,8 @@ table.cash-flow-table>tbody>tr>td{
 
 div#installments hr{
     border-top: 1px dotted #337ab7;
+}
+
+.bold {
+    font-weight: bold;
 }

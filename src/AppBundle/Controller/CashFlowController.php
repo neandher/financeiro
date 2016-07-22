@@ -45,7 +45,6 @@ class CashFlowController extends Controller
         $billPlanCategoryIds = array();
         $billPlanIds = array();
 
-
         foreach ($billPlans as $billPlanEntity) {
 
             /** @var BillPlan $billPlan */

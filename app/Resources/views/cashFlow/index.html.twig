@@ -18,7 +18,7 @@
 
             <tbody>
             <tr>
-                <th scope="row"><i class="glyphicon glyphicon-menu-right"></i> Saldo Final</th>
+                <th scope="row" class="active"><i class="glyphicon glyphicon-menu-right"></i> Saldo Final</th>
                 {% for i in 1..12 %}
 
                     {% set paid_option = paidOption(i,params.year) %}
@@ -98,7 +98,7 @@
 
                 <tbody>
                 <tr>
-                    <th><i class="glyphicon glyphicon-menu-right"></i> {{ bill_category[0]['description'] }}</th>
+                    <th class="active"><i class="glyphicon glyphicon-menu-right"></i> {{ bill_category[0]['description'] }}</th>
 
                     {% for i in 1..12 %}
 
