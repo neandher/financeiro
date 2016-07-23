@@ -1,3 +1,10 @@
+@media (min-width: 768px) {
+    .form-inline .control-label, .form-inline .form-group {
+        margin-bottom: 10px;
+        vertical-align: middle;
+    }
+}
+
 .page-header.navbar .page-logo .logo-default {
     margin: 15px 0 0;
     color: #fff;
@@ -14,15 +21,15 @@ table.cash-flow-table hr {
     border-top: 1px solid #ccc;
 }
 
-table.cash-flow-table td, table.cash-flow-table th{
+table.cash-flow-table td, table.cash-flow-table th {
     vertical-align: middle !important;
 }
 
-table.cash-flow-table>tbody>tr>td{
+table.cash-flow-table > tbody > tr > td {
     background-color: #fff !important;
 }
 
-div#installments hr{
+div#installments hr {
     border-top: 1px dotted #337ab7;
 }
 

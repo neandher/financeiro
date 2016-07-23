@@ -42,10 +42,10 @@ class CashFlowExtension extends \Twig_Extension
     public function billCategoryStyleFunction($amount)
     {
         if(strstr($amount,'-')){
-            return 'text-danger';
+            return '_text-danger';
         }
         else{
-            return 'text-success';
+            return '_text-success';
         }
     }
     

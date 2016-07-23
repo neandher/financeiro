@@ -2,27 +2,32 @@
 
 {% block body %}
 
-    <div class="panel panel-default">
+    <!-- BEGIN PAGE TITLE-->
+    <h3 class="page-title"> Gerencimento de Contas
+        <small></small>
+    </h3>
+    <!-- END PAGE TITLE-->
 
-        <div class="panel-heading">
+    <div class="portlet light bordered">
 
-            <h3 class="pull-left">
-                <i class="glyphicon glyphicon-list-alt"></i> {{ 'bill.title.list'|trans }}
-            </h3>
+        <div class="portlet-title">
 
-            <div class="pull-right" style="padding-top: 20px;">
-                <a href="{{ path('bill_new') ~ pagination_helper.buildQuery }}" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-plus"></span> {{ 'bill.action.new'|trans }}
-                </a>
+            <div class="caption">
+                <i class="icon-list font-green-sharp"></i>
+                <span class="caption-subject font-green-sharp bold uppercase">{{ 'bill.title.list'|trans }}</span>
             </div>
 
-            <div class="clearfix"></div>
+            <div class="actions btn-set">
+                <a href="{{ path('bill_new') ~ pagination_helper.buildQuery }}" class="btn green">
+                    <i class="fa fa-plus"></i></span> {{ 'bill.action.new'|trans }}
+                </a>
+            </div>
 
         </div>
 
         <form class="form-inline" role="search" method="get" action="{{ path('bill_index') }}" id="data_table">
 
-            <div class="panel-body">
+            <div class="portlet-body">
 
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="{{ 'form.placeholder.search'|trans }}"
@@ -74,12 +79,14 @@
 
                 <div class="form-group">
                     <button type="submit"
-                            class="btn btn-primary form-control">{{ 'form.submit_actions.search'|trans }}</button>
+                            class="btn green form-control"><i
+                                class="fa fa-search"></i> {{ 'form.submit_actions.search'|trans }}</button>
                 </div>
 
                 <div class="form-group">
                     <a href="{{ path('bill_index') }}"
-                       class="btn btn-primary form-control">{{ 'form.submit_actions.reset'|trans }}</a>
+                       class="btn btn-default form-control"><i
+                                class="fa fa-times"></i> {{ 'form.submit_actions.reset'|trans }}</a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -89,14 +96,9 @@
                 {{ include('partials/alerts.html.twig') }}
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-striped table-bordered table-advance table-hover">
                         <thead>
                         <tr>
-                            <th>
-                                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('createdAt') }}">
-                                    {{ 'bill.fields.createdAt'|trans }}
-                                </a>
-                            </th>
                             <th>
                                 <a href="{{ path('bill_index') ~ pagination_helper.buildQuery('sorting') ~ pagination_helper.sortingFieldQuery('description') }}">
                                     {{ 'bill.fields.description'|trans }}
@@ -133,36 +135,14 @@
                         <tbody>
                         {% for bill in bills %}
 
-                            <tr
-                                    {% if bill.billCategory.referency == 'despesa' and bill.isDateOverDue and bill.billstatus.referency == 'em_aberto' %}
-                                        class="warning text-danger bold"
-                                    {% endif %}
-                                    {% if bill.billCategory.referency == 'despesa' %}
-                                        {#class="bg-warning text-danger"#}
-                                        class="text-danger"
-                                    {% elseif bill.billCategory.referency == 'receita' %}
-                                        class="text-success"
-                                    {% endif %}
-                            >
-                                <td>{{ bill.createdAt|date('d/m/Y') }}</td>
+                            <tr>
                                 <td>
-                                    {#<a href="{{ path('bill_edit', {id: bill.id}) ~ pagination_helper.buildQuery }}">{{ bill.description }}</a>#}
-                                    {{ bill.description }}
+                                    <a href="{{ path('bill_edit', {id: bill.id}) ~ pagination_helper.buildQuery }}">{{ bill.description }}</a>
                                 </td>
-                                <td
-                                        {% if bill.billCategory.referency == 'despesa' %}
-                                            class="_text-danger"
-                                        {% elseif bill.billCategory.referency == 'receita' %}
-                                            class="_text-success"
-                                        {% endif %}
-                                >{{ bill.billCategory.description }}</td>
-                                <td
-                                        {% if bill.billCategory.referency == 'despesa' %}
-                                            class="_text-danger"
-                                        {% elseif bill.billCategory.referency == 'receita' %}
-                                            class="_text-success"
-                                        {% endif %}
-                                >{{ bill.amount }}</td>
+                                <td>
+                                    {{ bill.billCategory.description }}
+                                </td>
+                                <td>{{ bill.amount }}</td>
                                 <td>
                                     {% if bill.billStatus.referency == 'em_aberto' %}
                                         {% set installmentNextPayment = bill.getInstallmentNextPayment %}
@@ -175,17 +155,13 @@
                                         -
                                     {% endif %}
                                 </td>
-                                <td
-                                        {% if bill.billStatus.referency == 'em_aberto' %}
-                                            class="_text-danger"
-                                        {% elseif bill.billStatus.referency == 'pago' %}
-                                            class="_text-success"
-                                        {% endif %}
-                                >
+                                <td>
                                     {% if bill.isDateOverDue %}
-                                        {{ 'billStatus.dateOverDue'|trans }}
+                                        <span class="label label-sm label-danger">{{ 'billStatus.dateOverDue'|trans }}</span>
                                     {% else %}
-                                        {{ bill.billStatus.description }}
+                                        <span class="label label-sm label-{% if bill.billStatus.referency == 'pago' %}success{% else %}warning{% endif %}">
+                                            {{ bill.billStatus.description }}
+                                        </span>
                                     {% endif %}
                                 </td>
                                 <td>{{ bill.billPlan.descriptionWithPlanCategory }}</td>
@@ -193,8 +169,8 @@
                                 <td>
                                     <div class="item-actions">
                                         <a href="{{ path('bill_edit', {id: bill.id}) ~ pagination_helper.buildQuery }}"
-                                           class="btn btn-sm btn-primary">
-                                            <i class="glyphicon glyphicon-edit"></i> {{ 'action.edit'|trans }}
+                                           class="btn btn-sm green">
+                                            <i class="fa fa-pencil"></i> {{ 'action.edit'|trans }}
                                         </a>
                                     </div>
                                 </td>
