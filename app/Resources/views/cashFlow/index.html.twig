@@ -2,6 +2,12 @@
 
 {% block body %}
 
+    <!-- BEGIN PAGE TITLE-->
+    <h3 class="page-title"> {{ 'cashFlow.title.menu'|trans }}
+        <small></small>
+    </h3>
+    <!-- END PAGE TITLE-->
+
     <div class="table-responsive">
         <table class="table table-striped table-bordered cash-flow-table">
 
@@ -20,23 +26,19 @@
 
             <tbody>
             <tr>
-                <th class="bg-blue-dark bg-font-blue-dark"> Saldo Final</th>
+                <th class="bg-blue-dark bg-font-blue-dark">Saldo Final</th>
                 {% for i in 1..12 %}
 
                     {% set paid_option = paidOption(i,params.year) %}
 
                     {% if paid_option == 'PAID_AND_NOT_PAID' %}
                         <th class="text-center bg-green bg-font-green">
-                            <span class="{{ billCategoryStyle(cash_flow_data['saldo_final'][i]) }}">
-                                {{ cash_flow_data['saldo_final'][i]|number_format(2,',','.') }}
-                            </span>
+                            {{ cash_flow_data['saldo_final'][i]|number_format(2,',','.') }}
                             <hr>
-                            <span class="{{ billCategoryStyle(cash_flow_data['previsao_saldo_final'][i]) }}">
-                                {{ cash_flow_data['previsao_saldo_final'][i]|number_format(2,',','.') }}
-                            </span>
+                            {{ cash_flow_data['previsao_saldo_final'][i]|number_format(2,',','.') }}
                         </th>
                     {% else %}
-                        <th class="{{ billCategoryStyle(cash_flow_data['previsao_saldo_final'][i]) }} bg-blue-dark bg-font-blue-dark">
+                        <th class="bg-blue-dark bg-font-blue-dark">
                             {{ cash_flow_data['previsao_saldo_final'][i]|number_format(2,',','.') }}
                         </th>
                     {% endif %}
@@ -47,18 +49,16 @@
 
             <tbody>
             <tr>
-                <th scope="row" style="background-color: #fff !important; font-weight: normal">
-                     Saldo M&ecirc;s Anterior
-                </th>
+                <th scope="row">Saldo M&ecirc;s Anterior</th>
                 {% for i in 1..12 %}
                     {% if i == "now"|date('n') %}
-                        <th class="text-center bg-green bg-font-green {{ billCategoryStyle(cash_flow_data['saldo_anterior'][i]) }}">
+                        <th class="text-center bg-green bg-font-green">
                             {{ cash_flow_data['saldo_anterior'][i]|number_format(2,',','.') }}
                         </th>
                     {% else %}
-                        <td class="{{ billCategoryStyle(cash_flow_data['saldo_anterior'][i]) }}">
+                        <th>
                             {{ cash_flow_data['saldo_anterior'][i]|number_format(2,',','.') }}
-                        </td>
+                        </th>
                     {% endif %}
                 {% endfor %}
             </tr>
@@ -66,31 +66,25 @@
 
             <tbody>
             <tr>
-                <th style="background-color: #fff !important; font-weight: normal">
-                     Gera&ccedil;&atilde;o de Caixa
-                </th>
+                <th>Gera&ccedil;&atilde;o de Caixa</th>
                 {% for i in 1..12 %}
 
                     {% set paid_option = paidOption(i,params.year) %}
 
                     {% if paid_option == 'PAID_AND_NOT_PAID' %}
                         <th class="text-center bg-green bg-font-green">
-                            <span class="{{ billCategoryStyle(cash_flow_data['total_paid'][i]) }}">
-                                {{ cash_flow_data['total_paid'][i]|number_format(2,',','.') }}
-                            </span>
+                            {{ cash_flow_data['total_paid'][i]|number_format(2,',','.') }}
                             <hr>
-                            <span class="{{ billCategoryStyle(cash_flow_data['total_not_paid'][i]) }}">
-                                {{ cash_flow_data['total_not_paid'][i]|number_format(2,',','.') }}
-                            </span>
+                            {{ cash_flow_data['total_not_paid'][i]|number_format(2,',','.') }}
                         </th>
                     {% elseif paid_option == 'NOT_PAID' %}
-                        <td class="{{ billCategoryStyle(cash_flow_data['total_not_paid'][i]) }}">
+                        <th>
                             {{ cash_flow_data['total_not_paid'][i]|number_format(2,',','.') }}
-                        </td>
+                        </th>
                     {% elseif paid_option == 'PAID' %}
-                        <td class="{{ billCategoryStyle(cash_flow_data['total_paid'][i]) }}">
+                        <th>
                             {{ cash_flow_data['total_paid'][i]|number_format(2,',','.') }}
-                        </td>
+                        </th>
                     {% endif %}
                 {% endfor %}
             </tr>
@@ -100,7 +94,7 @@
 
                 <tbody>
                 <tr>
-                    <th class="bg-blue-dark bg-font-blue-dark"> {{ bill_category[0]['description'] }}</th>
+                    <th class="bg-blue-dark bg-font-blue-dark">{{ bill_category[0]['description'] }}</th>
 
                     {% for i in 1..12 %}
 
@@ -109,21 +103,17 @@
                         {% if paid_option == 'PAID_AND_NOT_PAID' %}
 
                             <th class="text-center bg-green bg-font-green">
-                                <span class="{{ billCategoryStyle(bill_category['total_bill_category_paid'][i]) }}">
-                                    {{ bill_category['total_bill_category_paid'][i]|number_format(2,',','.') }}
-                                </span>
+                                {{ bill_category['total_bill_category_paid'][i]|number_format(2,',','.') }}
                                 <hr>
-                                <span class="{{ billCategoryStyle(bill_category['total_bill_category_not_paid'][i]) }}">
-                                    {{ bill_category['total_bill_category_not_paid'][i]|number_format(2,',','.') }}
-                                </span>
+                                {{ bill_category['total_bill_category_not_paid'][i]|number_format(2,',','.') }}
                             </th>
 
                         {% elseif paid_option == 'NOT_PAID' %}
-                            <th class="{{ billCategoryStyle(bill_category['total_bill_category_not_paid'][i]) }} bg-blue-dark bg-font-blue-dark">
+                            <th class="bg-blue-dark bg-font-blue-dark">
                                 {{ bill_category['total_bill_category_not_paid'][i]|number_format(2,',','.') }}
                             </th>
                         {% elseif paid_option == 'PAID' %}
-                            <th class="{{ billCategoryStyle(bill_category['total_bill_category_paid'][i]) }} bg-blue-dark bg-font-blue-dark">
+                            <th class="bg-blue-dark bg-font-blue-dark">
                                 {{ bill_category['total_bill_category_paid'][i]|number_format(2,',','.') }}
                             </th>
                         {% endif %}
@@ -137,8 +127,7 @@
 
                     <tbody>
                     <tr>
-                        <th class="bg-default bg-font-default">
-                            
+                        <th class="bg-grey-cararra bg-font-grey-cararra" style="cursor: pointer" onclick="$('tbody#bpc_{{ bill_plan_category[0]['id'] }}').toggle()">
                             {{ bill_plan_category[0]['description'] }}
                         </th>
 
@@ -149,21 +138,17 @@
                             {% if paid_option == 'PAID_AND_NOT_PAID' %}
 
                                 <th class="text-center bg-green bg-font-green">
-                                    <span class="{{ billCategoryStyle(bill_plan_category[i]['total_paid']) }}">
-                                        {{ bill_plan_category[i]['total_paid']|number_format(2,',','.') }}
-                                    </span>
+                                    {{ bill_plan_category[i]['total_paid']|number_format(2,',','.') }}
                                     <hr>
-                                    <span class="{{ billCategoryStyle(bill_plan_category[i]['total_not_paid']) }}">
-                                        {{ bill_plan_category[i]['total_not_paid']|number_format(2,',','.') }}
-                                     </span>
+                                    {{ bill_plan_category[i]['total_not_paid']|number_format(2,',','.') }}
                                 </th>
 
                             {% elseif paid_option == 'NOT_PAID' %}
-                                <th class="{{ billCategoryStyle(bill_plan_category[i]['total_not_paid']) }} bg-default bg-font-default">
+                                <th class="bg-grey-cararra bg-font-grey-cararra">
                                     {{ bill_plan_category[i]['total_not_paid']|number_format(2,',','.') }}
                                 </th>
                             {% elseif paid_option == 'PAID' %}
-                                <th class="{{ billCategoryStyle(bill_plan_category[i]['total_paid']) }} bg-default bg-font-default">
+                                <th class="bg-grey-cararra bg-font-grey-cararra">
                                     {{ bill_plan_category[i]['total_paid']|number_format(2,',','.') }}
                                 </th>
                             {% endif %}
@@ -174,7 +159,7 @@
 
                     {% for bill_plan_key,bill_plan in bill_plan_category['bill_plans'] %}
 
-                        <tbody>
+                        <tbody style="display: none" id="bpc_{{ bill_plan_category[0]['id'] }}">
                         <tr>
                             <th style="background-color: #fff !important; font-weight: normal">
                                 {{ bill_plan[0]['description'] }}
@@ -187,23 +172,19 @@
                                 {% if paid_option == 'PAID_AND_NOT_PAID' %}
 
                                     <th class="text-center bg-green bg-font-green">
-                                        <span class="{{ billCategoryStyle(bill_plan[i]['total_paid']) }}">
-                                            {{ bill_plan[i]['total_paid']|number_format(2,',','.') }}
-                                        </span>
+                                        {{ bill_plan[i]['total_paid']|number_format(2,',','.') }}
                                         <hr>
-                                        <span class="{{ billCategoryStyle(bill_plan[i]['total_not_paid']) }}">
-                                            {{ bill_plan[i]['total_not_paid']|number_format(2,',','.') }}
-                                        </span>
+                                        {{ bill_plan[i]['total_not_paid']|number_format(2,',','.') }}
                                     </th>
 
                                 {% elseif paid_option == 'NOT_PAID' %}
-                                    <td class="{{ billCategoryStyle(bill_plan[i]['total_not_paid']) }}">
+                                    <th style="background-color: #fff !important; font-weight: normal">
                                         {{ bill_plan[i]['total_not_paid']|number_format(2,',','.') }}
-                                    </td>
+                                    </th>
                                 {% elseif paid_option == 'PAID' %}
-                                    <td class="{{ billCategoryStyle(bill_plan[i]['total_paid']) }}">
+                                    <th style="background-color: #fff !important; font-weight: normal">
                                         {{ bill_plan[i]['total_paid']|number_format(2,',','.') }}
-                                    </td>
+                                    </th>
                                 {% endif %}
 
                             {% endfor %}

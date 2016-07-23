@@ -10,8 +10,12 @@
     color: #fff;
 }
 
-table.cash-flow-table td {
-    text-align: center;
+table.cash-flow-table th {
+    text-align: center !important;
+}
+
+table.cash-flow-table th:first-child {
+    text-align: left !important;
 }
 
 table.cash-flow-table hr {
@@ -23,10 +27,6 @@ table.cash-flow-table hr {
 
 table.cash-flow-table td, table.cash-flow-table th {
     vertical-align: middle !important;
-}
-
-table.cash-flow-table > tbody > tr > td {
-    background-color: #fff !important;
 }
 
 div#installments hr {

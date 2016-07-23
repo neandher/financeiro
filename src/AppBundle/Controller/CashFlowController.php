@@ -69,7 +69,12 @@ class CashFlowController extends Controller
 
                         $billPlanCategoryIds[] = $bill_plan_category_id;
 
-                        $cashFlowData['content'][$bill_category_id]['bill_plan_categories'][$bill_plan_category_id] = ["0" => ['description' => $bpc_billPlan->getBillPlanCategory()->getDescription()]];
+                        $cashFlowData['content'][$bill_category_id]['bill_plan_categories'][$bill_plan_category_id] = [
+                            "0" => [
+                                'description' => $bpc_billPlan->getBillPlanCategory()->getDescription(),
+                                'id' => $bpc_billPlan->getBillPlanCategory()->getId(),
+                            ]
+                        ];
 
                         for ($i = 1; $i < 13; $i++) {
 
@@ -129,7 +134,11 @@ class CashFlowController extends Controller
 
                                 $billPlanIds[] = $bill_plan_id;
 
-                                $cashFlowData['content'][$bill_category_id]['bill_plan_categories'][$bill_plan_category_id]['bill_plans'][$bill_plan_id] = ["0" => ['description' => $bpl_billPlan->getDescription()]];
+                                $cashFlowData['content'][$bill_category_id]['bill_plan_categories'][$bill_plan_category_id]['bill_plans'][$bill_plan_id] = [
+                                    "0" => [
+                                        'description' => $bpl_billPlan->getDescription(),
+                                    ]
+                                ];
 
                                 for ($i = 1; $i < 13; $i++) {
 
