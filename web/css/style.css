@@ -12,10 +12,12 @@
 
 table.cash-flow-table th {
     text-align: center !important;
+    font-weight: normal;
 }
 
 table.cash-flow-table th:first-child {
     text-align: left !important;
+    font-weight: bold;
 }
 
 table.cash-flow-table hr {

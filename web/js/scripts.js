@@ -47,7 +47,7 @@ function installmentsInit() {
 
     var $collectionHolder;
 
-    var $addInstallmentLink = $('<a href="#" class="btn btn-info"><span class="glyphicon glyphicon-plus"></span> Adicionar Parcela</a>');
+    var $addInstallmentLink = $('<a href="#" class="btn default"><span class="fa fa-plus"></span> Adicionar Parcela</a>');
     var $newLinkLi = $('<div class="panel-footer"></div>').append('&nbsp;').append($addInstallmentLink);
 
     // Get the ul that holds the collection of installments
@@ -87,7 +87,7 @@ function addInstallmentForm($collectionHolder, $newLinkLi) {
 
     var htmlGenerateInstallments = '<div class="form-group col-md-12"><hr></div>';
 
-    var $addMultiInstallmentLink = $('<a href="#" class="btn btn-info col-md-2">Gerar Multiplas Parcelas</a>');
+    var $addMultiInstallmentLink = $('<a href="#" class="btn default col-md-2">Gerar Multiplas Parcelas</a>');
 
     if (totalCollectionHolder == 0) {
 
@@ -155,7 +155,8 @@ function addInstallmentForm($collectionHolder, $newLinkLi) {
 }
 
 function addInstallmentFormDeleteLink($installmentFormLi, $collectionHolder, $addMultiInstallmentLink) {
-    var $removeFormA = $('<div class="form-group col-md-6"><label class="control-label">&nbsp;</label><a href="#" class="btn btn-danger form-control"><span class="glyphicon glyphicon-remove"></span> Remover Parcela</a></div>');
+
+    var $removeFormA = $('<div class="form-group col-md-6"><label class="control-label">&nbsp;</label><a href="#" class="btn btn-danger"><span class="fa fa-remove"></span> Remover Parcela</a></div>');
     $installmentFormLi.append($removeFormA);
 
     $removeFormA.on('click', function (e) {

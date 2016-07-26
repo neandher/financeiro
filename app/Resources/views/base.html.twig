@@ -29,6 +29,9 @@
     <link href="{{ asset('assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}" rel="stylesheet"
           type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="{{ asset('assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN THEME GLOBAL STYLES -->
     <link href="{{ asset('assets/global/css/components-rounded.min.css') }}" rel="stylesheet" id="style_components"
           type="text/css"/>
@@ -43,13 +46,10 @@
 
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
-    {#<link rel="stylesheet"
-          href="{{ asset('plugins/bootstrap-datepicker-1.6.1-dist/css/bootstrap-datepicker3.min.css') }}">#}
-
 </head>
 <!-- END HEAD -->
 
-<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white {% block body_class %}{% endblock %}">
 
 {{ include('partials/navbar.html.twig') }}
 
@@ -57,13 +57,16 @@
 <div class="page-container">
 
     <!-- BEGIN SIDEBAR -->
-    {{ include('partials/sidebar.html.twig') }}
+    {% include 'partials/sidebar.html.twig' with {ul_page_sidebar_menu_class: block('ul_page_sidebar_menu_class')} %}
     <!-- END SIDEBAR -->
 
     <!-- BEGIN CONTENT -->
     <div class="page-content-wrapper">
         <!-- BEGIN CONTENT BODY -->
         <div class="page-content">
+            <h3 class="page-title">{% block page_title %}{% endblock %}
+                <small>{% block page_small_title %}{% endblock %}</small>
+            </h3>
             {% block body %}{% endblock %}
         </div>
         <!-- END CONTENT BODY -->
@@ -89,6 +92,11 @@
 <script src="{{ asset('assets/global/plugins/jquery.blockui.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script type="text/javascript" src="{{ asset('assets/global/plugins/moment.min.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js') }}"></script>
+<!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
 <script src="{{ asset('assets/global/scripts/app.min.js') }}" type="text/javascript"></script>
 <!-- END THEME GLOBAL SCRIPTS -->
@@ -98,25 +106,14 @@
 <script src="{{ asset('assets/layouts/global/scripts/quick-sidebar.min.js') }}" type="text/javascript"></script>
 <!-- END THEME LAYOUT SCRIPTS -->
 
-<script src="{{ asset('plugins/momentjs/moment.js') }}"></script>
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 <script src="{{ asset('js/scriptsfields.js') }}"></script>
 <script src="{{ asset('js/scripts.js') }}"></script>
 
-{#<script src="{{ asset('js/jquery.min.js') }}"></script>
-<script src="{{ asset('plugins/bootstrap-3.3.6-dist/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('plugins/bootstrap-datepicker-1.6.1-dist/js/bootstrap-datepicker.min.js') }}"></script>
-<script src="{{ asset('plugins/bootstrap-datepicker-1.6.1-dist/locales/bootstrap-datepicker.pt-BR.min.js') }}"></script>
-<script src="{{ asset('plugins/momentjs/moment.js') }}"></script>
-<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-<script src="{{ asset('js/scriptsfields.js') }}"></script>
-<script src="{{ asset('js/scripts.js') }}"></script>#}
-
 <script>
     $(document).ready(function () {
-        //datepicker();
+        datepicker();
         showTabError();
     });
 </script>

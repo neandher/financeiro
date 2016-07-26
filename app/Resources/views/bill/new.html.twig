@@ -1,12 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block page_title %}{{ 'bill.title.menu'|trans }}{% endblock %}
 
-    <!-- BEGIN PAGE TITLE-->
-    <h3 class="page-title"> Gerencimento de Contas
-        <small></small>
-    </h3>
-    <!-- END PAGE TITLE-->
+{% block body %}
 
     <div class="portlet light bordered">
 
@@ -19,15 +15,9 @@
 
             <div class="actions">
                 <a href="{{ path('bill_index') ~ pagination_helper.buildQuery }}" class="btn default">
-                    <span class="glyphicon glyphicon-circle-arrow-left"></span> {{ 'form.link.go_back'|trans }}
+                    <span class="fa fa-arrow-circle-left"></span> {{ 'form.link.go_back'|trans }}
                 </a>
             </div>
-
-            {#<div class="pull-right" style="padding-top: 20px;">
-                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery }}" class="btn default">
-                    <span class="glyphicon glyphicon-circle-arrow-left"></span> {{ 'form.link.go_back'|trans }}
-                </a>
-            </div>#}
 
         </div>
 
@@ -88,8 +78,6 @@
                 {{ form_widget(form.buttons.save_and_new, {'attr' : {'class' : 'green'}}) }}
                 {{ form_widget(form.buttons.save_and_close, {'attr' : {'class' : 'green'}}) }}
             </div>
-
-
 
             {{ form_end(form) }}
 

@@ -1,12 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block page_title %}{{ 'bill.title.menu'|trans }}{% endblock %}
 
-    <!-- BEGIN PAGE TITLE-->
-    <h3 class="page-title"> Gerencimento de Contas
-        <small></small>
-    </h3>
-    <!-- END PAGE TITLE-->
+{% block body %}
 
     <div class="portlet light bordered">
 
@@ -140,7 +136,9 @@
                                     <a href="{{ path('bill_edit', {id: bill.id}) ~ pagination_helper.buildQuery }}">{{ bill.description }}</a>
                                 </td>
                                 <td>
-                                    {{ bill.billCategory.description }}
+                                    <span class="label label-{% if bill.billCategory.referency == 'despesa' %}danger{% else %}success{% endif %}">
+                                         {{ bill.billCategory.description }}
+                                    </span>
                                 </td>
                                 <td>{{ bill.amount }}</td>
                                 <td>
