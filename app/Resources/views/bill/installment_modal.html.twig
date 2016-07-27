@@ -9,34 +9,14 @@
             <div class="modal-body">
                 {{ form_start(form_generate_installments, {'attr': {'class' : 'form-horizontal', 'onsubmit' : 'return false'}}) }}
 
-                {{ form_row(form_generate_installments.dueDateAt, {form_row_horizontal : true, set_col_md_label : 'col-md-4', set_col_md_field : 'col-md-7'}) }}
-                {{ form_row(form_generate_installments.amount, {form_row_horizontal : true, set_col_md_label : 'col-md-4', set_col_md_field : 'col-md-7'}) }}
-                {{ form_row(form_generate_installments.number, {form_row_horizontal : true, set_col_md_label : 'col-md-4', set_col_md_field : 'col-md-7'}) }}
+                {{ form_row(form_generate_installments.dueDateAt, {'label_attr' : {'class' : 'col-md-4'}, form_row_horizontal : true, set_col_md_field : 'col-md-8'}) }}
+                {{ form_row(form_generate_installments.amount, {'label_attr' : {'class' : 'col-md-4'}, form_row_horizontal : true, set_col_md_field : 'col-md-8'}) }}
+                {{ form_row(form_generate_installments.number, {'label_attr' : {'class' : 'col-md-4'}, form_row_horizontal : true, set_col_md_field : 'col-md-8'}) }}
 
                 {{ form_end(form_generate_installments) }}
 
                 <div class="clearfix"></div>
 
-                {#<form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Data de Vencimento</label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control js-datepicker">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Valor</label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Quantidade</label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
-                </form>#}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal" id="installments_generate">

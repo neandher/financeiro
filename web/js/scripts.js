@@ -2,7 +2,8 @@ function datepicker() {
     $('.js-datepicker').datepicker({
         format: 'dd-mm-yyyy',
         language: 'pt-BR',
-        clearBtn: true
+        clearBtn: true,
+        autoclose: true
     });
 }
 
@@ -130,10 +131,15 @@ function installmentsGenerate($collectionHolder, $newLinkPanel) {
     var newDueDateAt = null;
     var dueDateAtVal;
 
+    var index = $collectionHolder.find('div.panel-default').length == 0 ? 1 : (parseInt($collectionHolder.find('div.panel-default').length) - 1);
+
+    $collectionHolder.removeData('index');
+    $collectionHolder.data('index', index);
+
     if ($number.val() > 0) {
         for (i = 0; i < $number.val(); i++) {
 
-            var current_index = parseInt(addInstallmentForm($collectionHolder, $newLinkPanel));
+            var current_index = (parseInt(addInstallmentForm($collectionHolder, $newLinkPanel))-1);
 
             console.log(current_index);
 
