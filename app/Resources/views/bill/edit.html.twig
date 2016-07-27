@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}{{ parent() ~ ' - ' ~ 'bill.title.edit'|trans }}{% endblock %}
 {% block page_title %}{{ 'bill.title.menu'|trans }}{% endblock %}
 
 {% block body %}
@@ -65,11 +66,13 @@
 
                     <div role="tabpanel" class="tab-pane" id="parcelas">
 
-                        <div id="installments" class="panel panel-default"
+                        <div id="installments"
                              data-prototype="{{ form_widget(form.billInstallments.vars.prototype)|e('html_attr') }}">
                             {% for billInstallment in form.billInstallments %}
-                                <div class="panel-body">
-                                    {{ form_widget(billInstallment) }}
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        {{ form_widget(billInstallment) }}
+                                    </div>
                                 </div>
                             {% endfor %}
                         </div>

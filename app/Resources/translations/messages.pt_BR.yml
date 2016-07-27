@@ -117,9 +117,12 @@ billInstallments:
         amount: Valor
         amountPaid: Valor Pago
         description: Descrição
+    generate:
+        number: Número de Parcelas
     action:
         new: Adicionar Parcela
         remove: Remover Parcela
+        generate: Gerar
 
 cashFlow:
     title:

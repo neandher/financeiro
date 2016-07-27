@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}{{ parent() ~ ' - ' ~ 'bill.title.new'|trans }}{% endblock %}
 {% block page_title %}{{ 'bill.title.menu'|trans }}{% endblock %}
 
 {% block body %}
@@ -56,32 +57,44 @@
 
                     <div role="tabpanel" class="tab-pane" id="parcelas">
 
-                        <div id="installments" class="panel panel-default"
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="#" class="btn btn-default pull-right" data-toggle="modal"
+                                   data-target="#generateInstallment">Gerar Parcelas</a>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div id="installments"
                              data-prototype="{{ form_widget(form.billInstallments.vars.prototype)|e('html_attr') }}">
                             {% if form.vars.submitted and form.vars.valid == false %}
                                 {% for billInstallment in form.billInstallments %}
-                                    <div class="panel-body">
-                                        {{ form_widget(billInstallment) }}
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            {{ form_widget(billInstallment) }}
+                                        </div>
                                     </div>
                                 {% endfor %}
                             {% endif %}
                         </div>
-
                     </div>
 
                 </div>
 
             </div>
 
-            <div class="form-actions">
-                {{ form_widget(form.buttons.save_and_keep, {'attr' : {'class' : 'green'}}) }}
-                {{ form_widget(form.buttons.save_and_new, {'attr' : {'class' : 'green'}}) }}
-                {{ form_widget(form.buttons.save_and_close, {'attr' : {'class' : 'green'}}) }}
-            </div>
-
-            {{ form_end(form) }}
-
         </div>
+
+        <div class="form-actions">
+            {{ form_widget(form.buttons.save_and_keep, {'attr' : {'class' : 'green'}}) }}
+            {{ form_widget(form.buttons.save_and_new, {'attr' : {'class' : 'green'}}) }}
+            {{ form_widget(form.buttons.save_and_close, {'attr' : {'class' : 'green'}}) }}
+        </div>
+
+        {{ form_end(form) }}
+
+        {{ include('bill/installment_modal.html.twig') }}
 
     </div>
 

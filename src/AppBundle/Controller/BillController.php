@@ -6,6 +6,7 @@ use AppBundle\Entity\Bill;
 use AppBundle\Entity\BillCategory;
 use AppBundle\Entity\BillStatus;
 use AppBundle\Event\FlashBagEvents;
+use AppBundle\Form\BillGenerateInstallmentsType;
 use AppBundle\Form\BillType;
 use AppBundle\Form\SubmitActions;
 use AppBundle\Form\SubmitActionsType;
@@ -69,7 +70,9 @@ class BillController extends Controller
                     ]
                 ]
             );
-
+        
+        $formGenerateInstallments = $this->createForm(BillGenerateInstallmentsType::class);
+        
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -105,6 +108,7 @@ class BillController extends Controller
             [
                 'bill' => $bill,
                 'form' => $form->createView(),
+                'form_generate_installments' => $formGenerateInstallments->createView(),
                 'pagination_helper' => $paginationHelper
             ]
         );

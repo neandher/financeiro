@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}{{ parent() ~ ' - ' ~ 'cashFlow.title.menu'|trans }}{% endblock %}
 {% block body_class %}page-sidebar-closed{% endblock %}
 {% block ul_page_sidebar_menu_class %}page-sidebar-menu-closed{% endblock %}
-
 {% block page_title %}{{ 'cashFlow.title.menu'|trans }}{% endblock %}
 
 {% block body %}
