@@ -16,7 +16,7 @@ class SubmitActionsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if (in_array(SubmitActions::SAVE_AND_CLOSE, $options['actions'])) {
-            $builder->add(SubmitActions::SAVE_AND_CLOSE, SubmitType::class, ['label' => 'form.submit_actions.save_and_close']);
+            $builder->add(SubmitActions::SAVE_AND_CLOSE, SubmitType::class, ['label_format' => 'form.submit_actions.save_and_close']);
         }
         if (in_array(SubmitActions::SAVE_AND_NEW, $options['actions'])) {
             $builder->add(SubmitActions::SAVE_AND_NEW, SubmitType::class, ['label' => 'form.submit_actions.save_and_new']);

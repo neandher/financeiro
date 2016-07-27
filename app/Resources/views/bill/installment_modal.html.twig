@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Gerar Parcelas</h4>
+                <h4 class="modal-title">{{ 'billInstallments.generate.title'|trans }}</h4>
             </div>
             <div class="modal-body">
                 {{ form_start(form_generate_installments, {'attr': {'class' : 'form-horizontal', 'onsubmit' : 'return false'}}) }}
@@ -19,8 +19,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="installments_generate">
-                    {{ 'billInstallments.action.generate'|trans }}
+                <button type="button" class="btn green" data-dismiss="modal" id="installments_generate">
+                    {{ 'form.submit_actions.send'|trans }}
                 </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     {{ 'form.link.cancel'|trans }}

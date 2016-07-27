@@ -15,7 +15,7 @@
             </div>
 
             <div class="actions">
-                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery }}" class="btn default">
+                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery }}" class="btn blue-hoki btn-outline sbold">
                     <span class="fa fa-arrow-circle-left"></span> {{ 'form.link.go_back'|trans }}
                 </a>
             </div>
@@ -41,9 +41,9 @@
                     </li>
                 </ul>
 
-                <br>
-
                 <div class="tab-content">
+
+                    <br>
 
                     <div role="tabpanel" class="tab-pane active" id="dados">
                         <div class="row">
@@ -59,8 +59,11 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="#" class="btn btn-default pull-right" data-toggle="modal"
-                                   data-target="#generateInstallment">Gerar Parcelas</a>
+                                <a href="#" class="btn green btn-outline btn-sm pull-right" data-toggle="modal"
+                                   data-target="#generateInstallment">
+                                    <i class="fa fa-tasks"></i>
+                                    {{ 'billInstallments.generate.title'|trans }}
+                                </a>
                             </div>
                         </div>
 
@@ -77,6 +80,17 @@
                                     </div>
                                 {% endfor %}
                             {% endif %}
+
+                            <div class="portlet light bordered" id="panel_add_installment">
+                                <div class="portlet-body">
+                                    <a href="#" class="btn green btn-outline col-md-12" id="btn_add_installment">
+                                        <span class="fa fa-plus"></span>
+                                        {{ 'billInstallments.action.new'|trans }}
+                                    </a>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -87,9 +101,7 @@
         </div>
 
         <div class="form-actions">
-            {{ form_widget(form.buttons.save_and_keep, {'attr' : {'class' : 'green'}}) }}
-            {{ form_widget(form.buttons.save_and_new, {'attr' : {'class' : 'green'}}) }}
-            {{ form_widget(form.buttons.save_and_close, {'attr' : {'class' : 'green'}}) }}
+            {{ include('partials/default_form_actions.html.twig') }}
         </div>
 
         {{ form_end(form) }}

@@ -17,6 +17,7 @@ form:
         save_and_close: Salvar e fechar
         search: Buscar
         reset: Limpar
+        send: Enviar
     link:
         cancel: Cancelar
         go_back: Voltar
@@ -119,10 +120,10 @@ billInstallments:
         description: Descrição
     generate:
         number: Número de Parcelas
+        title: Gerar Parcelas
     action:
         new: Adicionar Parcela
         remove: Remover Parcela
-        generate: Gerar
 
 cashFlow:
     title:

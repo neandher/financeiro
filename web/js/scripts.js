@@ -56,10 +56,9 @@ $('#bill_billCategory').change(function () {
 function installmentsInit() {
 
     var $collectionHolder;
-
-    var $addInstallmentLink = $('<a href="#" class="btn btn-info"><span class="glyphicon glyphicon-plus"></span> Adicionar Parcela</a>');
-    var $newLinkFooter = $('<div class="panel-footer"></div>').append($addInstallmentLink);
-    var $newLinkPanel = $('<div class="panel panel-default"></div>').append($newLinkFooter);
+    
+    var $addInstallmentLink = $('#btn_add_installment');
+    var $newLinkPanel = $('#panel_add_installment');
     var $generateInstallments = $('#installments_generate');
 
     $collectionHolder = $('div#installments');
@@ -68,7 +67,7 @@ function installmentsInit() {
         addInstallmentFormDeleteLink($(this));
     });
 
-    $collectionHolder.append($newLinkPanel);
+    //$collectionHolder.append($newLinkPanel);
 
     var index = $collectionHolder.find('div.panel-default').length == 0 ? 1 : (parseInt($collectionHolder.find('div.panel-default').length) - 1);
 
@@ -107,7 +106,7 @@ function addInstallmentForm($collectionHolder, $newLinkPanel) {
 }
 
 function addInstallmentFormDeleteLink($newFormPanelBody, $newFormPanel) {
-    var $removeForm = $('<div class="col-md-6"><div class="form-group"><a href="#" class="btn btn-danger form-control"><span class="glyphicon glyphicon-remove"></span> Remover Parcela</a></div></div>');
+    var $removeForm = $('<div class="col-md-6"><div class="form-group"><a href="#" class="btn red btn-outline form-control"><span class="fa fa-remove"></span> Remover Parcela</a></div></div>');
     $newFormPanelBody.append($removeForm);
 
     if ($newFormPanel == null) {
