@@ -10,6 +10,15 @@
 
 {%- block form_widget_simple -%}
     {%- set type = type|default('text') -%}
+    {#{% if type == 'file' %}
+        <span class="btn green fileinput-button col-md-12">
+            <i class="fa fa-plus"></i>
+            <span> Selecionar Arquivo </span>
+            <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        </span>
+    {% else %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% endif %}#}
     <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
 {%- endblock form_widget_simple -%}
 
@@ -44,10 +53,10 @@
 
 {%- block choice_widget_expanded -%}
     <div {{ block('widget_container_attributes') }}>
-    {%- for child in form %}
-        {{- form_widget(child) -}}
-        {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
-    {% endfor -%}
+        {%- for child in form %}
+            {{- form_widget(child) -}}
+            {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
+        {% endfor -%}
     </div>
 {%- endblock choice_widget_expanded -%}
 
@@ -74,7 +83,8 @@
 {%- block choice_widget_options -%}
     {% for group_label, choice in options %}
         {%- if choice is iterable -%}
-            <optgroup label="{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}">
+            <optgroup
+                    label="{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}">
                 {% set options = choice %}
                 {{- block('choice_widget_options') -}}
             </optgroup>
@@ -185,8 +195,8 @@
     {%- if label is empty -%}
         {%- if label_format is not empty -%}
             {% set label = label_format|replace({
-                '%name%': name,
-                '%id%': id,
+            '%name%': name,
+            '%id%': id,
             }) %}
         {%- else -%}
             {% set label = name|humanize %}
@@ -219,8 +229,8 @@
         {% if label is empty -%}
             {%- if label_format is not empty -%}
                 {% set label = label_format|replace({
-                    '%name%': name,
-                    '%id%': id,
+                '%name%': name,
+                '%id%': id,
                 }) %}
             {%- else -%}
                 {% set label = name|humanize %}
@@ -258,7 +268,7 @@ form_label
 
 {%- block form -%}
     {{ form_start(form) }}
-        {{- form_widget(form) -}}
+    {{- form_widget(form) -}}
     {{ form_end(form) }}
 {%- endblock form -%}
 
@@ -269,9 +279,10 @@ form_label
     {%- else -%}
         {% set form_method = "POST" %}
     {%- endif -%}
-    <form name="{{ name }}" method="{{ form_method|lower }}"{% if action != '' %} action="{{ action }}"{% endif %}{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>
+    <form
+    name="{{ name }}" method="{{ form_method|lower }}"{% if action != '' %} action="{{ action }}"{% endif %}{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>
     {%- if form_method != method -%}
-        <input type="hidden" name="_method" value="{{ method }}" />
+        <input type="hidden" name="_method" value="{{ method }}"/>
     {%- endif -%}
 {%- endblock form_start -%}
 
@@ -284,11 +295,11 @@ form_label
 
 {%- block form_errors -%}
     {%- if errors|length > 0 -%}
-    <ul>
-        {%- for error in errors -%}
-            <li>{{ error.message }}</li>
-        {%- endfor -%}
-    </ul>
+        <ul>
+            {%- for error in errors -%}
+                <li>{{ error.message }}</li>
+            {%- endfor -%}
+        </ul>
     {%- endif -%}
 {%- endblock form_errors -%}
 

@@ -30,7 +30,8 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "doctrine/doctrine-migrations-bundle": "^1.1",
         "white-october/pagerfanta-bundle": "^1.0",
-        "friendsofsymfony/jsrouting-bundle": "^1.6"
+        "friendsofsymfony/jsrouting-bundle": "^1.6",
+        "vich/uploader-bundle": "^1.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

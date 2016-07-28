@@ -131,6 +131,12 @@ class BillController extends Controller
             $originalBillInstallments->add($billInstallment);
         }
 
+        $originalBillFiles = new ArrayCollection();
+
+        foreach ($bill->getBillFiles() as $billFile) {
+            $originalBillFiles->add($billFile);
+        }
+
         $paginationHelper = $this->get('app.helper.pagination')->handle($request);
 
         $form = $this->createForm(BillType::class, $bill)
@@ -144,6 +150,8 @@ class BillController extends Controller
                     ]
                 ]
             );
+
+        $formGenerateInstallments = $this->createForm(BillGenerateInstallmentsType::class);
 
         $formDelete = $this->createDeleteForm($bill);
 
@@ -160,6 +168,13 @@ class BillController extends Controller
                 if (false === $bill->getBillInstallments()->contains($billInstallment)) {
                     $billInstallment->setBill(null);
                     $em->remove($billInstallment);
+                }
+            }
+
+            foreach ($originalBillFiles as $billFile) {
+                if (false === $bill->getBillFiles()->contains($billFile)) {
+                    $billFile->setBill(null);
+                    $em->remove($billFile);
                 }
             }
 
@@ -189,6 +204,7 @@ class BillController extends Controller
             [
                 'bill' => $bill,
                 'form' => $form->createView(),
+                'form_generate_installments' => $formGenerateInstallments->createView(),
                 'form_delete' => $formDelete->createView(),
                 'pagination_helper' => $paginationHelper
             ]

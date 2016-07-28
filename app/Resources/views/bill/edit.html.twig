@@ -21,7 +21,8 @@
                     <span class="fa fa-trash"></span>
                     {{ 'form.link.delete'|trans }}
                 </button>
-                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery }}" class="btn default">
+                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery }}"
+                   class="btn blue-hoki btn-outline sbold">
                     <span class="fa fa-arrow-circle-left"></span> {{ 'form.link.go_back'|trans }}
                 </a>
                 {{ form_end(form_delete) }}
@@ -46,6 +47,10 @@
                     <li role="presentation">
                         <a href="#parcelas" aria-controls="parcelas" role="tab" data-toggle="tab">Parcelas</a>
                     </li>
+                    <li role="presentation">
+                        <a href="#files" aria-controls="files" role="tab"
+                           data-toggle="tab">{{ 'billFiles.title.menu'|trans }}</a>
+                    </li>
                 </ul>
 
                 <br>
@@ -66,6 +71,18 @@
 
                     <div role="tabpanel" class="tab-pane" id="parcelas">
 
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="#" class="btn green btn-outline btn-sm pull-right" data-toggle="modal"
+                                   data-target="#generateInstallment">
+                                    <i class="fa fa-tasks"></i>
+                                    {{ 'billInstallments.generate.title'|trans }}
+                                </a>
+                            </div>
+                        </div>
+
+                        <br>
+
                         <div id="installments"
                              data-prototype="{{ form_widget(form.billInstallments.vars.prototype)|e('html_attr') }}">
                             {% for billInstallment in form.billInstallments %}
@@ -75,6 +92,44 @@
                                     </div>
                                 </div>
                             {% endfor %}
+
+                            <div class="portlet light bordered" id="panel_add_installment">
+                                <div class="portlet-body">
+                                    <a href="#" class="btn green btn-outline col-md-12" id="btn_add_installment">
+                                        <span class="fa fa-plus"></span>
+                                        {{ 'billInstallments.action.new'|trans }}
+                                    </a>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div id="files" role="tabpanel" class="tab-pane">
+
+                        <div id="prototype_files"
+                             data-prototype="{{ form_widget(form.billFiles.vars.prototype)|e('html_attr') }}">
+
+                            {% for billFile in form.billFiles %}
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        {{ form_row(billFile.file, {'label' : billFile.vars.value.fileName}) }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            <div class="portlet light bordered" id="panel_add_file">
+                                <div class="portlet-body">
+                                    <a href="#" class="btn green btn-outline col-md-12" id="btn_add_file">
+                                        <span class="fa fa-plus"></span>
+                                        {{ 'billFiles.action.new'|trans }}
+                                    </a>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
@@ -84,12 +139,12 @@
             </div>
 
             <div class="form-actions">
-                {{ form_widget(form.buttons.save_and_keep, {'attr' : {'class' : 'green'}}) }}
-                {{ form_widget(form.buttons.save_and_new, {'attr' : {'class' : 'green'}}) }}
-                {{ form_widget(form.buttons.save_and_close, {'attr' : {'class' : 'green'}}) }}
+                {{ include('partials/default_form_actions.html.twig') }}
             </div>
 
             {{ form_end(form) }}
+
+            {{ include('bill/installment_modal.html.twig') }}
 
         </div>
 
@@ -102,6 +157,7 @@
     <script>
         jQuery(document).ready(function () {
             installmentsInit();
+            filesInit();
         });
     </script>
 

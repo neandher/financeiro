@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: pt_BR
+    upload_files_path: "%kernel.root_dir%/../web/uploads/file"
 
 framework:
     #esi:             ~
@@ -69,3 +70,13 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+vich_uploader:
+    db_driver: orm
+    mappings:
+        files:
+            upload_destination: "%upload_files_path%"
+            delete_on_remove: true
+            delete_on_update: true
+            inject_on_load: true
+            #namer:              vich_uploader.namer_uniqid

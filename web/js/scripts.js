@@ -67,9 +67,7 @@ function installmentsInit() {
         addInstallmentFormDeleteLink($(this));
     });
 
-    //$collectionHolder.append($newLinkPanel);
-
-    var index = $collectionHolder.find('div.panel-default').length == 0 ? 1 : (parseInt($collectionHolder.find('div.panel-default').length) - 1);
+    var index = $collectionHolder.find('div.panel-default').length;
 
     $collectionHolder.data('index', index);
 
@@ -113,13 +111,18 @@ function addInstallmentFormDeleteLink($newFormPanelBody, $newFormPanel) {
         $newFormPanel = $newFormPanelBody.parent('.panel');
     }
 
+    var $collectionHolder = $('div#installments');
+
     $removeForm.on('click', function (e) {
         e.preventDefault();
         $newFormPanel.remove();
+
+        var index = $collectionHolder.find('div.panel-default').length;
+
+        $collectionHolder.removeData('index');
+        $collectionHolder.data('index', index);
     });
 }
-
-
 
 function installmentsGenerate($collectionHolder, $newLinkPanel) {
 
@@ -130,7 +133,7 @@ function installmentsGenerate($collectionHolder, $newLinkPanel) {
     var newDueDateAt = null;
     var dueDateAtVal;
 
-    var index = $collectionHolder.find('div.panel-default').length == 0 ? 1 : (parseInt($collectionHolder.find('div.panel-default').length) - 1);
+    var index = $collectionHolder.find('div.panel-default').length;
 
     $collectionHolder.removeData('index');
     $collectionHolder.data('index', index);
@@ -139,8 +142,6 @@ function installmentsGenerate($collectionHolder, $newLinkPanel) {
         for (i = 0; i < $number.val(); i++) {
 
             var current_index = (parseInt(addInstallmentForm($collectionHolder, $newLinkPanel))-1);
-
-            console.log(current_index);
 
             if (newDueDateAt == null) {
                 dueDateAtVal = $dueDateAt.val();
@@ -162,4 +163,67 @@ function installmentsGenerate($collectionHolder, $newLinkPanel) {
             $('#bill_billInstallments_' + current_index + '_dueDateAt').val(newDueDateAt);
         }
     }
+}
+
+function filesInit() {
+
+    var $collectionHolder;
+
+    var $addFileLink = $('#btn_add_file');
+    var $newLinkPanel = $('#panel_add_file');
+
+    $collectionHolder = $('div#prototype_files');
+
+    $collectionHolder.find('div.panel-body').each(function () {
+        addFileFormDeleteLink($(this));
+    });
+
+    var index = $collectionHolder.find('div.panel-default').length;
+
+    $collectionHolder.data('index', index);
+
+    $addFileLink.on('click', function (e) {
+        e.preventDefault();
+        addFileForm($collectionHolder, $newLinkPanel);
+    });
+}
+
+function addFileForm($collectionHolder, $newLinkPanel) {
+
+    var prototype = $collectionHolder.data('prototype');
+    var index = $collectionHolder.data('index');
+
+    var newForm = prototype.replace(/__name__/g, index);
+    var new_index = index + 1;
+
+    $collectionHolder.data('index', new_index);
+
+    var $newFormPanelBody = $('<div class="panel-body"></div>').append(newForm);
+    var $newFormPanel = $('<div class="panel panel-default"></div>').append($newFormPanelBody);
+    $newLinkPanel.before($newFormPanel);
+
+    addFileFormDeleteLink($newFormPanelBody, $newFormPanel);
+
+    return new_index;
+}
+
+function addFileFormDeleteLink($newFormPanelBody, $newFormPanel) {
+    var $removeForm = $('<div class="col-md-2"><div class="form-group"><label class="control-label">&nbsp;</label><a href="#" class="btn red btn-outline form-control"><span class="fa fa-remove"></span></a></div></div>');
+    $newFormPanelBody.append($removeForm);
+
+    if ($newFormPanel == null) {
+        $newFormPanel = $newFormPanelBody.parent('.panel');
+    }
+
+    var $collectionHolder = $('div#prototype_files');
+
+    $removeForm.on('click', function (e) {
+        e.preventDefault();
+        $newFormPanel.remove();
+
+        var index = $collectionHolder.find('div.panel-default').length;
+
+        $collectionHolder.removeData('index');
+        $collectionHolder.data('index', index);
+    });
 }

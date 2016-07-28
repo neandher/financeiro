@@ -98,11 +98,20 @@ class Bill
     private $billInstallments;
 
     /**
+     * @var BillFiles
+     * 
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BillFiles", mappedBy="bill", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private $billFiles;
+
+    /**
      * Bill constructor.
      */
     public function __construct()
     {
         $this->billInstallments = new ArrayCollection();
+        $this->billFiles = new ArrayCollection();
     }
 
     /**
@@ -343,6 +352,25 @@ class Bill
             }
         }
         return $i;
+    }
+
+    /**
+     * @return ArrayCollection|BillFiles
+     */
+    public function getBillFiles()
+    {
+        return $this->billFiles;
+    }
+
+    public function addBillFile(BillFiles $billFile)
+    {
+        $billFile->setBill($this);
+        $this->billFiles->add($billFile);
+    }
+
+    public function removeBillFile(BillFiles $billFile)
+    {
+        $this->billFiles->removeElement($billFile);
     }
 }
 

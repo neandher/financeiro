@@ -2,15 +2,11 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Bank;
 use AppBundle\Entity\Bill;
 use AppBundle\Entity\BillCategory;
-use AppBundle\Entity\BillInstallments;
 use AppBundle\Entity\BillPlan;
-use AppBundle\Repository\BankRepository;
 use AppBundle\Repository\BillCategoryRepository;
 use AppBundle\Repository\BillPlanRepository;
-use AppBundle\Repository\BillTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -52,6 +48,17 @@ class BillType extends AbstractType
                     'allow_delete' => true,
                     'by_reference' => false,
                     'label' => 'billInstallments.title.menu',
+                    'label_attr' => ['class' => 'hide'],
+                    'attr' => ['class' => 'hide'],
+                ]
+            )
+            ->add('billFiles', CollectionType::class,
+                [
+                    'entry_type' => BillFilesType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                    'label' => 'billFiles.title.menu',
                     'label_attr' => ['class' => 'hide'],
                     'attr' => ['class' => 'hide'],
                 ]

@@ -128,3 +128,14 @@ billInstallments:
 cashFlow:
     title:
         menu: Fluxo de Caixa
+
+billFiles:
+    title:
+        menu: Arquivos
+    fields:
+        file: Arquivo
+        fileName: Nome do Arquivo
+        createdAt: Data de Criação
+    action:
+        new: Adicionar Arquivo
+        remove: Remover Arquivos

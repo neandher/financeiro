@@ -15,7 +15,8 @@
             </div>
 
             <div class="actions">
-                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery }}" class="btn blue-hoki btn-outline sbold">
+                <a href="{{ path('bill_index') ~ pagination_helper.buildQuery }}"
+                   class="btn blue-hoki btn-outline sbold">
                     <span class="fa fa-arrow-circle-left"></span> {{ 'form.link.go_back'|trans }}
                 </a>
             </div>
@@ -37,7 +38,12 @@
                         <a href="#dados" aria-controls="dados" role="tab" data-toggle="tab">Dados</a>
                     </li>
                     <li role="presentation">
-                        <a href="#parcelas" aria-controls="parcelas" role="tab" data-toggle="tab">Parcelas</a>
+                        <a href="#parcelas" aria-controls="parcelas" role="tab"
+                           data-toggle="tab">{{ 'billInstallments.title.menu'|trans }}</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#files" aria-controls="files" role="tab"
+                           data-toggle="tab">{{ 'billFiles.title.menu'|trans }}</a>
                     </li>
                 </ul>
 
@@ -94,6 +100,34 @@
                         </div>
                     </div>
 
+                    <div id="files" role="tabpanel" class="tab-pane">
+
+                        <div id="prototype_files"
+                             data-prototype="{{ form_widget(form.billFiles.vars.prototype)|e('html_attr') }}">
+                            {% if form.vars.submitted and form.vars.valid == false %}
+                                {% for billFile in form.billFiles %}
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            {{ form_widget(billFile) }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                            <div class="portlet light bordered" id="panel_add_file">
+                                <div class="portlet-body">
+                                    <a href="#" class="btn green btn-outline col-md-12" id="btn_add_file">
+                                        <span class="fa fa-plus"></span>
+                                        {{ 'billFiles.action.new'|trans }}
+                                    </a>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
@@ -117,6 +151,7 @@
     <script>
         jQuery(document).ready(function () {
             installmentsInit();
+            filesInit();
         });
     </script>
 

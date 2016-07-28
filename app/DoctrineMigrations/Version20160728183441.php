@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20160718222639 extends AbstractMigration
+class Version20160728183441 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -18,7 +18,7 @@ class Version20160718222639 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE bill_installments DROP INDEX UNIQ_805065891A8C12F5, ADD INDEX IDX_805065891A8C12F5 (bill_id)');
+        $this->addSql('ALTER TABLE bill_files CHANGE update_at updated_at DATETIME DEFAULT NULL');
     }
 
     /**
@@ -29,6 +29,6 @@ class Version20160718222639 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE bill_installments DROP INDEX IDX_805065891A8C12F5, ADD UNIQUE INDEX UNIQ_805065891A8C12F5 (bill_id)');
+        $this->addSql('ALTER TABLE bill_files CHANGE updated_at update_at DATETIME DEFAULT NULL');
     }
 }
