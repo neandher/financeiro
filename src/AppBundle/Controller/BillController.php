@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Bill;
 use AppBundle\Entity\BillCategory;
+use AppBundle\Entity\BillInstallments;
 use AppBundle\Entity\BillStatus;
 use AppBundle\Event\FlashBagEvents;
 use AppBundle\Form\BillGenerateInstallmentsType;
@@ -33,12 +34,27 @@ class BillController extends Controller
         $paginationHelper = $this->get('app.helper.pagination')->handle($request, Bill::class);
 
         $bills = $this->getDoctrine()->getRepository(Bill::class)->findLatest($paginationHelper);
+
+        $results = [];
+
+        foreach ($bills->getCurrentPageResults() as $result) {
+            $result->getBillInstallments()->clear();
+            $results[$result->getId()] = $result;
+        }
+        
+        $billInstallments = $this->getDoctrine()->getRepository(BillInstallments::class)->findAllByBills($results);
+
+        foreach ($billInstallments as $billInstallment) {
+            $results[$billInstallment->getBill()->getId()]->getBillInstallments()->add($billInstallment);
+        }
+
         $billCategory = $this->getDoctrine()->getRepository(BillCategory::class)->findAll();
         $billstatus = $this->getDoctrine()->getRepository(BillStatus::class)->findAll();
-        
+
         return $this->render('bill/index.html.twig',
             [
                 'bills' => $bills,
+                'results' => $results,
                 'bill_category' => $billCategory,
                 'bill_status' => $billstatus,
                 'pagination_helper' => $paginationHelper
@@ -70,9 +86,9 @@ class BillController extends Controller
                     ]
                 ]
             );
-        
+
         $formGenerateInstallments = $this->createForm(BillGenerateInstallmentsType::class);
-        
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -265,7 +281,7 @@ class BillController extends Controller
 
         foreach ($bill->getBillInstallments() as $billInstallment) {
 
-            $amountFull += (float)str_replace(['-','.', ','], ['','', '.'], $billInstallment->getAmount());
+            $amountFull += (float)str_replace(['-', '.', ','], ['', '', '.'], $billInstallment->getAmount());
 
             $newInstallmentAmount = $operator . $billInstallment->getAmount();
             $billInstallment->setAmount($newInstallmentAmount);
