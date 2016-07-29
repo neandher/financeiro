@@ -92,7 +92,7 @@
 
                 {{ include('partials/alerts.html.twig') }}
 
-                <div class="table-responsive">
+                <div class="_table-responsive dataTables_wrapper no-footer">
                     <table class="table table-striped table-bordered _table-advance table-hover">
                         <thead>
                         <tr>
@@ -181,10 +181,26 @@
                         {% endfor %}
                         </tbody>
                     </table>
-                </div>
 
-                <div class="navigation text-center">
-                    {{ pagerfanta(bills, 'twitter_bootstrap3', { routeName: 'bill_index', routeParams: app.request.query.all }) }}
+                    <div class="row">
+                        <div class="col-md-5 col-sm-5">
+                            <div class="dataTables_info">
+                                {{ 'pagination.default'|trans(
+                                    {
+                                        'currentPageOffsetStart' : bills.currentPageOffsetStart,
+                                        'currentPageOffsetEnd' : bills.currentPageOffsetEnd,
+                                        'nbResults' : bills.nbResults
+                                    })
+                                }}
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-7">
+                            <div class="dataTables_paginate paging_bootstrap_number">
+                                {{ pagerfanta(bills, 'twitter_bootstrap3', { routeName: 'bill_index', routeParams: app.request.query.all }) }}
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>

@@ -37,6 +37,9 @@ action:
     edit: Editar
     delete: Excluir
 
+pagination:
+    default: Exibindo currentPageOffsetStart a currentPageOffsetEnd de nbResults registros
+
 ############## ENTITIES ################
 
 bank:

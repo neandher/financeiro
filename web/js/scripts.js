@@ -71,6 +71,10 @@ function installmentsInit() {
 
     $collectionHolder.data('index', index);
 
+    if(index == 0){
+        addInstallmentForm($collectionHolder, $newLinkPanel);
+    }
+
     $addInstallmentLink.on('click', function (e) {
         e.preventDefault();
         addInstallmentForm($collectionHolder, $newLinkPanel);

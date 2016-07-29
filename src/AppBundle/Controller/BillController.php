@@ -30,12 +30,21 @@ class BillController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if (!$request->query->has('date_start') && !$request->query->has('date_end')) {
+            $request->query->add(
+                [
+                    'date_start' => date('01-m-Y'),
+                    'date_end' => date('t-m-Y')
+                ]
+            );
+        }
+
         $paginationHelper = $this->get('app.helper.pagination')->handle($request, Bill::class);
 
         $bills = $this->getDoctrine()->getRepository(Bill::class)->findLatest($paginationHelper);
         $billCategory = $this->getDoctrine()->getRepository(BillCategory::class)->findAll();
         $billstatus = $this->getDoctrine()->getRepository(BillStatus::class)->findAll();
-        
+
         return $this->render('bill/index.html.twig',
             [
                 'bills' => $bills,
@@ -70,9 +79,9 @@ class BillController extends Controller
                     ]
                 ]
             );
-        
+
         $formGenerateInstallments = $this->createForm(BillGenerateInstallmentsType::class);
-        
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -265,7 +274,7 @@ class BillController extends Controller
 
         foreach ($bill->getBillInstallments() as $billInstallment) {
 
-            $amountFull += (float)str_replace(['-','.', ','], ['','', '.'], $billInstallment->getAmount());
+            $amountFull += (float)str_replace(['-', '.', ','], ['', '', '.'], $billInstallment->getAmount());
 
             $newInstallmentAmount = $operator . $billInstallment->getAmount();
             $billInstallment->setAmount($newInstallmentAmount);

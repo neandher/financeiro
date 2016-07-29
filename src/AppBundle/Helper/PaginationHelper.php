@@ -127,7 +127,7 @@ class PaginationHelper
     {
         return isset($this->routeParams[$param]) ? $this->routeParams[$param] : $this->routeParams;
     }
-
+    
     /**
      * @param string $without
      * @return string
