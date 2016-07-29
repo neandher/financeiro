@@ -31,6 +31,15 @@ class BillController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if (!$request->query->has('date_start') && !$request->query->has('date_end')) {
+            $request->query->add(
+                [
+                    'date_start' => date('01-m-Y'),
+                    'date_end' => date('t-m-Y')
+                ]
+            );
+        }
+
         $paginationHelper = $this->get('app.helper.pagination')->handle($request, Bill::class);
 
         $bills = $this->getDoctrine()->getRepository(Bill::class)->findLatest($paginationHelper);
@@ -41,7 +50,7 @@ class BillController extends Controller
             $result->getBillInstallments()->clear();
             $results[$result->getId()] = $result;
         }
-        
+
         $billInstallments = $this->getDoctrine()->getRepository(BillInstallments::class)->findAllByBills($results);
 
         foreach ($billInstallments as $billInstallment) {
