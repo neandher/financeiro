@@ -79,7 +79,6 @@ class BillController extends Controller
 
             $this->setAmount($bill);
             $this->setBillStatus($bill);
-            $bill->setCreatedAt(new \DateTime('now'));
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($bill);

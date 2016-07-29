@@ -112,12 +112,15 @@
                         <div id="prototype_files"
                              data-prototype="{{ form_widget(form.billFiles.vars.prototype)|e('html_attr') }}">
 
+                            {% set i = 0 %}
                             {% for billFile in form.billFiles %}
+                                {% set link_file = '<a href="'~vich_uploader_asset(bill.billFiles.get(i),'file')~'">'~bill.billFiles.get(i).fileName~'</a>' %}
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        {{ form_row(billFile.file, {'label' : billFile.vars.value.fileName}) }}
+                                        {{ form_row(billFile.file, {'label' : link_file}) }}
                                     </div>
                                 </div>
+                                {% set i = i + 1 %}
                             {% endfor %}
 
                             <div class="portlet light bordered" id="panel_add_file">
