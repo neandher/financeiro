@@ -10,4 +10,23 @@ namespace AppBundle\Repository;
  */
 class BillInstallmentsRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAllByBills($bills)
+    {
+        $keys = array_keys($bills);
+
+        $sqlBills = '';
+
+        foreach ($keys as $key) {
+            $sqlBills .= $key . (next($keys) ? ',' : '');
+        }
+
+        $qb = $this->createQueryBuilder('billInstallments')
+            ->addSelect()
+            ->innerJoin('billInstallments.bill', 'bill')
+            ->addSelect('bill')
+            ->where('bill.id in ('.$sqlBills.')')
+            ->orderBy('billInstallments.dueDateAt', 'asc');
+
+        return $qb->getQuery()->getResult();
+    }
 }

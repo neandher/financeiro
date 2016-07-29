@@ -230,6 +230,14 @@ class BillInstallments
     }
 
     /**
+     * @return Bill
+     */
+    public function getBill()
+    {
+        return $this->bill;
+    }
+
+    /**
      * @Assert\Callback()
      */
     public function validate(ExecutionContextInterface $context, $payload)
