@@ -88,7 +88,7 @@ class BillFiles
      * @param File $file
      * @return BillFiles
      */
-    public function setFile($file = null)
+    public function setFile(File $file = null)
     {
         $this->file = $file;
 

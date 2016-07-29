@@ -102,7 +102,7 @@ class Bill
     /**
      * @var BillFiles
      * 
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BillFiles", mappedBy="bill", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BillFiles", mappedBy="bill", cascade={"persist", "remove"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $billFiles;
