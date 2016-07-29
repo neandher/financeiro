@@ -30,9 +30,8 @@ class BillRepository extends AbstractEntityRepository
             ->addSelect('bank')
             ->innerJoin('bill.billCategory', 'billCategory')
             ->addSelect('billCategory')
-            ->leftJoin('bill.billInstallments', 'billInstallments')
-            ->addSelect('billInstallments')
-            /*->groupBy('bill.id')*/;
+            ->innerJoin('bill.billInstallments', 'billInstallments')
+            ->addSelect('billInstallments');
 
         if (!empty($routeParams['search'])) {
             $qb->andWhere('bill.description LIKE :search')->setParameter('search', '%' . $routeParams['search'] . '%');
@@ -114,5 +113,27 @@ class BillRepository extends AbstractEntityRepository
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    public function findOneById($id)
+    {
+        return $this->createQueryBuilder('bill')
+            ->innerJoin('bill.billPlan', 'billPlan')
+            ->addSelect('billPlan')
+            ->innerJoin('billPlan.billPlanCategory', 'billPlanCategory')
+            ->addSelect('billPlanCategory')
+            ->innerJoin('bill.billStatus', 'billStatus')
+            ->addSelect('billStatus')
+            ->leftJoin('bill.bank', 'bank')
+            ->addSelect('bank')
+            ->innerJoin('bill.billCategory', 'billCategory')
+            ->addSelect('billCategory')
+            ->innerJoin('bill.billInstallments', 'billInstallments')
+            ->addSelect('billInstallments')
+            ->leftJoin('bill.billFiles', 'billFiles')
+            ->addSelect()
+            ->where('bill.id = :id')->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

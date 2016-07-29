@@ -145,8 +145,12 @@ class BillController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, Bill $bill)
+    public function editAction(Request $request)
     {
+        $id = $request->attributes->get('id');
+
+        $bill = $this->getDoctrine()->getRepository(Bill::class)->findOneById($id);
+
         $this->setAmountInverse($bill);
 
         $originalBillInstallments = new ArrayCollection();
