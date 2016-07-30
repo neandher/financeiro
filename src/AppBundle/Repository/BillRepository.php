@@ -26,12 +26,13 @@ class BillRepository extends AbstractEntityRepository
             ->addSelect('billPlanCategory')
             ->innerJoin('bill.billStatus', 'billStatus')
             ->addSelect('billStatus')
-            ->leftJoin('bill.bank', 'bank')
+            ->innerJoin('bill.bank', 'bank')
             ->addSelect('bank')
             ->innerJoin('bill.billCategory', 'billCategory')
             ->addSelect('billCategory')
             ->innerJoin('bill.billInstallments', 'billInstallments')
-            ->addSelect('billInstallments');
+            ->addSelect('billInstallments')
+        ->groupBy('bill.id');
 
         if (!empty($routeParams['search'])) {
             $qb->andWhere('bill.description LIKE :search')->setParameter('search', '%' . $routeParams['search'] . '%');
