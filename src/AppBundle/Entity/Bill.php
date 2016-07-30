@@ -50,7 +50,7 @@ class Bill
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="createdAt", type="date")
+     * @ORM\Column(name="createdAt", type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
