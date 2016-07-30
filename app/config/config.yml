@@ -80,7 +80,7 @@ vich_uploader:
             delete_on_remove: true
             delete_on_update: true
             inject_on_load: true
-            #namer:              vich_uploader.namer_uniqid
+            namer: vich_uploader.namer_uniqid
 
 stof_doctrine_extensions:
     orm:

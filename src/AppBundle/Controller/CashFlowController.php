@@ -87,7 +87,8 @@ class CashFlowController extends Controller
                                     && $i == date('n', strtotime($val['dueDateAt']))
                                     && date('Y', strtotime($val['dueDateAt'])) == $params['year']
                                 ) {
-                                    if ($val['referency'] == 'pago') {
+                                    //if ($val['referency'] == 'pago') {
+                                    if (!is_null($val['cf_amount_paid'])) {
                                         $installmentPaid += $val['cf_amount_paid'];
                                     } else {
                                         $installmentNotPaid += $val['cf_amount'];
@@ -151,7 +152,8 @@ class CashFlowController extends Controller
                                             && $i == date('n', strtotime($val['dueDateAt']))
                                             && date('Y', strtotime($val['dueDateAt'])) == $params['year']
                                         ) {
-                                            if ($val['referency'] == 'pago') {
+                                            //if ($val['referency'] == 'pago') {
+                                            if (!is_null($val['cf_amount_paid'])) {
                                                 $installmentPaid += $val['cf_amount_paid'];
                                             } else {
                                                 $installmentNotPaid += $val['cf_amount'];

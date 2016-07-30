@@ -14,6 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="bill_files")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BillFilesRepository")
  * @Vich\Uploadable()
+ * @ORM\HasLifecycleCallbacks()
  */
 class BillFiles
 {
@@ -29,7 +30,7 @@ class BillFiles
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
-     * @Vich\UploadableField(mapping="files", fileNameProperty="fileName")
+     * @Vich\UploadableField(mapping="files", fileNameProperty="newFileName")
      *
      * @var File
      */
@@ -41,6 +42,13 @@ class BillFiles
      * @ORM\Column(type="string", length=255)
      */
     private $fileName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    private $newFileName;
 
     /**
      * @var \DateTime
@@ -108,12 +116,35 @@ class BillFiles
     }
 
     /**
-     * @param string $fileName
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     *
      * @return BillFiles
      */
-    public function setFileName($fileName)
+    public function setFileName()
     {
-        $this->fileName = $fileName;
+        /** @var UploadedFile $file */
+        $file = $this->file;
+
+        $this->fileName = $file->getClientOriginalName();
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNewFileName()
+    {
+        return $this->newFileName;
+    }
+
+    /**
+     * @param string $newFileName
+     * @return BillFiles
+     */
+    public function setNewFileName($newFileName)
+    {
+        $this->newFileName = $newFileName;
         return $this;
     }
 

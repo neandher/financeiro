@@ -114,7 +114,7 @@
 
                             {% set i = 0 %}
                             {% for billFile in form.billFiles %}
-                                {% set link_file = '<a href="'~vich_uploader_asset(bill.billFiles.get(i),'file')~'">'~bill.billFiles.get(i).fileName~'</a>' %}
+                                {% set link_file = '<a href="'~vich_uploader_asset(bill.billFiles.get(i),'file')~'" target="_blank">'~bill.billFiles.get(i).fileName~'</a>' %}
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         {{ form_row(billFile.file, {'label' : link_file}) }}
