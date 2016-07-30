@@ -51,10 +51,17 @@ class BillController extends Controller
             $results[$result->getId()] = $result;
         }
 
-        $billInstallments = $this->getDoctrine()->getRepository(BillInstallments::class)->findAllByBills($results);
+        if (count($results) > 0) {
+            
+            $billInstallments = $this->getDoctrine()->getRepository(BillInstallments::class)->findAllByBills($results);
 
-        foreach ($billInstallments as $billInstallment) {
-            $results[$billInstallment->getBill()->getId()]->getBillInstallments()->add($billInstallment);
+            foreach ($billInstallments as $billInstallment) {
+                foreach ($bills->getCurrentPageResults() as $result) {
+                    if ($result->getId() == $billInstallment->getBill()->getId()) {
+                        $result->getBillInstallments()->add($billInstallment);
+                    }
+                }
+            }
         }
 
         $billCategory = $this->getDoctrine()->getRepository(BillCategory::class)->findAll();
@@ -63,7 +70,6 @@ class BillController extends Controller
         return $this->render('bill/index.html.twig',
             [
                 'bills' => $bills,
-                'results' => $results,
                 'bill_category' => $billCategory,
                 'bill_status' => $billstatus,
                 'pagination_helper' => $paginationHelper

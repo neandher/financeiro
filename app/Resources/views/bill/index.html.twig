@@ -144,10 +144,10 @@
                                 <td>{{ bill.amount }}</td>
                                 <td>
                                     {% if bill.billStatus.referency == 'em_aberto' %}
-                                        {% set installmentNextPayment = results[bill.id].getInstallmentNextPayment %}
+                                        {% set installmentNextPayment = bill.getInstallmentNextPayment %}
                                         {{ installmentNextPayment.dueDateAt|date('d/m/Y') }} R$: {{ installmentNextPayment.amount }} -
-                                        {% set installment_number = results[bill.id].getTotalInstallmentsPaid + 1 %}
-                                        {{ installment_number }}/{{ results[bill.id].billInstallments.count }}
+                                        {% set installment_number = bill.getTotalInstallmentsPaid + 1 %}
+                                        {{ installment_number }}/{{ bill.billInstallments.count }}
                                     {% else %}
                                         -
                                     {% endif %}
