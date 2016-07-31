@@ -7,6 +7,10 @@ function datepicker() {
     });
 }
 
+function tooltip(){
+    $('.js-tooltip').tooltip();
+}
+
 function showTabError() {
 
     var $tab_content = $(".tab-content");

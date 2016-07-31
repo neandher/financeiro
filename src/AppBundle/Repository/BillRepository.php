@@ -32,7 +32,7 @@ class BillRepository extends AbstractEntityRepository
             ->addSelect('billCategory')
             ->innerJoin('bill.billInstallments', 'billInstallments')
             ->addSelect('billInstallments')
-        ->groupBy('bill.id');
+            ->groupBy('bill.id');
 
         if (!empty($routeParams['search'])) {
             $qb->andWhere('bill.description LIKE :search')->setParameter('search', '%' . $routeParams['search'] . '%');
@@ -136,5 +136,12 @@ class BillRepository extends AbstractEntityRepository
             ->where('bill.id = :id')->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function findByAttributes($attributes)
+    {
+        $qb = $this->createQueryBuilder('bill');
+
+        return $qb->getQuery()->getArrayResult();
     }
 }

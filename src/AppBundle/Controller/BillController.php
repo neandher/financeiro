@@ -52,7 +52,7 @@ class BillController extends Controller
         }
 
         if (count($results) > 0) {
-            
+
             $billInstallments = $this->getDoctrine()->getRepository(BillInstallments::class)->findAllByBills($results);
 
             foreach ($billInstallments as $billInstallment) {
@@ -345,5 +345,31 @@ class BillController extends Controller
             }
         }
         $bill->setBillStatus($this->getDoctrine()->getRepository(BillStatus::class)->findOneByReferency($status));
+    }
+
+    /**
+     * @Route("/bills/{bill_category}/{bill_plan_id}/{status}/{month}/{year}/", name="bill_list_ajax", options={"expose"=true})
+     * @Method("GET")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function listAjaxAction(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return $this->json(['message' => 'You can access this only using Ajax!'], 400);
+        }
+
+        if (!$request->attributes->count() > 0) {
+            return $this->json(['message' => 'No attributes found!'], 400);
+        }
+
+        $result = [];
+
+        if ($request->attributes->has('bill_plan_id')) {
+            $result = $this->getDoctrine()->getRepository(Bill::class)->findByAttributes($request->attributes->all());
+        }
+
+        return $this->json($result);
     }
 }

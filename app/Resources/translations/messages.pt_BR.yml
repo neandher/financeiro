@@ -131,6 +131,17 @@ billInstallments:
 cashFlow:
     title:
         menu: Fluxo de Caixa
+        cash_generation: Geração de Caixa
+        cash_generation_paid: 'Total de: despesas pagas + receitas recebidas'
+        cash_generation_not_paid: 'Total de: despesas a pagar + receitas a receber'
+        current_balance: Saldo Atual
+        final_balance: Saldo Final
+        expected_final_balance: Previsão Saldo Final
+        balance_last_month: Saldo Mês Anterior
+        total_paid: Total Pago
+        total_not_paid: Total a Pagar
+        total_received: Total Recebido
+        total_not_received: Total a Receber
 
 billFiles:
     title:

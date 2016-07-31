@@ -25,16 +25,24 @@
 
             <tbody>
             <tr>
-                <th class="bg-blue-dark bg-font-blue-dark">Saldo Final</th>
+                <th class="bg-blue-dark bg-font-blue-dark">{{ 'cashFlow.title.final_balance'|trans }}</th>
                 {% for i in 1..12 %}
 
                     {% set paid_option = paidOption(i,params.year) %}
 
                     {% if paid_option == 'PAID_AND_NOT_PAID' %}
                         <th class="text-center bg-blue-hoki bg-font-blue-hoki">
-                            {{ cash_flow_data['saldo_final'][i]|number_format(2,',','.') }}
+                            <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
+                                  title="{{ 'cashFlow.title.current_balance'|trans }}"
+                            >
+                                {{ cash_flow_data['saldo_final'][i]|number_format(2,',','.') }}
+                            </span>
                             <hr>
-                            {{ cash_flow_data['previsao_saldo_final'][i]|number_format(2,',','.') }}
+                            <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
+                                  title="{{ 'cashFlow.title.expected_final_balance'|trans }}"
+                            >
+                                {{ cash_flow_data['previsao_saldo_final'][i]|number_format(2,',','.') }}
+                            </span>
                         </th>
                     {% else %}
                         <th class="bg-blue-dark bg-font-blue-dark">
@@ -48,7 +56,7 @@
 
             <tbody>
             <tr>
-                <th scope="row">Saldo M&ecirc;s Anterior</th>
+                <th scope="row">{{ 'cashFlow.title.balance_last_month'|trans }}</th>
                 {% for i in 1..12 %}
                     {% if i == "now"|date('n') %}
                         <th class="text-center bg-blue-hoki bg-font-blue-hoki">
@@ -65,16 +73,24 @@
 
             <tbody>
             <tr>
-                <th>Gera&ccedil;&atilde;o de Caixa</th>
+                <th>{{ 'cashFlow.title.cash_generation'|trans }}</th>
                 {% for i in 1..12 %}
 
                     {% set paid_option = paidOption(i,params.year) %}
 
                     {% if paid_option == 'PAID_AND_NOT_PAID' %}
                         <th class="text-center bg-blue-hoki bg-font-blue-hoki">
-                            {{ cash_flow_data['total_paid'][i]|number_format(2,',','.') }}
+                            <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
+                                  title="{{ 'cashFlow.title.cash_generation_paid'|trans }}"
+                            >
+                                {{ cash_flow_data['total_paid'][i]|number_format(2,',','.') }}
+                            </span>
                             <hr>
-                            {{ cash_flow_data['total_not_paid'][i]|number_format(2,',','.') }}
+                            <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
+                                  title="{{ 'cashFlow.title.cash_generation_not_paid'|trans }}"
+                            >
+                                {{ cash_flow_data['total_not_paid'][i]|number_format(2,',','.') }}
+                            </span>
                         </th>
                     {% elseif paid_option == 'NOT_PAID' %}
                         <th>
@@ -102,9 +118,17 @@
                         {% if paid_option == 'PAID_AND_NOT_PAID' %}
 
                             <th class="text-center bg-blue-hoki bg-font-blue-hoki">
-                                {{ bill_category['total_bill_category_paid'][i]|number_format(2,',','.') }}
+                                <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
+                                      title="{% if bill_category[0]['referency'] == 'despesa' %}{{ 'cashFlow.title.total_paid'|trans }}{% else %}{{ 'cashFlow.title.total_received'|trans }}{% endif %}"
+                                >
+                                    {{ bill_category['total_bill_category_paid'][i]|number_format(2,',','.') }}
+                                </span>
                                 <hr>
-                                {{ bill_category['total_bill_category_not_paid'][i]|number_format(2,',','.') }}
+                                <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
+                                      title="{% if bill_category[0]['referency'] == 'despesa' %}{{ 'cashFlow.title.total_not_paid'|trans }}{% else %}{{ 'cashFlow.title.total_not_received'|trans }}{% endif %}"
+                                >
+                                    {{ bill_category['total_bill_category_not_paid'][i]|number_format(2,',','.') }}
+                                </span>
                             </th>
 
                         {% elseif paid_option == 'NOT_PAID' %}
@@ -126,7 +150,8 @@
 
                     <tbody>
                     <tr>
-                        <th class="bg-grey-cararra bg-font-grey-cararra" style="cursor: pointer" onclick="$('tbody#bpc_{{ bill_plan_category[0]['id'] }}').toggle()">
+                        <th class="bg-grey-cararra bg-font-grey-cararra" style="cursor: pointer"
+                            onclick="$('tbody#bpc_{{ bill_plan_category[0]['id'] }}').toggle()">
                             {{ bill_plan_category[0]['description'] }}
                         </th>
 
@@ -137,9 +162,17 @@
                             {% if paid_option == 'PAID_AND_NOT_PAID' %}
 
                                 <th class="text-center bg-blue-hoki bg-font-blue-hoki">
-                                    {{ bill_plan_category[i]['total_paid']|number_format(2,',','.') }}
+                                    <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
+                                          title="{% if bill_category[0]['referency'] == 'despesa' %}{{ 'cashFlow.title.total_paid'|trans }}{% else %}{{ 'cashFlow.title.total_received'|trans }}{% endif %}"
+                                    >
+                                        {{ bill_plan_category[i]['total_paid']|number_format(2,',','.') }}
+                                    </span>
                                     <hr>
-                                    {{ bill_plan_category[i]['total_not_paid']|number_format(2,',','.') }}
+                                    <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
+                                          title="{% if bill_category[0]['referency'] == 'despesa' %}{{ 'cashFlow.title.total_not_paid'|trans }}{% else %}{{ 'cashFlow.title.total_not_received'|trans }}{% endif %}"
+                                    >
+                                        {{ bill_plan_category[i]['total_not_paid']|number_format(2,',','.') }}
+                                    </span>
                                 </th>
 
                             {% elseif paid_option == 'NOT_PAID' %}
@@ -171,9 +204,17 @@
                                 {% if paid_option == 'PAID_AND_NOT_PAID' %}
 
                                     <th class="text-center bg-blue-hoki bg-font-blue-hoki">
-                                        {{ bill_plan[i]['total_paid']|number_format(2,',','.') }}
+                                        <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
+                                              title="{% if bill_category[0]['referency'] == 'despesa' %}{{ 'cashFlow.title.total_paid'|trans }}{% else %}{{ 'cashFlow.title.total_received'|trans }}{% endif %}"
+                                        >
+                                            {{ bill_plan[i]['total_paid']|number_format(2,',','.') }}
+                                        </span>
                                         <hr>
-                                        {{ bill_plan[i]['total_not_paid']|number_format(2,',','.') }}
+                                        <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
+                                              title="{% if bill_category[0]['referency'] == 'despesa' %}{{ 'cashFlow.title.total_not_paid'|trans }}{% else %}{{ 'cashFlow.title.total_not_received'|trans }}{% endif %}"
+                                        >
+                                            {{ bill_plan[i]['total_not_paid']|number_format(2,',','.') }}
+                                        </span>
                                     </th>
 
                                 {% elseif paid_option == 'NOT_PAID' %}

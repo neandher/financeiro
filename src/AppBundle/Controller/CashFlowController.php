@@ -56,7 +56,12 @@ class CashFlowController extends Controller
 
                 $billCategoryIds[] = $bill_category_id;
 
-                $cashFlowData['content'][$bill_category_id] = ["0" => ['description' => $billPlan->getBillPlanCategory()->getBillCategory()->getDescription()]];
+                $cashFlowData['content'][$bill_category_id] = [
+                    "0" => [
+                        'description' => $billPlan->getBillPlanCategory()->getBillCategory()->getDescription(),
+                        'referency' => $billPlan->getBillPlanCategory()->getBillCategory()->getReferency()
+                    ]
+                ];
 
                 foreach ($billPlans as $bpc_billPlanEntity) {
 
