@@ -348,7 +348,7 @@ class BillController extends Controller
     }
 
     /**
-     * @Route("/bills/{bill_category}/{bill_plan_id}/{status}/{month}/{year}/", name="bill_list_ajax", options={"expose"=true})
+     * @Route("/bills_ajax/", name="bill_list_ajax", options={"expose"=true})
      * @Method("GET")
      *
      * @param Request $request
@@ -359,16 +359,12 @@ class BillController extends Controller
         if (!$request->isXmlHttpRequest()) {
             return $this->json(['message' => 'You can access this only using Ajax!'], 400);
         }
-
-        if (!$request->attributes->count() > 0) {
-            return $this->json(['message' => 'No attributes found!'], 400);
+        
+        if (!$request->query->all() > 0) {
+            return $this->json(['message' => 'No filters found!'], 400);
         }
-
-        $result = [];
-
-        if ($request->attributes->has('bill_plan_id')) {
-            $result = $this->getDoctrine()->getRepository(Bill::class)->findByAttributes($request->attributes->all());
-        }
+        
+        $result = $this->getDoctrine()->getRepository(Bill::class)->findByParams($request->query->all());
 
         return $this->json($result);
     }

@@ -59,7 +59,8 @@ class CashFlowController extends Controller
                 $cashFlowData['content'][$bill_category_id] = [
                     "0" => [
                         'description' => $billPlan->getBillPlanCategory()->getBillCategory()->getDescription(),
-                        'referency' => $billPlan->getBillPlanCategory()->getBillCategory()->getReferency()
+                        'referency' => $billPlan->getBillPlanCategory()->getBillCategory()->getReferency(),
+                        'id' => $billPlan->getBillPlanCategory()->getBillCategory()->getId(),
                     ]
                 ];
 
@@ -143,6 +144,7 @@ class CashFlowController extends Controller
                                 $cashFlowData['content'][$bill_category_id]['bill_plan_categories'][$bill_plan_category_id]['bill_plans'][$bill_plan_id] = [
                                     "0" => [
                                         'description' => $bpl_billPlan->getDescription(),
+                                        'id' => $bpl_billPlan->getId(),
                                     ]
                                 ];
 

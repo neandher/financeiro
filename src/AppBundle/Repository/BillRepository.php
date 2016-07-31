@@ -138,9 +138,29 @@ class BillRepository extends AbstractEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findByAttributes($attributes)
+    public function findByParams($params)
     {
-        $qb = $this->createQueryBuilder('bill');
+        $qb = $this->createQueryBuilder('bill')
+            ->innerJoin('bill.billCategory', 'billCategory')
+            ->addSelect('billCategory')
+            ->innerJoin('bill.billPlan', 'billPlan')
+            ->addSelect('billPlan')
+            ->innerJoin('bill.billInstallments', 'billInstallments')
+            ->addSelect('billInstallments')
+            ->where('billCategory.id = :category')->setParameter(':category', $params['billCategory'])
+            ->andWhere('billPlan.id = :plan')->setParameter(':plan', $params['billPlan']);
+
+        if ($params['billStatus'] == 'paid') {
+            $qb->andWhere('billInstallments.amountPaid is not null')
+                ->andWhere('year(billInstallments.paymentDateAt) = :year')->setParameter(':year', $params['billYear'])
+                ->andWhere('month(billInstallments.paymentDateAt) = :month')->setParameter(':month', $params['billMonth']);;
+        }
+
+        if ($params['billStatus'] == 'not_paid') {
+            $qb->andWhere('billInstallments.amountPaid is null')
+                ->andWhere('year(billInstallments.dueDateAt) = :year')->setParameter(':year', $params['billYear'])
+                ->andWhere('month(billInstallments.dueDateAt) = :month')->setParameter(':month', $params['billMonth']);;
+        }
 
         return $qb->getQuery()->getArrayResult();
     }

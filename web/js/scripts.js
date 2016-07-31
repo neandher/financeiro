@@ -7,7 +7,7 @@ function datepicker() {
     });
 }
 
-function tooltip(){
+function tooltip() {
     $('.js-tooltip').tooltip();
 }
 
@@ -57,10 +57,45 @@ $('#bill_billCategory').change(function () {
     }
 });
 
+$('.cashFlowAjaxBills').click(function () {
+
+    $('#showAjaxBillsModal').modal();
+
+    var $modalBody = $('.showAjaxBillsModalBody');
+
+    $modalBody.html('<tr><td colspan="5">loading...</td><tr>');
+
+    $.getJSON(Routing.generate("bill_list_ajax"),
+        {
+            billCategory: $(this).data('billCategory'),
+            billPlan: $(this).data('billPlan'),
+            billStatus: $(this).data('billStatus'),
+            billMonth: $(this).data('billMonth'),
+            billYear: $(this).data('billYear')
+        },
+        function (data) {
+
+            $modalBody.html('');
+
+            $.each(data, function (key, value) {
+
+                $.each(value.billInstallments, function (_key, _value) {
+
+                    var dueDateAt = moment(_value.dueDateAt.date).format('DD/MM/YYYY');
+                    var paymentDateAt = _value.paymentDateAt != null ? moment(_value.paymentDateAt.date).format('DD/MM/YYYY') : '-';
+                    var amountPaid = _value.amountPaid != null ? _value.amountPaid : '-';
+                    var amount = _value.amount;
+
+                    $modalBody.append('<tr><td>' + value.description + '</td><td>' + dueDateAt + '</td><td>' + amount + '</td><td>' + paymentDateAt + '</td><td>' + amountPaid + '</td></tr>');
+                });
+            });
+        })
+});
+
 function installmentsInit() {
 
     var $collectionHolder;
-    
+
     var $addInstallmentLink = $('#btn_add_installment');
     var $newLinkPanel = $('#panel_add_installment');
     var $generateInstallments = $('#installments_generate');
@@ -75,7 +110,7 @@ function installmentsInit() {
 
     $collectionHolder.data('index', index);
 
-    if(index == 0){
+    if (index == 0) {
         addInstallmentForm($collectionHolder, $newLinkPanel);
     }
 
@@ -149,7 +184,7 @@ function installmentsGenerate($collectionHolder, $newLinkPanel) {
     if ($number.val() > 0) {
         for (i = 0; i < $number.val(); i++) {
 
-            var current_index = (parseInt(addInstallmentForm($collectionHolder, $newLinkPanel))-1);
+            var current_index = (parseInt(addInstallmentForm($collectionHolder, $newLinkPanel)) - 1);
 
             if (newDueDateAt == null) {
                 dueDateAtVal = $dueDateAt.val();

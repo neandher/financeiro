@@ -8,7 +8,7 @@
 {% block body %}
 
     <div class="table-responsive">
-        <table class="table table-striped table-bordered cash-flow-table">
+        <table class="table table-striped table-bordered table-hover cash-flow-table">
 
             <thead>
             <tr>
@@ -204,14 +204,30 @@
                                 {% if paid_option == 'PAID_AND_NOT_PAID' %}
 
                                     <th class="text-center bg-blue-hoki bg-font-blue-hoki">
-                                        <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
-                                              title="{% if bill_category[0]['referency'] == 'despesa' %}{{ 'cashFlow.title.total_paid'|trans }}{% else %}{{ 'cashFlow.title.total_received'|trans }}{% endif %}"
+                                        <span
+                                                class="js-tooltip cashFlowAjaxBills"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                title="{% if bill_category[0]['referency'] == 'despesa' %}{{ 'cashFlow.title.total_paid'|trans }}{% else %}{{ 'cashFlow.title.total_received'|trans }}{% endif %}"
+                                                data-bill-category="{{ bill_category[0]['id'] }}"
+                                                data-bill-plan="{{ bill_plan[0]['id'] }}"
+                                                data-bill-status="paid"
+                                                data-bill-month="{{ i }}"
+                                                data-bill-year="{{ params.year }}"
                                         >
                                             {{ bill_plan[i]['total_paid']|number_format(2,',','.') }}
                                         </span>
                                         <hr>
-                                        <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
-                                              title="{% if bill_category[0]['referency'] == 'despesa' %}{{ 'cashFlow.title.total_not_paid'|trans }}{% else %}{{ 'cashFlow.title.total_not_received'|trans }}{% endif %}"
+                                        <span
+                                                class="js-tooltip cashFlowAjaxBills"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                title="{% if bill_category[0]['referency'] == 'despesa' %}{{ 'cashFlow.title.total_not_paid'|trans }}{% else %}{{ 'cashFlow.title.total_not_received'|trans }}{% endif %}"
+                                                data-bill-category="{{ bill_category[0]['id'] }}"
+                                                data-bill-plan="{{ bill_plan[0]['id'] }}"
+                                                data-bill-status="not_paid"
+                                                data-bill-month="{{ i }}"
+                                                data-bill-year="{{ params.year }}"
                                         >
                                             {{ bill_plan[i]['total_not_paid']|number_format(2,',','.') }}
                                         </span>
@@ -239,5 +255,7 @@
 
         </table>
     </div>
+
+    {{ include('cashFlow/show_ajax_bills_modal.html.twig') }}
 
 {% endblock %}

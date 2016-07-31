@@ -50,3 +50,11 @@ div#installments hr {
     direction: ltr;
     cursor: pointer;
 }
+
+.cashFlowAjaxBills{
+    cursor: pointer;
+}
+
+.cashFlowAjaxBills:hover{
+    text-decoration: underline;
+}
