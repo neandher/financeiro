@@ -17,7 +17,7 @@
                     <th class="text-center
                     {% if i == "now"|date('n') %}bg-blue-hoki bg-font-blue-hoki{% else %}bg-blue-hoki bg-font-blue-hoki{% endif %}"
                     >
-                        {{ i |date("now"|date('Y') ~ '-' ~ i ~ '-' ~ "now"|date('d')) |date('M') }}
+                        {{ date(params.year ~ '-' ~ i ~ '-' ~ '01')|date('M') }}
                     </th>
                 {% endfor %}
             </tr>
