@@ -191,9 +191,9 @@ class CashFlowController extends Controller
         $total_paid = [];
         $total_not_paid = [];
 
-        $saldoFinal = '';
-        $saldoAnterior = '';
-        $previsaoSaldoFinal = '';
+        $finalBalance = '';
+        $balanceLastMonth = '';
+        $expectedFinalBalance = '';
 
         for ($i = 1; $i < 13; $i++) {
 
@@ -229,30 +229,30 @@ class CashFlowController extends Controller
             $total_not_paid[$i] = empty($total_not_paid[$i]) ? 0 : $total_not_paid[$i];
 
             if (($checkCashFlow == $this::CF_PAID_AND_NOT_PAID || $checkCashFlow == $this::CF_PAID) && $i == 1) {
-                $saldoFinal = $previousBalance + $total_paid[$i];
-                $previsaoSaldoFinal = $saldoFinal + $total_not_paid[$i];
-                $saldoAnterior[$i] = $previsaoSaldoFinal;
+                $finalBalance = $previousBalance + $total_paid[$i];
+                $expectedFinalBalance = $finalBalance + $total_not_paid[$i];
+                $balanceLastMonth[$i] = $expectedFinalBalance;
             } else {
                 if ($checkCashFlow == $this::CF_PAID_AND_NOT_PAID || $checkCashFlow == $this::CF_PAID) {
-                    $saldoFinal = $saldoAnterior[($i - 1)] + $total_paid[$i];
-                    $previsaoSaldoFinal = $saldoFinal + $total_not_paid[$i];
-                    $saldoAnterior[$i] = $previsaoSaldoFinal;
+                    $finalBalance = $balanceLastMonth[($i - 1)] + $total_paid[$i];
+                    $expectedFinalBalance = $finalBalance + $total_not_paid[$i];
+                    $balanceLastMonth[$i] = $expectedFinalBalance;
                 } else {
                     if ($checkCashFlow == $this::CF_NOT_PAID && $i == 1) {
-                        $previsaoSaldoFinal = $previousBalance + $total_not_paid[$i];
-                        $saldoAnterior[$i] = $previsaoSaldoFinal;
+                        $expectedFinalBalance = $previousBalance + $total_not_paid[$i];
+                        $balanceLastMonth[$i] = $expectedFinalBalance;
                     } else {
                         if ($checkCashFlow == $this::CF_NOT_PAID) {
-                            $previsaoSaldoFinal = $saldoAnterior[($i - 1)] + $total_not_paid[$i];
-                            $saldoAnterior[$i] = $previsaoSaldoFinal;
+                            $expectedFinalBalance = $balanceLastMonth[($i - 1)] + $total_not_paid[$i];
+                            $balanceLastMonth[$i] = $expectedFinalBalance;
                         }
                     }
                 }
             }
 
-            $cashFlowData['saldo_final'][$i] = $saldoFinal;
-            $cashFlowData['saldo_anterior'][$i] = $i == 1 ? $previousBalance : $saldoAnterior[($i - 1)];
-            $cashFlowData['previsao_saldo_final'][$i] = $previsaoSaldoFinal;
+            $cashFlowData['current_balance'][$i] = $finalBalance;
+            $cashFlowData['balance_last_month'][$i] = $i == 1 ? $previousBalance : $balanceLastMonth[($i - 1)];
+            $cashFlowData['expected_final_balance'][$i] = $expectedFinalBalance;
         }
 
         $cashFlowData['total_paid'] = $total_paid;

@@ -15,7 +15,7 @@
                 <th>&nbsp;</th>
                 {% for i in 1..12 %}
                     <th class="text-center
-                    {% if i == "now"|date('n') %}bg-blue-hoki bg-font-blue-hoki{% else %}bg-blue-hoki bg-font-blue-hoki{% endif %}"
+                    {% if i == "now"|date('n') %}bg-blue-hoki bg-font-blue-hoki{% else %}bg-dark bg-font-grey-steel{% endif %}"
                     >
                         {{ date(params.year ~ '-' ~ i ~ '-' ~ '01')|date('M') }}
                     </th>
@@ -35,18 +35,18 @@
                             <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
                                   title="{{ 'cashFlow.title.current_balance'|trans }}"
                             >
-                                {{ cash_flow_data['saldo_final'][i]|number_format(2,',','.') }}
+                                {{ cash_flow_data['current_balance'][i]|number_format(2,',','.') }}
                             </span>
                             <hr>
                             <span class="js-tooltip" data-toggle="tooltip" data-placement="right"
                                   title="{{ 'cashFlow.title.expected_final_balance'|trans }}"
                             >
-                                {{ cash_flow_data['previsao_saldo_final'][i]|number_format(2,',','.') }}
+                                {{ cash_flow_data['expected_final_balance'][i]|number_format(2,',','.') }}
                             </span>
                         </th>
                     {% else %}
                         <th class="bg-blue-dark bg-font-blue-dark">
-                            {{ cash_flow_data['previsao_saldo_final'][i]|number_format(2,',','.') }}
+                            {{ cash_flow_data['expected_final_balance'][i]|number_format(2,',','.') }}
                         </th>
                     {% endif %}
 
@@ -60,11 +60,11 @@
                 {% for i in 1..12 %}
                     {% if i == "now"|date('n') %}
                         <th class="text-center bg-blue-hoki bg-font-blue-hoki">
-                            {{ cash_flow_data['saldo_anterior'][i]|number_format(2,',','.') }}
+                            {{ cash_flow_data['balance_last_month'][i]|number_format(2,',','.') }}
                         </th>
                     {% else %}
                         <th>
-                            {{ cash_flow_data['saldo_anterior'][i]|number_format(2,',','.') }}
+                            {{ cash_flow_data['balance_last_month'][i]|number_format(2,',','.') }}
                         </th>
                     {% endif %}
                 {% endfor %}
@@ -152,7 +152,7 @@
                     <tr>
                         <th class="bg-grey-cararra bg-font-grey-cararra" style="cursor: pointer"
                             onclick="$('tbody#bpc_{{ bill_plan_category[0]['id'] }}').toggle()">
-                            {{ bill_plan_category[0]['description'] }}
+                            <i class="fa fa-caret-right"></i> {{ bill_plan_category[0]['description'] }}
                         </th>
 
                         {% for i in 1..12 %}
@@ -193,8 +193,8 @@
 
                         <tbody style="display: none" id="bpc_{{ bill_plan_category[0]['id'] }}">
                         <tr>
-                            <th style="background-color: #fff !important; font-weight: normal">
-                                {{ bill_plan[0]['description'] }}
+                            <th style=" font-weight: normal; padding-left: 25px;">
+                                <i class="fa fa-angle-double-right"></i> {{ bill_plan[0]['description'] }}
                             </th>
 
                             {% for i in 1..12 %}
@@ -234,11 +234,11 @@
                                     </th>
 
                                 {% elseif paid_option == 'NOT_PAID' %}
-                                    <th style="background-color: #fff !important; font-weight: normal">
+                                    <th style=" font-weight: normal">
                                         {{ bill_plan[i]['total_not_paid']|number_format(2,',','.') }}
                                     </th>
                                 {% elseif paid_option == 'PAID' %}
-                                    <th style="background-color: #fff !important; font-weight: normal">
+                                    <th style=" font-weight: normal">
                                         {{ bill_plan[i]['total_paid']|number_format(2,',','.') }}
                                     </th>
                                 {% endif %}

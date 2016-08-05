@@ -153,3 +153,7 @@ billFiles:
     action:
         new: Adicionar Arquivo
         remove: Remover Arquivos
+
+panel_home:
+    title:
+        menu: Visão Geral
