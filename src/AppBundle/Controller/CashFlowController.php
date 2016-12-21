@@ -121,7 +121,7 @@ class CashFlowController extends Controller
                                 }
                                 $cashFlowData['content'][$bill_category_id]['total_bill_category_paid'][$i] += $installmentPaid;
                             }
-                            
+
                             if ($checkCashFlow == $this::CF_PAID_AND_NOT_PAID || $checkCashFlow == $this::CF_NOT_PAID) {
                                 if (empty($cashFlowData['content'][$bill_category_id]['total_bill_category_not_paid'][$i])) {
                                     $cashFlowData['content'][$bill_category_id]['total_bill_category_not_paid'][$i] = 0;
