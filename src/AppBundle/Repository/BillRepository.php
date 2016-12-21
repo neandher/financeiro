@@ -82,7 +82,7 @@ class BillRepository extends AbstractEntityRepository
 
         $sql = "SELECT SUM( CAST( replace( replace( bins.amountPaid,'.','' ),',','.' )  AS DECIMAL( 13,2 ) ) ) as previous_balance
                 FROM bill 
-                inner join bill_installments as bins
+                inner join bill_installments as bins on bins.bill_id = bill.id
                 WHERE YEAR(bins.dueDateAt) < '" . $params['year'] . "' AND bins.amountPaid IS NOT NULL ORDER BY bins.dueDateAt ASC";
 
         $stmt = $conn->prepare($sql);
@@ -146,20 +146,51 @@ class BillRepository extends AbstractEntityRepository
             ->innerJoin('bill.billPlan', 'billPlan')
             ->addSelect('billPlan')
             ->innerJoin('bill.billInstallments', 'billInstallments')
-            ->addSelect('billInstallments')
-            ->where('billCategory.id = :category')->setParameter(':category', $params['billCategory'])
-            ->andWhere('billPlan.id = :plan')->setParameter(':plan', $params['billPlan']);
+            ->addSelect('billInstallments');
 
-        if ($params['billStatus'] == 'paid') {
-            $qb->andWhere('billInstallments.amountPaid is not null')
-                ->andWhere('year(billInstallments.paymentDateAt) = :year')->setParameter(':year', $params['billYear'])
-                ->andWhere('month(billInstallments.paymentDateAt) = :month')->setParameter(':month', $params['billMonth']);;
+        if (!empty($params['billCategory'])) {
+            $qb->where('billCategory.id = :category')->setParameter(':category', $params['billCategory']);
         }
 
-        if ($params['billStatus'] == 'not_paid') {
-            $qb->andWhere('billInstallments.amountPaid is null')
-                ->andWhere('year(billInstallments.dueDateAt) = :year')->setParameter(':year', $params['billYear'])
-                ->andWhere('month(billInstallments.dueDateAt) = :month')->setParameter(':month', $params['billMonth']);;
+        if (!empty($params['billPlan'])) {
+            $qb->andWhere('billPlan.id = :plan')->setParameter(':plan', $params['billPlan']);
+        }
+
+        if (!empty($params['billStatus'])) {
+
+            if ($params['billStatus'] == 'paid') {
+
+                $qb->andWhere('billInstallments.amountPaid is not null');
+
+                if (!empty($params['billYear'])) {
+                    $qb->andWhere('year(billInstallments.paymentDateAt) = :year')->setParameter(':year', $params['billYear']);
+                }
+
+                if (!empty($params['billMonth'])) {
+                    $qb->andWhere('month(billInstallments.paymentDateAt) = :month')->setParameter(':month', $params['billMonth']);
+                }
+            }
+
+            if ($params['billStatus'] == 'not_paid') {
+
+                $qb->andWhere('billInstallments.amountPaid is null');
+
+                if (!empty($params['billYear'])) {
+                    $qb->andWhere('year(billInstallments.dueDateAt) = :year')->setParameter(':year', $params['billYear']);
+                }
+
+                if (!empty($params['billMonth'])) {
+                    $qb->andWhere('month(billInstallments.dueDateAt) = :month')->setParameter(':month', $params['billMonth']);
+                }
+            }
+        }
+
+        if (!empty($params['datePaymentIsNull'])) {
+            $qb->andWhere('billInstallments.paymentDateAt is null');
+        }
+
+        if (!empty($params['latest_days'])) {
+            $qb->andWhere("billInstallments.dueDateAt <= NOW() and billInstallments.dueDateAt >= DATE_SUB(CURRENT_TIME(), :latest_days, 'DAY')")->setParameter('latest_days', $params['latest_days']);
         }
 
         return $qb->getQuery()->getArrayResult();
