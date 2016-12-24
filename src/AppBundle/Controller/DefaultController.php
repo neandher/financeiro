@@ -27,8 +27,6 @@ class DefaultController extends Controller
           ]
         );
 
-        dump($bills);
-
         return $this->render('default/index.html.twig');
     }
 }
