@@ -29,57 +29,60 @@
     <link href="{{ asset('assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}" rel="stylesheet"
           type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="{{ asset('assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css') }}">
-    <!-- END PAGE LEVEL PLUGINS -->
+
     <!-- BEGIN THEME GLOBAL STYLES -->
     <link href="{{ asset('assets/global/css/components-rounded.min.css') }}" rel="stylesheet" id="style_components"
           type="text/css"/>
     <link href="{{ asset('assets/global/css/plugins.min.css') }}" rel="stylesheet" type="text/css"/>
     <!-- END THEME GLOBAL STYLES -->
-    <!-- BEGIN THEME LAYOUT STYLES -->
-    <link href="{{ asset('assets/layouts/layout/css/layout.min.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('assets/layouts/layout/css/themes/darkblue.min.css') }}" rel="stylesheet" type="text/css"
-          id="style_color"/>
-    <link href="{{ asset('assets/layouts/layout/css/custom.min.css') }}" rel="stylesheet" type="text/css"/>
-    <!-- END THEME LAYOUT STYLES -->
+
+    <link href="{{ asset('assets/pages/css/login-3.css') }}" rel="stylesheet" type="text/css"/>
 
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
 </head>
 <!-- END HEAD -->
 
-<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white {% block body_class %}{% endblock %}">
+<body class=" login">
+<!-- BEGIN : LOGIN PAGE -->
 
-{{ include('partials/navbar.html.twig') }}
-
-<!-- BEGIN CONTAINER -->
-<div class="page-container">
-
-    <!-- BEGIN SIDEBAR -->
-    {% include 'partials/sidebar.html.twig' with {ul_page_sidebar_menu_class: (block('ul_page_sidebar_menu_class') is defined ? block('ul_page_sidebar_menu_class') : '' )} %}
-    <!-- END SIDEBAR -->
-
-    <!-- BEGIN CONTENT -->
-    <div class="page-content-wrapper">
-        <!-- BEGIN CONTENT BODY -->
-        <div class="page-content">
-            <h3 class="page-title">{% block page_title %}{% endblock %}
-                <small>{% block page_small_title %}{% endblock %}</small>
-            </h3>
-            {% block body %}{% endblock %}
-        </div>
-        <!-- END CONTENT BODY -->
+<!-- BEGIN LOGIN -->
+<div class="content">
+    <!-- BEGIN LOGIN FORM -->
+    {{ form_start(form, { 'action': path('system_security_login_check'), 'attr': {'class': 'login-form'} }) }}
+    <h3 class="form-title font-green">Login</h3>
+    <div class="alert alert-danger display-hide">
+        <button class="close" data-close="alert"></button>
+        <span> Preencha os campos abaixo. </span>
     </div>
-    <!-- END CONTENT -->
-
+    {{ include('partials/alerts.html.twig') }}
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Usuário</label>
+        {{ form_widget(form.login, {'attr':{
+            'value': last_username,
+            'class': 'form-control form-control-solid placeholder-no-fix',
+            'autocomplete': 'off',
+            'placeholder': 'usuário'
+        }}) }}
+    </div>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Senha</label>
+        {{ form_widget(form.password, {'attr': {
+            'class': 'form-control form-control-solid placeholder-no-fix',
+            'autocomplete': 'off',
+            'placeholder': 'senha'
+        }}) }}
+    </div>
+    <div class="form-group">
+        {{ form_widget(form._remember_me) }}
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn green uppercase">Login</button>
+    </div>
+    {{ form_widget(form._token) }}
+    {{ form_end(form, {'render_rest': false}) }}
+    <!-- END LOGIN FORM -->
 </div>
-
-<!-- BEGIN FOOTER -->
-{{ include('partials/footer.html.twig') }}
-<!-- END FOOTER -->
 
 <!--[if lt IE 9]>
 <script src="{{ asset('') }}assets/global/plugins/respond.min.js"></script>
@@ -89,15 +92,20 @@
 <script src="{{ asset('assets/global/plugins/jquery.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/global/plugins/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/global/plugins/js.cookie.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js') }}"
+        type="text/javascript"></script>
+<script src="{{ asset('assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js') }}"
+        type="text/javascript"></script>
 <script src="{{ asset('assets/global/plugins/jquery.blockui.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"
+        type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script type="text/javascript" src="{{ asset('assets/global/plugins/moment.min.js') }}" ></script>
-<script type="text/javascript" src="{{ asset('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/global/plugins/moment.min.js') }}"></script>
+<script type="text/javascript"
+        src="{{ asset('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
+<script type="text/javascript"
+        src="{{ asset('assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js') }}"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
 <script src="{{ asset('assets/global/scripts/app.min.js') }}" type="text/javascript"></script>
@@ -113,15 +121,6 @@
 <script src="{{ asset('js/scriptsfields.js') }}"></script>
 <script src="{{ asset('js/scripts.js') }}"></script>
 
-<script>
-    $(document).ready(function () {
-        datepicker();
-        tooltip();
-        showTabError();
-    });
-</script>
-
-{% block javascripts %}{% endblock %}
 
 </body>
 </html>
