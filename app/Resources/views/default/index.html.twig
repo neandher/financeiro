@@ -40,49 +40,6 @@
 
         <div class="col-md-6 col-sm-6">
             {% embed 'partials/_default_dashboard_portlet_bill.html.twig' with {
-            caption_subject: 'Contas A Pagar: Vencidas',
-            caption_helper: '',
-            bills: toPayOverdue,
-            billsTotal: toPayOverdueTotal,
-            font_color: 'font-red'
-            } %}
-                {% block thead %}
-                    <tr class="uppercase">
-                        <th>{{ 'bill.fields.description'|trans }}</th>
-                        <th>{{ 'billInstallments.fields.dueDateAt'|trans }}</th>
-                        <th>{{ 'billInstallments.fields.amount'|trans }}</th>
-                        <th>#</th>
-                    </tr>
-                {% endblock %}
-                {% block tbody %}
-                    {% for bill in toPayOverdue %}
-                        {% for installment in bill.billInstallments %}
-                            <tr>
-                                <td class="highlight">
-                                    <div class="danger"></div>
-                                    <a href="javascript:;"> {{ bill.description }} </a>
-                                </td>
-                                <td>{{ installment.dueDateAt|date }}</td>
-                                <td>
-                                <span class="label label-sm label-danger">
-                                    {{ installment.amount|number_format }}
-                                </span>
-                                </td>
-                                <td>
-                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"
-                                       class="btn btn-outline btn-sm green">
-                                        <span class="fa fa-edit"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    {% endfor %}
-                {% endblock %}
-            {% endembed %}
-        </div>
-
-        <div class="col-md-6 col-sm-6">
-            {% embed 'partials/_default_dashboard_portlet_bill.html.twig' with {
             caption_subject: 'Contas A Pagar',
             caption_helper: '(Próximos 30 dias)',
             bills: toPay,
@@ -124,60 +81,13 @@
             {% endembed %}
         </div>
 
-        {#<div class="col-md-6 col-sm-6">
-            {% embed 'partials/_default_dashboard_portlet_bill.html.twig' with {
-            caption_subject: 'Contas A Pagar: Pago',
-            caption_helper: '(30 dias atrás)',
-            bills: paid,
-            billsTotal: paidTotal,
-            font_color: 'font-red'
-            } %}
-                {% block thead %}
-                    <tr class="uppercase">
-                        <th>{{ 'bill.fields.description'|trans }}</th>
-                        <th>{{ 'billInstallments.fields.paymentDateAt'|trans }}</th>
-                        <th>{{ 'billInstallments.fields.amountPaid'|trans }}</th>
-                        <th>#</th>
-                    </tr>
-                {% endblock %}
-                {% block tbody %}
-                    {% for bill in paid %}
-                        {% for installment in bill.billInstallments %}
-                            <tr>
-                                <td class="highlight">
-                                    <div class="success" style="border-left: 2px solid #26C281!important"></div>
-                                    <a href="javascript:;"> {{ bill.description }} </a>
-                                </td>
-                                <td>{{ installment.paymentDateAt|date }}</td>
-                                <td>
-                                <span class="label label-sm label-success bg-green-jungle">
-                                    {{ installment.amountPaid|number_format }}
-                                </span>
-                                </td>
-                                <td>
-                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"
-                                       class="btn btn-outline btn-sm green">
-                                        <span class="fa fa-edit"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    {% endfor %}
-                {% endblock %}
-            {% endembed %}
-        </div>#}
-
-        <!-- *************** FIM DESPESAS ************** -->
-
-        <!-- *************** RECEITAS ************** -->
-
         <div class="col-md-6 col-sm-6">
             {% embed 'partials/_default_dashboard_portlet_bill.html.twig' with {
-            caption_subject: 'Contas A Receber: Vencidas',
+            caption_subject: 'Contas A Pagar: Vencidas',
             caption_helper: '',
-            bills: overdue,
-            billsTotal: overdueTotal,
-            font_color: 'font-green'
+            bills: toPayOverdue,
+            billsTotal: toPayOverdueTotal,
+            font_color: 'font-red'
             } %}
                 {% block thead %}
                     <tr class="uppercase">
@@ -188,7 +98,7 @@
                     </tr>
                 {% endblock %}
                 {% block tbody %}
-                    {% for bill in overdue %}
+                    {% for bill in toPayOverdue %}
                         {% for installment in bill.billInstallments %}
                             <tr>
                                 <td class="highlight">
@@ -213,6 +123,10 @@
                 {% endblock %}
             {% endembed %}
         </div>
+
+        <!-- *************** FIM DESPESAS ************** -->
+
+        <!-- *************** RECEITAS ************** -->
 
         <div class="col-md-6 col-sm-6">
             {% embed 'partials/_default_dashboard_portlet_bill.html.twig' with {
@@ -257,34 +171,34 @@
             {% endembed %}
         </div>
 
-        {#<div class="col-md-6 col-sm-6">
+        <div class="col-md-6 col-sm-6">
             {% embed 'partials/_default_dashboard_portlet_bill.html.twig' with {
-            caption_subject: 'Contas A Receber: Recebidas',
-            caption_helper: '(30 dias atrás)',
-            bills: received,
-            billsTotal: receivedTotal,
+            caption_subject: 'Contas A Receber: Vencidas',
+            caption_helper: '',
+            bills: overdue,
+            billsTotal: overdueTotal,
             font_color: 'font-green'
             } %}
                 {% block thead %}
                     <tr class="uppercase">
                         <th>{{ 'bill.fields.description'|trans }}</th>
-                        <th>{{ 'billInstallments.fields.paymentDateAt'|trans }}</th>
-                        <th>{{ 'billInstallments.fields.amountPaid'|trans }}</th>
+                        <th>{{ 'billInstallments.fields.dueDateAt'|trans }}</th>
+                        <th>{{ 'billInstallments.fields.amount'|trans }}</th>
                         <th>#</th>
                     </tr>
                 {% endblock %}
                 {% block tbody %}
-                    {% for bill in received %}
+                    {% for bill in overdue %}
                         {% for installment in bill.billInstallments %}
                             <tr>
                                 <td class="highlight">
-                                    <div class="success" style="border-left: 2px solid #26C281!important"></div>
+                                    <div class="danger"></div>
                                     <a href="javascript:;"> {{ bill.description }} </a>
                                 </td>
-                                <td>{{ installment.paymentDateAt|date }}</td>
+                                <td>{{ installment.dueDateAt|date }}</td>
                                 <td>
-                                <span class="label label-sm label-success bg-green-jungle">
-                                    {{ installment.amountPaid|number_format }}
+                                <span class="label label-sm label-danger">
+                                    {{ installment.amount|number_format }}
                                 </span>
                                 </td>
                                 <td>
@@ -298,7 +212,7 @@
                     {% endfor %}
                 {% endblock %}
             {% endembed %}
-        </div>#}
+        </div>
 
         <!-- *************** FIM RECEITAS ************** -->
 

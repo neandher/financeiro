@@ -33,11 +33,8 @@ class BillRepository extends AbstractEntityRepository
             ->innerJoin('bill.billCategory', 'billCategory')
             ->addSelect('billCategory')
             ->innerJoin('bill.billInstallments', 'billInstallments')
-            ->addSelect('billInstallments');
-
-        if (empty($routeParams['group_by_false'])) {
-            $qb->groupBy('bill.id');
-        }
+            ->addSelect('billInstallments')
+            ->groupBy('bill.id');
 
         $qb = $this->filters($qb, $routeParams);
 
@@ -116,7 +113,7 @@ class BillRepository extends AbstractEntityRepository
 
         if (!empty($routeParams['overdue'])) {
             $qb->andWhere('billInstallments.dueDateAt <= :now')->setParameter('now', new \DateTime())
-            ->andWhere('billInstallments.amountPaid IS NULL');
+                ->andWhere('billInstallments.amountPaid IS NULL');
         }
 
         if (!empty($routeParams['sum_amount']) && $routeParams['sum_amount'] === true) {
@@ -128,6 +125,28 @@ class BillRepository extends AbstractEntityRepository
         }
 
         return $qb;
+    }
+
+    public function dashboard($routeParams = [])
+    {
+        $qb = $this->createQueryBuilder('bill')
+            ->innerJoin('bill.billPlan', 'billPlan')
+            ->addSelect('billPlan')
+            ->innerJoin('billPlan.billPlanCategory', 'billPlanCategory')
+            ->addSelect('billPlanCategory')
+            ->innerJoin('bill.billStatus', 'billStatus')
+            ->addSelect('billStatus')
+            ->innerJoin('bill.bank', 'bank')
+            ->addSelect('bank')
+            ->innerJoin('bill.billCategory', 'billCategory')
+            ->addSelect('billCategory')
+            ->innerJoin('bill.billInstallments', 'billInstallments')
+            ->addSelect('billInstallments')
+            ->addOrderBy('billInstallments.dueDateAt', 'ASC');
+
+        $qb = $this->filters($qb, $routeParams);
+
+        return $qb->getQuery()->getArrayResult();
     }
 
     public function balancePreviousMonth($params)

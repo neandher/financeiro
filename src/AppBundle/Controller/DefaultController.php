@@ -21,111 +21,71 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $params = [];
+        
         $billRepository = $this->getDoctrine()->getRepository(Bill::class);
-
-        $request->query->set('num_items', 30);
-        $request->query->set('sorting', ['billInstallments.dueDateAt' => 'asc']);
-        $request->query->set('group_by_false', true);
 
         //**************** RECEITAS **************
 
         $billCategoryReceita = $this->getDoctrine()->getRepository(BillCategory::class)->findOneBy(['referency' => BillCategory::BILL_CATEGORY_RECEITA]);
-        $request->query->set('bill_category', $billCategoryReceita->getId());
+        $params['bill_category'] = $billCategoryReceita->getId();
 
         // TO RECEIVE
-        $request->query->set('bills_status_desc', BillStatus::BILL_STATUS_EM_ABERTO);
-        $request->query->set('date_start', date('d-m-Y'));
-        $request->query->set('date_end', (new \DateTime())->add(new \DateInterval('P30D'))->format('d-m-Y'));
+        $params['bills_status_desc'] = BillStatus::BILL_STATUS_EM_ABERTO;
+        $params['date_start'] = date('d-m-Y');
+        $params['date_end'] = (new \DateTime())->add(new \DateInterval('P30D'))->format('d-m-Y');
 
-        $pagination = $this->get('app.helper.pagination')->handle($request, Bill::class);
-
-        $toReceive = $billRepository->findLatest($pagination);
-        $request->query->set('sum_amount', true);
-        $toReceiveTotal = $billRepository->getAmountTotal($request->query->all());
-
-        // RECEIVED
-        /*$request->query->set('bills_status_desc', BillStatus::BILL_STATUS_PAGO);
-        $request->query->set('date_start', (new \DateTime())->sub(new \DateInterval('P30D'))->format('d-m-Y'));
-        $request->query->set('date_end', date('d-m-Y'));
-        $request->query->set('sum_amount', false);
-
-        $pagination = $this->get('app.helper.pagination')->handle($request, Bill::class);
-
-        $received = $billRepository->findLatest($pagination);
-        $request->query->set('sum_amount_paid', true);
-        $receivedTotal = $billRepository->getAmountTotal($request->query->all());*/
+        $toReceive = $billRepository->dashboard($params);
+        $params['sum_amount'] = true;
+        $toReceiveTotal = $billRepository->getAmountTotal($params);
 
         // OVERDUE
-        $request->query->set('bills_status_desc', BillStatus::BILL_STATUS_EM_ABERTO);
-        $request->query->set('sum_amount', false);
-        $request->query->set('sum_amount_paid', false);
-        $request->query->set('overdue', 'true');
-        $request->query->remove('date_start');
-        $request->query->remove('date_end');
+        $params['bills_status_desc'] = BillStatus::BILL_STATUS_EM_ABERTO;
+        $params['sum_amount'] = false;
+        $params['sum_amount_paid'] = false;
+        $params['overdue'] = 'true';
+        unset($params['date_start']);
+        unset($params['date_end']);
 
-        $pagination = $this->get('app.helper.pagination')->handle($request, Bill::class);
-
-        $overdue = $billRepository->findLatest($pagination);
-        $request->query->set('sum_amount', true);
-        $overdueTotal = $billRepository->getAmountTotal($request->query->all());
+        $overdue = $billRepository->dashboard($params);
+        $params['sum_amount'] = true;
+        $overdueTotal = $billRepository->getAmountTotal($params);
 
         //*********** DESEPESAS *********************
 
-        $billCategoryDespesa = $this->getDoctrine()->getRepository(BillCategory::class)->findOneBy(['referency' => BillCategory::BILL_CATEGORY_DESPESA]);
-        $request->query->set('bill_category', $billCategoryDespesa->getId());
+        $params = [];
 
-        $request->query->remove('sum_amount');
-        $request->query->remove('sum_amount_paid');
-        $request->query->remove('overdue');
+        $billCategoryDespesa = $this->getDoctrine()->getRepository(BillCategory::class)->findOneBy(['referency' => BillCategory::BILL_CATEGORY_DESPESA]);
+        $params['bill_category'] = $billCategoryDespesa->getId();
 
         // TO PAY
-        $request->query->set('bills_status_desc', BillStatus::BILL_STATUS_EM_ABERTO);
-        $request->query->set('date_start', date('d-m-Y'));
-        $request->query->set('date_end', (new \DateTime())->add(new \DateInterval('P30D'))->format('d-m-Y'));
+        $params['bills_status_desc'] = BillStatus::BILL_STATUS_EM_ABERTO;
+        $params['date_start'] = date('d-m-Y');
+        $params['date_end'] = (new \DateTime())->add(new \DateInterval('P30D'))->format('d-m-Y');
 
-        $pagination = $this->get('app.helper.pagination')->handle($request, Bill::class);
-
-        $toPay = $billRepository->findLatest($pagination);
-        $request->query->set('sum_amount', true);
-        $toPayTotal = $billRepository->getAmountTotal($request->query->all());
-
-        // PAID
-        /*$request->query->set('bills_status_desc', BillStatus::BILL_STATUS_PAGO);
-        $request->query->set('date_start', (new \DateTime())->sub(new \DateInterval('P30D'))->format('d-m-Y'));
-        $request->query->set('date_end', date('d-m-Y'));
-        $request->query->set('sum_amount', false);
-
-        $pagination = $this->get('app.helper.pagination')->handle($request, Bill::class);
-
-        $paid = $billRepository->findLatest($pagination);
-        $request->query->set('sum_amount_paid', true);
-        $paidTotal = $billRepository->getAmountTotal($request->query->all());*/
+        $toPay = $billRepository->dashboard($params);
+        $params['sum_amount'] = true;
+        $toPayTotal = $billRepository->getAmountTotal($params);
 
         // TO PAY OVERDUE
-        $request->query->set('bills_status_desc', BillStatus::BILL_STATUS_EM_ABERTO);
-        $request->query->set('sum_amount', false);
-        $request->query->set('sum_amount_paid', false);
-        $request->query->set('overdue', 'true');
-        $request->query->remove('date_start');
-        $request->query->remove('date_end');
+        $params['bills_status_desc'] = BillStatus::BILL_STATUS_EM_ABERTO;
+        $params['sum_amount'] = false;
+        $params['sum_amount_paid'] = false;
+        $params['overdue'] = 'true';
+        unset($params['date_start']);
+        unset($params['date_end']);
 
-        $pagination = $this->get('app.helper.pagination')->handle($request, Bill::class);
-
-        $toPayOverdue = $billRepository->findLatest($pagination);
-        $request->query->set('sum_amount', true);
-        $toPayOverdueTotal = $billRepository->getAmountTotal($request->query->all());
+        $toPayOverdue = $billRepository->dashboard($params);
+        $params['sum_amount'] = true;
+        $toPayOverdueTotal = $billRepository->getAmountTotal($params);
 
         return $this->render('default/index.html.twig', [
             'toReceive' => $toReceive,
             'toReceiveTotal' => $toReceiveTotal,
-//            'received' => $received,
-//            'receivedTotal' => $receivedTotal,
             'overdue' => $overdue,
             'overdueTotal' => $overdueTotal,
             'toPay' => $toPay,
             'toPayTotal' => $toPayTotal,
-//            'paid' => $paid,
-//            'paidTotal' => $paidTotal,
             'toPayOverdue' => $toPayOverdue,
             'toPayOverdueTotal' => $toPayOverdueTotal
         ]);

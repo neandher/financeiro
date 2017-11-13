@@ -26,11 +26,9 @@
                 </table>
             </div>
         </div>
-        <div class="scroller-footer">
+        <div class="scroller-footer" style="padding-top: 15px;">
             <div class="btn-arrow-link pull-left">
-                {{ bills.currentPageOffsetStart }} a
-                {{ bills.currentPageOffsetEnd }} de
-                {{ bills.nbResults }} registros
+                {{ bills|length }} registros
             </div>
             <div class="btn-arrow-link pull-right bold _font-green uppercase">
                 Total: R$ {{ billsTotal|number_format }}
