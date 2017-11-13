@@ -1,11 +1,18 @@
 imports:
     - { resource: config.yml }
 
-#doctrine:
-#    orm:
-#        metadata_cache_driver: apc
-#        result_cache_driver: apc
-#        query_cache_driver: apc
+parameters:
+    http_protocol: https
+    system_user: "%env(SYSTEM_USER)%"
+    system_pass: "%env(SYSTEM_PASS)%"
+
+doctrine:
+    dbal:
+        url: "%env(CLEARDB_DATABASE_URL)%"
+    orm:
+        metadata_cache_driver: apc
+        result_cache_driver: apc
+        query_cache_driver: apc
 
 monolog:
     handlers:
@@ -15,7 +22,8 @@ monolog:
             handler:      nested
         nested:
             type:  stream
-            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            #path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            path: 'php://stderr' # to heroku
             level: debug
         console:
             type:  console
