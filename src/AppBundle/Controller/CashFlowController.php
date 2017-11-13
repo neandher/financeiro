@@ -258,9 +258,6 @@ class CashFlowController extends Controller
         $cashFlowData['total_paid'] = $total_paid;
         $cashFlowData['total_not_paid'] = $total_not_paid;
 
-        var_dump($cashFlowData);
-        exit;
-
         return $this->render('cashFlow/index.html.twig',
             [
                 'cash_flow_data' => $cashFlowData,
