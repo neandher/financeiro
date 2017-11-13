@@ -1,6 +1,5 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/book/security.html
-
 security:
 
     encoders:
@@ -16,8 +15,8 @@ security:
         in_memory_system:
             memory:
                 users:
-                    neandher.carlos:
-                        password: $2y$12$rxK3cYs2RDIQmSEeUP4uTuWdXUrvm9rahA4K4sQkwe4llOVX43pd.
+                    '%system_user%':
+                        password: '%system_pass%'
                         roles: [ROLE_SYSTEM_CONTENT]
 
     firewalls:

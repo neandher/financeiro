@@ -3,8 +3,8 @@ imports:
 
 parameters:
     http_protocol: https
-    system_user: "%env(system_user)%"
-    system_pass: "%env(system_pass)%"
+    system_user: "%env(SYSTEM_USER)%"
+    system_pass: "%env(SYSTEM_PASS)%"
 
 doctrine:
     dbal:
@@ -27,3 +27,4 @@ monolog:
             level: debug
         console:
             type:  console
+            process_psr_3_messages: false
