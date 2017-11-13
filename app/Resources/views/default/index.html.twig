@@ -40,49 +40,6 @@
 
         <div class="col-md-6 col-sm-6">
             {% embed 'partials/_default_dashboard_portlet_bill.html.twig' with {
-            caption_subject: 'Contas A Pagar',
-            caption_helper: '(Próximos 30 dias)',
-            bills: toPay,
-            billsTotal: toPayTotal,
-            font_color: 'font-red'
-            } %}
-                {% block thead %}
-                    <tr class="uppercase">
-                        <th>{{ 'bill.fields.description'|trans }}</th>
-                        <th>{{ 'billInstallments.fields.dueDateAt'|trans }}</th>
-                        <th>{{ 'billInstallments.fields.amount'|trans }}</th>
-                        <th>#</th>
-                    </tr>
-                {% endblock %}
-                {% block tbody %}
-                    {% for bill in toPay %}
-                        {% for installment in bill.billInstallments %}
-                            <tr>
-                                <td class="highlight">
-                                    <div class="warning"></div>
-                                    <a href="javascript:;"> {{ bill.description }} </a>
-                                </td>
-                                <td>{{ installment.dueDateAt|date }}</td>
-                                <td>
-                                <span class="label label-sm label-warning">
-                                    {{ installment.amount|number_format }}
-                                </span>
-                                </td>
-                                <td>
-                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"
-                                       class="btn btn-outline btn-sm green">
-                                        <span class="fa fa-edit"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    {% endfor %}
-                {% endblock %}
-            {% endembed %}
-        </div>
-
-        <div class="col-md-6 col-sm-6">
-            {% embed 'partials/_default_dashboard_portlet_bill.html.twig' with {
             caption_subject: 'Contas A Pagar: Vencidas',
             caption_helper: '',
             bills: toPayOverdue,
@@ -108,6 +65,49 @@
                                 <td>{{ installment.dueDateAt|date }}</td>
                                 <td>
                                 <span class="label label-sm label-danger">
+                                    {{ installment.amount|number_format }}
+                                </span>
+                                </td>
+                                <td>
+                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"
+                                       class="btn btn-outline btn-sm green">
+                                        <span class="fa fa-edit"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                {% endblock %}
+            {% endembed %}
+        </div>
+
+        <div class="col-md-6 col-sm-6">
+            {% embed 'partials/_default_dashboard_portlet_bill.html.twig' with {
+            caption_subject: 'Contas A Pagar',
+            caption_helper: '(Próximos 30 dias)',
+            bills: toPay,
+            billsTotal: toPayTotal,
+            font_color: 'font-red'
+            } %}
+                {% block thead %}
+                    <tr class="uppercase">
+                        <th>{{ 'bill.fields.description'|trans }}</th>
+                        <th>{{ 'billInstallments.fields.dueDateAt'|trans }}</th>
+                        <th>{{ 'billInstallments.fields.amount'|trans }}</th>
+                        <th>#</th>
+                    </tr>
+                {% endblock %}
+                {% block tbody %}
+                    {% for bill in toPay %}
+                        {% for installment in bill.billInstallments %}
+                            <tr>
+                                <td class="highlight">
+                                    <div class="warning"></div>
+                                    <a href="javascript:;"> {{ bill.description }} </a>
+                                </td>
+                                <td>{{ installment.dueDateAt|date }}</td>
+                                <td>
+                                <span class="label label-sm label-warning">
                                     {{ installment.amount|number_format }}
                                 </span>
                                 </td>
@@ -173,49 +173,6 @@
 
         <div class="col-md-6 col-sm-6">
             {% embed 'partials/_default_dashboard_portlet_bill.html.twig' with {
-            caption_subject: 'Contas A Receber',
-            caption_helper: '(Próximos 30 dias)',
-            bills: toReceive,
-            billsTotal: toReceiveTotal,
-            font_color: 'font-green'
-            } %}
-                {% block thead %}
-                    <tr class="uppercase">
-                        <th>{{ 'bill.fields.description'|trans }}</th>
-                        <th>{{ 'billInstallments.fields.dueDateAt'|trans }}</th>
-                        <th>{{ 'billInstallments.fields.amount'|trans }}</th>
-                        <th>#</th>
-                    </tr>
-                {% endblock %}
-                {% block tbody %}
-                    {% for bill in toReceive %}
-                        {% for installment in bill.billInstallments %}
-                            <tr>
-                                <td class="highlight">
-                                    <div class="warning"></div>
-                                    <a href="javascript:;"> {{ bill.description }} </a>
-                                </td>
-                                <td>{{ installment.dueDateAt|date }}</td>
-                                <td>
-                                <span class="label label-sm label-warning">
-                                    {{ installment.amount|number_format }}
-                                </span>
-                                </td>
-                                <td>
-                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"
-                                       class="btn btn-outline btn-sm green">
-                                        <span class="fa fa-edit"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    {% endfor %}
-                {% endblock %}
-            {% endembed %}
-        </div>
-
-        <div class="col-md-6 col-sm-6">
-            {% embed 'partials/_default_dashboard_portlet_bill.html.twig' with {
             caption_subject: 'Contas A Receber: Vencidas',
             caption_helper: '',
             bills: overdue,
@@ -241,6 +198,49 @@
                                 <td>{{ installment.dueDateAt|date }}</td>
                                 <td>
                                 <span class="label label-sm label-danger">
+                                    {{ installment.amount|number_format }}
+                                </span>
+                                </td>
+                                <td>
+                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"
+                                       class="btn btn-outline btn-sm green">
+                                        <span class="fa fa-edit"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                {% endblock %}
+            {% endembed %}
+        </div>
+
+        <div class="col-md-6 col-sm-6">
+            {% embed 'partials/_default_dashboard_portlet_bill.html.twig' with {
+            caption_subject: 'Contas A Receber',
+            caption_helper: '(Próximos 30 dias)',
+            bills: toReceive,
+            billsTotal: toReceiveTotal,
+            font_color: 'font-green'
+            } %}
+                {% block thead %}
+                    <tr class="uppercase">
+                        <th>{{ 'bill.fields.description'|trans }}</th>
+                        <th>{{ 'billInstallments.fields.dueDateAt'|trans }}</th>
+                        <th>{{ 'billInstallments.fields.amount'|trans }}</th>
+                        <th>#</th>
+                    </tr>
+                {% endblock %}
+                {% block tbody %}
+                    {% for bill in toReceive %}
+                        {% for installment in bill.billInstallments %}
+                            <tr>
+                                <td class="highlight">
+                                    <div class="warning"></div>
+                                    <a href="javascript:;"> {{ bill.description }} </a>
+                                </td>
+                                <td>{{ installment.dueDateAt|date }}</td>
+                                <td>
+                                <span class="label label-sm label-warning">
                                     {{ installment.amount|number_format }}
                                 </span>
                                 </td>
