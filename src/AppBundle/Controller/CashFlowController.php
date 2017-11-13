@@ -192,7 +192,7 @@ class CashFlowController extends Controller
         $total_not_paid = [];
 
         $finalBalance = 0;
-        $balanceLastMonth = 0;
+        $balanceLastMonth = [];
         $expectedFinalBalance = 0;
 
         for ($i = 1; $i < 13; $i++) {
