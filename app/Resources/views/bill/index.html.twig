@@ -92,7 +92,7 @@
 
                 {{ include('partials/alerts.html.twig') }}
 
-                <div class="_table-responsive dataTables_wrapper no-footer">
+                <div class="table-responsive dataTables_wrapper no-footer">
                     <table class="table table-striped table-bordered _table-advance table-hover">
                         <thead>
                         <tr>
@@ -180,25 +180,25 @@
                         </tbody>
                     </table>
 
-                    <div class="row">
-                        <div class="col-md-5 col-sm-5">
-                            <div class="dataTables_info">
-                                {{ 'pagination.default'|trans(
-                                    {
-                                        'currentPageOffsetStart' : bills.currentPageOffsetStart,
-                                        'currentPageOffsetEnd' : bills.currentPageOffsetEnd,
-                                        'nbResults' : bills.nbResults
-                                    })
-                                }}
-                            </div>
-                        </div>
-                        <div class="col-md-7 col-sm-7">
-                            <div class="dataTables_paginate paging_bootstrap_number">
-                                {{ pagerfanta(bills, 'twitter_bootstrap3', { routeName: 'bill_index', routeParams: app.request.query.all }) }}
-                            </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5 col-sm-5 col-xs-12">
+                        <div style="padding-top: 0.755em">
+                            {{ 'pagination.default'|trans(
+                            {
+                                'currentPageOffsetStart' : bills.currentPageOffsetStart,
+                                'currentPageOffsetEnd' : bills.currentPageOffsetEnd,
+                                'nbResults' : bills.nbResults
+                            })
+                            }}
                         </div>
                     </div>
-
+                    <div class="col-md-7 col-sm-7 col-xs-12">
+                        <div style="text-align: right">
+                            {{ pagerfanta(bills, 'twitter_bootstrap3', { routeName: 'bill_index', routeParams: app.request.query.all }) }}
+                        </div>
+                    </div>
                 </div>
 
             </div>
