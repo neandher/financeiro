@@ -51,7 +51,6 @@
                         <th>{{ 'bill.fields.description'|trans }}</th>
                         <th>{{ 'billInstallments.fields.dueDateAt'|trans }}</th>
                         <th>{{ 'billInstallments.fields.amount'|trans }}</th>
-                        <th>#</th>
                     </tr>
                 {% endblock %}
                 {% block tbody %}
@@ -60,19 +59,13 @@
                             <tr>
                                 <td class="highlight">
                                     <div class="warning"></div>
-                                    <a href="javascript:;"> {{ bill.description }} </a>
+                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"> {{ bill.description }} </a>
                                 </td>
                                 <td>{{ installment.dueDateAt|date }}</td>
                                 <td>
                                 <span class="label label-sm label-warning">
                                     {{ installment.amount|number_format }}
                                 </span>
-                                </td>
-                                <td>
-                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"
-                                       class="btn btn-outline btn-sm green">
-                                        <span class="fa fa-edit"></span>
-                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -94,7 +87,6 @@
                         <th>{{ 'bill.fields.description'|trans }}</th>
                         <th>{{ 'billInstallments.fields.dueDateAt'|trans }}</th>
                         <th>{{ 'billInstallments.fields.amount'|trans }}</th>
-                        <th>#</th>
                     </tr>
                 {% endblock %}
                 {% block tbody %}
@@ -103,19 +95,13 @@
                             <tr>
                                 <td class="highlight">
                                     <div class="danger"></div>
-                                    <a href="javascript:;"> {{ bill.description }} </a>
+                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"> {{ bill.description }} </a>
                                 </td>
                                 <td>{{ installment.dueDateAt|date }}</td>
                                 <td>
                                 <span class="label label-sm label-danger">
                                     {{ installment.amount|number_format }}
                                 </span>
-                                </td>
-                                <td>
-                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"
-                                       class="btn btn-outline btn-sm green">
-                                        <span class="fa fa-edit"></span>
-                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -141,7 +127,6 @@
                         <th>{{ 'bill.fields.description'|trans }}</th>
                         <th>{{ 'billInstallments.fields.dueDateAt'|trans }}</th>
                         <th>{{ 'billInstallments.fields.amount'|trans }}</th>
-                        <th>#</th>
                     </tr>
                 {% endblock %}
                 {% block tbody %}
@@ -150,19 +135,13 @@
                             <tr>
                                 <td class="highlight">
                                     <div class="warning"></div>
-                                    <a href="javascript:;"> {{ bill.description }} </a>
+                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"> {{ bill.description }} </a>
                                 </td>
                                 <td>{{ installment.dueDateAt|date }}</td>
                                 <td>
                                 <span class="label label-sm label-warning">
                                     {{ installment.amount|number_format }}
                                 </span>
-                                </td>
-                                <td>
-                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"
-                                       class="btn btn-outline btn-sm green">
-                                        <span class="fa fa-edit"></span>
-                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -184,7 +163,6 @@
                         <th>{{ 'bill.fields.description'|trans }}</th>
                         <th>{{ 'billInstallments.fields.dueDateAt'|trans }}</th>
                         <th>{{ 'billInstallments.fields.amount'|trans }}</th>
-                        <th>#</th>
                     </tr>
                 {% endblock %}
                 {% block tbody %}
@@ -193,19 +171,13 @@
                             <tr>
                                 <td class="highlight">
                                     <div class="danger"></div>
-                                    <a href="javascript:;"> {{ bill.description }} </a>
+                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"> {{ bill.description }} </a>
                                 </td>
                                 <td>{{ installment.dueDateAt|date }}</td>
                                 <td>
                                 <span class="label label-sm label-danger">
                                     {{ installment.amount|number_format }}
                                 </span>
-                                </td>
-                                <td>
-                                    <a href="{{ path('bill_edit', {id: bill.id}) }}"
-                                       class="btn btn-outline btn-sm green">
-                                        <span class="fa fa-edit"></span>
-                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}
