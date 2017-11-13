@@ -15,7 +15,7 @@ security:
         in_memory_system:
             memory:
                 users:
-                    neandher.carlos:
+                    '%system_user%':
                         password: '%system_pass%'
                         roles: [ROLE_SYSTEM_CONTENT]
 

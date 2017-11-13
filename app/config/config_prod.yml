@@ -3,8 +3,8 @@ imports:
 
 parameters:
     http_protocol: https
-    system_user: "%env(SYSTEM_USER)%"
-    system_pass: "%env(SYSTEM_PASS)%"
+    system_user: "%env(system_user)%"
+    system_pass: "%env(system_pass)%"
 
 doctrine:
     dbal:
