@@ -2,8 +2,10 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\BillStatus;
 use AppBundle\Helper\PaginationHelper;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 
@@ -31,35 +33,20 @@ class BillRepository extends AbstractEntityRepository
             ->innerJoin('bill.billCategory', 'billCategory')
             ->addSelect('billCategory')
             ->innerJoin('bill.billInstallments', 'billInstallments')
-            ->addSelect('billInstallments')
-            ->groupBy('bill.id');
+            ->addSelect('billInstallments');
 
-        if (!empty($routeParams['search'])) {
-            $qb->andWhere('bill.description LIKE :search')->setParameter('search', '%' . $routeParams['search'] . '%');
+        if (empty($routeParams['group_by_false'])) {
+            $qb->groupBy('bill.id');
         }
 
-        if (!empty($routeParams['bill_category'])) {
-            $qb->andWhere('billCategory.id = :bill_category')->setParameter('bill_category', $routeParams['bill_category']);
-        }
-
-        if (!empty($routeParams['bill_status'])) {
-            $qb->andWhere('billStatus.id = :bill_status')->setParameter('bill_status', $routeParams['bill_status']);
-        }
-
-        if ((isset($routeParams['date_start']) && !empty($routeParams['date_start'])) && (isset($routeParams['date_end']) && !empty($routeParams['date_end']))) {
-
-            $date_start = \DateTime::createFromFormat('d-m-Y', $routeParams['date_start'])->format('Y-m-d');
-            $date_end = \DateTime::createFromFormat('d-m-Y', $routeParams['date_end'])->format('Y-m-d');
-
-            $qb->andWhere('billInstallments.dueDateAt >= :date_start')->setParameter('date_start', $date_start);
-            $qb->andWhere('billInstallments.dueDateAt <= :date_end')->setParameter('date_end', $date_end);
-        }
+        $qb = $this->filters($qb, $routeParams);
 
         if (!isset($routeParams['sorting'])) {
             $qb->orderBy('bill.id', 'desc');
         } else {
             $qb = $this->addOrderingQueryBuilder($qb, $paginationHelper);
         }
+
         return $qb->getQuery();
     }
 
@@ -73,6 +60,74 @@ class BillRepository extends AbstractEntityRepository
         $paginator->setCurrentPage($routeParams['page']);
 
         return $paginator;
+    }
+
+    private function filters(QueryBuilder $qb, $routeParams = [])
+    {
+        if (!empty($routeParams['search'])) {
+            $qb->andWhere('bill.description LIKE :search')->setParameter('search', '%' . $routeParams['search'] . '%');
+        }
+
+        if (!empty($routeParams['bill_category'])) {
+            $qb->andWhere('billCategory.id = :bill_category')->setParameter('bill_category', $routeParams['bill_category']);
+        }
+
+        if (!empty($routeParams['bill_status'])) {
+            $qb->andWhere('billStatus.id = :bill_status')->setParameter('bill_status', $routeParams['bill_status']);
+        }
+
+        if (!empty($routeParams['bill_status_desc'])) {
+
+            if ($routeParams['bill_status_desc'] == BillStatus::BILL_STATUS_PAGO) {
+
+                $qb->andWhere('billInstallments.amountPaid is not null');
+
+                if (!empty($routeParams['billYear'])) {
+                    $qb->andWhere('year(billInstallments.paymentDateAt) = :year')->setParameter(':year', $routeParams['billYear']);
+                }
+
+                if (!empty($routeParams['billMonth'])) {
+                    $qb->andWhere('month(billInstallments.paymentDateAt) = :month')->setParameter(':month', $routeParams['billMonth']);
+                }
+            }
+
+            if ($routeParams['bill_status_desc'] == BillStatus::BILL_STATUS_EM_ABERTO) {
+
+                $qb->andWhere('billInstallments.amountPaid is null');
+
+                if (!empty($routeParams['billYear'])) {
+                    $qb->andWhere('year(billInstallments.dueDateAt) = :year')->setParameter(':year', $routeParams['billYear']);
+                }
+
+                if (!empty($routeParams['billMonth'])) {
+                    $qb->andWhere('month(billInstallments.dueDateAt) = :month')->setParameter(':month', $routeParams['billMonth']);
+                }
+            }
+        }
+
+        if (!empty($routeParams['date_start']) && !empty($routeParams['date_end'])) {
+
+            $date_start = \DateTime::createFromFormat('d-m-Y', $routeParams['date_start'])->format('Y-m-d');
+            $date_end = \DateTime::createFromFormat('d-m-Y', $routeParams['date_end'])->format('Y-m-d');
+
+            $qb->andWhere('billInstallments.dueDateAt >= :date_start')->setParameter('date_start', $date_start);
+            $qb->andWhere('billInstallments.dueDateAt <= :date_end')->setParameter('date_end', $date_end);
+        }
+
+        if (!empty($routeParams['overdue'])) {
+            $qb->andWhere('billInstallments.dueDateAt <= :now')->setParameter('now', new \DateTime())
+            ->andWhere('billInstallments.amountPaid IS NULL');
+        }
+
+        if (!empty($routeParams['sum_amount']) && $routeParams['sum_amount'] === true) {
+            $qb->select('SUM(billInstallments.amount) as amountTotal');
+        }
+
+        if (!empty($routeParams['sum_amount_paid']) && $routeParams['sum_amount_paid'] === true) {
+            $qb->select('SUM(billInstallments.amountPaid) as amountPaidTotal');
+        }
+
+        return $qb;
     }
 
     public function balancePreviousMonth($params)
@@ -194,5 +249,17 @@ class BillRepository extends AbstractEntityRepository
         }
 
         return $qb->getQuery()->getArrayResult();
+    }
+
+    public function getAmountTotal($params = [])
+    {
+        $qb = $this->createQueryBuilder('bill')
+            ->innerJoin('bill.billStatus', 'billStatus')
+            ->innerJoin('bill.billCategory', 'billCategory')
+            ->innerJoin('bill.billInstallments', 'billInstallments');
+
+        $qb = $this->filters($qb, $params);
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }
