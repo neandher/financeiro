@@ -24,7 +24,8 @@ class BankTypeChoices extends AbstractType
                         return $er->queryLatestForm();
                     },
                     'choice_label' => 'description',
-                    'label' => 'bank.title.menu'
+                    'label' => 'bank.title.menu',
+                    'required' => false
                 ]
             );
     }

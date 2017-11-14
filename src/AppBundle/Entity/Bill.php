@@ -86,6 +86,7 @@ class Bill
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Bank")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Assert\NotNull()
      */
     private $bank;
 
