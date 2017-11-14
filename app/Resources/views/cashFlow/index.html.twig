@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <label for="bank">Banco: </label>
                     <select class="form-control" name="bank" id="bank" onchange="submit();">
-                        <option value="">{{ 'bank.title.menu'|trans }}</option>
+                        <option value="">Todos</option>
                         {% for bank in banks %}
                             <option value="{{ bank.id }}"
                                     {% if app.request.query.has('bank') %}{% if app.request.query.get('bank') == bank.id %}selected{% endif %}{% endif %}>{{ bank.description }}</option>
