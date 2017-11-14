@@ -121,11 +121,11 @@ class BillRepository extends AbstractEntityRepository
         }
 
         if (!empty($routeParams['sum_amount']) && $routeParams['sum_amount'] === true) {
-            $qb->select('SUM(billInstallments.amount) as amountTotal');
+            $qb->select("SUM(CAST( replace( replace( billInstallments.amount,'.','' ),',','.' )  AS DECIMAL( 13,2 ) )) as amountTotal");
         }
 
         if (!empty($routeParams['sum_amount_paid']) && $routeParams['sum_amount_paid'] === true) {
-            $qb->select('SUM(billInstallments.amountPaid) as amountPaidTotal');
+            $qb->select("SUM(CAST( replace( replace( billInstallments.amountPaid,'.','' ),',','.' )  AS DECIMAL( 13,2 ) )) as amountPaidTotal");
         }
 
         return $qb;
@@ -293,7 +293,7 @@ class BillRepository extends AbstractEntityRepository
             ->innerJoin('bill.billInstallments', 'billInstallments')
             ->innerJoin('bill.bank', 'bank');
 
-        $qb = $this->filters($qb, $params);
+        $qb = $this->filters($qb, $params); 
 
         return $qb->getQuery()->getSingleScalarResult();
     }
