@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Bank;
 use AppBundle\Entity\Bill;
 use AppBundle\Entity\BillCategory;
 use AppBundle\Entity\BillInstallments;
@@ -66,12 +67,14 @@ class BillController extends Controller
 
         $billCategory = $this->getDoctrine()->getRepository(BillCategory::class)->findAll();
         $billstatus = $this->getDoctrine()->getRepository(BillStatus::class)->findAll();
+        $banks = $this->getDoctrine()->getRepository(Bank::class)->findAll();
 
         return $this->render('bill/index.html.twig',
             [
                 'bills' => $bills,
                 'bill_category' => $billCategory,
                 'bill_status' => $billstatus,
+                'banks' => $banks,
                 'pagination_helper' => $paginationHelper
             ]
         );

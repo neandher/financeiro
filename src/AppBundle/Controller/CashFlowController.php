@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Bank;
 use AppBundle\Entity\Bill;
 use AppBundle\Entity\BillPlan;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -22,14 +23,20 @@ class CashFlowController extends Controller
     /**
      * @Route("/", name="cash_flow_index")
      * @Method("GET")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
     {
+        $params = $request->query->all();
+
         $params['year'] = date('Y');
 
-        if ($request->query->has('date') && !empty($request->query->get('date'))) {
-            $params['year'] = $request->query->get('date');
+        if ($request->query->has('year') && !empty($request->query->get('year'))) {
+            $params['year'] = $request->query->get('year');
         }
+
+        $banks = $this->getDoctrine()->getRepository(Bank::class)->findAll();
 
         $billPlans = $this->getDoctrine()->getRepository(BillPlan::class)->listBillPlans();
 
@@ -261,6 +268,7 @@ class CashFlowController extends Controller
         return $this->render('cashFlow/index.html.twig',
             [
                 'cash_flow_data' => $cashFlowData,
+                'banks' => $banks,
                 'params' => $params
             ]
         );

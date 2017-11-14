@@ -73,6 +73,10 @@ class BillRepository extends AbstractEntityRepository
             $qb->andWhere('billStatus.id = :bill_status')->setParameter('bill_status', $routeParams['bill_status']);
         }
 
+        if (!empty($routeParams['bank'])) {
+            $qb->andWhere('bank.id = :bank')->setParameter('bank', $routeParams['bank']);
+        }
+
         if (!empty($routeParams['bill_status_desc'])) {
 
             if ($routeParams['bill_status_desc'] == BillStatus::BILL_STATUS_PAGO) {
@@ -167,6 +171,16 @@ class BillRepository extends AbstractEntityRepository
 
     public function cashFlow($params)
     {
+        $where = "bill.id > 0 ";
+
+        if(!empty($params['y'])){
+            $where .= " and YEAR(bins.dueDateAt) = '".$params['y']."' ";
+        }
+
+        if(!empty($params['bank'])){
+            $where .= " and bank.id = '".$params['bank']."' ";
+        }
+
         $conn = $this->getEntityManager()
             ->getConnection();
 
@@ -179,8 +193,9 @@ class BillRepository extends AbstractEntityRepository
                 inner join bill_plan_category as biplc on biplc.id = bipl.bill_plan_category_id
                 inner join bill_category as bica on bica.id = bill.bill_category_id
                 inner join bill_status as bist on bist.id = bill.bill_status_id
+                inner join bank on bank.id = bill.bank_id
                 inner join bill_installments as bins on bins.bill_id = bill.id
-                WHERE YEAR(bins.dueDateAt) = '" . $params['year'] . "'
+                WHERE ".$where."
                 GROUP BY bill.id,bill.description,bipl.id,bipl.description,biplc.id,bica.id,bins.dueDateAt,bist.referency
                 ORDER BY bins.dueDateAt ASC,biplc.description ASC,bipl.description ASC";
 
@@ -275,7 +290,8 @@ class BillRepository extends AbstractEntityRepository
         $qb = $this->createQueryBuilder('bill')
             ->innerJoin('bill.billStatus', 'billStatus')
             ->innerJoin('bill.billCategory', 'billCategory')
-            ->innerJoin('bill.billInstallments', 'billInstallments');
+            ->innerJoin('bill.billInstallments', 'billInstallments')
+            ->innerJoin('bill.bank', 'bank');
 
         $qb = $this->filters($qb, $params);
 

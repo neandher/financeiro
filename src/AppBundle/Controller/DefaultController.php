@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Bank;
 use AppBundle\Entity\Bill;
 use AppBundle\Entity\BillCategory;
 use AppBundle\Entity\BillStatus;
@@ -21,9 +22,11 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $params = [];
+        $params = $request->query->all();
         
         $billRepository = $this->getDoctrine()->getRepository(Bill::class);
+
+        $banks = $this->getDoctrine()->getRepository(Bank::class)->findAll();
 
         //**************** RECEITAS **************
 
@@ -53,7 +56,7 @@ class DefaultController extends Controller
 
         //*********** DESEPESAS *********************
 
-        $params = [];
+        $params = $request->query->all();
 
         $billCategoryDespesa = $this->getDoctrine()->getRepository(BillCategory::class)->findOneBy(['referency' => BillCategory::BILL_CATEGORY_DESPESA]);
         $params['bill_category'] = $billCategoryDespesa->getId();
@@ -87,7 +90,8 @@ class DefaultController extends Controller
             'toPay' => $toPay,
             'toPayTotal' => $toPayTotal,
             'toPayOverdue' => $toPayOverdue,
-            'toPayOverdueTotal' => $toPayOverdueTotal
+            'toPayOverdueTotal' => $toPayOverdueTotal,
+            'banks' => $banks
         ]);
     }
 }

@@ -67,6 +67,16 @@
                 </div>
 
                 <div class="form-group">
+                    <select class="form-control" name="bank" id="bank" onchange="submit();">
+                        <option value="">{{ 'bank.title.menu'|trans }}</option>
+                        {% for bank in banks %}
+                            <option value="{{ bank.id }}"
+                                    {% if app.request.query.has('bank') %}{% if app.request.query.get('bank') == bank.id %}selected{% endif %}{% endif %}>{{ bank.description }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <input type="number" class="form-control col-md-4"
                            placeholder="{{ 'form.placeholder.num_items'|trans }}"
                            name="num_items"
@@ -137,9 +147,10 @@
                                     <a href="{{ path('bill_edit', {id: bill.id}) ~ pagination_helper.buildQuery }}">{{ bill.description }}</a>
                                 </td>
                                 <td>
-                                    <span class="label label-{% if bill.billCategory.referency == 'despesa' %}danger{% else %}success{% endif %}">
+                                    {#<span class="label label-{% if bill.billCategory.referency == 'despesa' %}danger{% else %}success{% endif %}">
                                          {{ bill.billCategory.description }}
-                                    </span>
+                                    </span>#}
+                                    {{ bill.billCategory.description }}
                                 </td>
                                 <td>{{ bill.amount }}</td>
                                 <td>
@@ -156,7 +167,7 @@
                                     {% if bill.isDateOverDue %}
                                         <span class="label label-sm label-danger">{{ 'billStatus.dateOverDue'|trans }}</span>
                                     {% else %}
-                                        <span class="label label-sm label-{% if bill.billStatus.referency == 'pago' %}success{% else %}warning{% endif %}">
+                                        <span class="label label-sm label-{% if bill.billStatus.referency == 'pago' %}success bg-green-jungle{% else %}warning{% endif %}">
                                             {{ bill.billStatus.description }}
                                         </span>
                                     {% endif %}

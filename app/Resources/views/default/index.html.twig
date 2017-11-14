@@ -34,6 +34,30 @@
         </div>
     </div>
 
+    <form class="form-inline" role="search" method="get" action="{{ path('index') }}" id="data_table">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="bank">Banco: </label>
+                    <select class="form-control" name="bank" id="bank" onchange="submit();">
+                        <option value="">{{ 'bank.title.menu'|trans }}</option>
+                        {% for bank in banks %}
+                            <option value="{{ bank.id }}"
+                                    {% if app.request.query.has('bank') %}{% if app.request.query.get('bank') == bank.id %}selected{% endif %}{% endif %}>{{ bank.description }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default form-control">
+                        Filtrar <span class="fa fa-check"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <br>
+
     <div class="row">
 
         <!-- *************** DESPESAS ************** -->
