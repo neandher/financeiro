@@ -34,7 +34,7 @@ class DefaultController extends Controller
         $params['bill_category'] = $billCategoryReceita->getId();
 
         // TO RECEIVE
-        $params['bills_status_desc'] = BillStatus::BILL_STATUS_EM_ABERTO;
+        $params['bill_status_desc'] = BillStatus::BILL_STATUS_EM_ABERTO;
         $params['date_start'] = date('d-m-Y');
         $params['date_end'] = (new \DateTime())->add(new \DateInterval('P30D'))->format('d-m-Y');
 
@@ -43,7 +43,7 @@ class DefaultController extends Controller
         $toReceiveTotal = $billRepository->getAmountTotal($params);
 
         // OVERDUE
-        $params['bills_status_desc'] = BillStatus::BILL_STATUS_EM_ABERTO;
+        $params['bill_status_desc'] = BillStatus::BILL_STATUS_EM_ABERTO;
         $params['sum_amount'] = false;
         $params['sum_amount_paid'] = false;
         $params['overdue'] = 'true';
@@ -62,7 +62,7 @@ class DefaultController extends Controller
         $params['bill_category'] = $billCategoryDespesa->getId();
 
         // TO PAY
-        $params['bills_status_desc'] = BillStatus::BILL_STATUS_EM_ABERTO;
+        $params['bill_status_desc'] = BillStatus::BILL_STATUS_EM_ABERTO;
         $params['date_start'] = date('d-m-Y');
         $params['date_end'] = (new \DateTime())->add(new \DateInterval('P30D'))->format('d-m-Y');
 
@@ -71,7 +71,7 @@ class DefaultController extends Controller
         $toPayTotal = $billRepository->getAmountTotal($params);
 
         // TO PAY OVERDUE
-        $params['bills_status_desc'] = BillStatus::BILL_STATUS_EM_ABERTO;
+        $params['bill_status_desc'] = BillStatus::BILL_STATUS_EM_ABERTO;
         $params['sum_amount'] = false;
         $params['sum_amount_paid'] = false;
         $params['overdue'] = 'true';

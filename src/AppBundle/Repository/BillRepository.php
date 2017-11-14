@@ -293,7 +293,7 @@ class BillRepository extends AbstractEntityRepository
             ->innerJoin('bill.billInstallments', 'billInstallments')
             ->innerJoin('bill.bank', 'bank');
 
-        $qb = $this->filters($qb, $params); 
+        $qb = $this->filters($qb, $params);
 
         return $qb->getQuery()->getSingleScalarResult();
     }
