@@ -71,7 +71,8 @@ $('.cashFlowAjaxBills').click(function () {
             billPlan: $(this).data('billPlan'),
             billStatus: $(this).data('billStatus'),
             billMonth: $(this).data('billMonth'),
-            billYear: $(this).data('billYear')
+            billYear: $(this).data('billYear'),
+            billBank: $(this).data('billYear')
         },
         function (data) {
 
