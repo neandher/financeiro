@@ -19,6 +19,10 @@ class CashFlowExtension extends \Twig_Extension
             new \Twig_SimpleFunction('billCategoryStyle', [
                 $this,
                 'billCategoryStyleFunction'
+            ]),
+            new \Twig_SimpleFunction('hiddenMonthsXs', [
+                $this,
+                'hiddenMonthsXsFunction'
             ])
         ];
     }
@@ -38,17 +42,28 @@ class CashFlowExtension extends \Twig_Extension
         }
         return false;
     }
-    
+
     public function billCategoryStyleFunction($amount)
     {
-        if(strstr($amount,'-')){
+        if (strstr($amount, '-')) {
             return '_text-danger';
-        }
-        else{
+        } else {
             return '_text-success';
         }
     }
-    
+
+    public function hiddenMonthsXsFunction($i, $year)
+    {
+        $hidden = '';
+        if (date('Y') == $year) {
+            $hidden = 'hidden-xs';
+            if (date('n') == $i || (date('n') + 1) == $i || (date('n') - 1) == $i) {
+                $hidden = '';
+            }
+        }
+        return $hidden;
+    }
+
     /**
      * Returns the name of the extension.
      *
