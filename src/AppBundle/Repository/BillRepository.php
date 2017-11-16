@@ -157,8 +157,8 @@ class BillRepository extends AbstractEntityRepository
     {
         $where = "bill.id > 0 ";
 
-        if (!empty($params['y'])) {
-            $where .= " and YEAR(bins.dueDateAt) < '" . $params['y'] . "' ";
+        if (!empty($params['year'])) {
+            $where .= " and YEAR(bins.dueDateAt) < '" . $params['year'] . "' ";
         }
 
         if (!empty($params['bank'])) {
@@ -189,8 +189,8 @@ class BillRepository extends AbstractEntityRepository
     {
         $where = "bill.id > 0 ";
 
-        if (!empty($params['y'])) {
-            $where .= " and YEAR(bins.dueDateAt) = '" . $params['y'] . "' ";
+        if (!empty($params['year'])) {
+            $where .= " and YEAR(bins.dueDateAt) = '" . $params['year'] . "' ";
         }
 
         if (!empty($params['bank'])) {
