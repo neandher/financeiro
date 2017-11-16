@@ -158,7 +158,13 @@ class BillRepository extends AbstractEntityRepository
         $conn = $this->getEntityManager()
             ->getConnection();
 
-        $sql = "SELECT SUM( CAST( replace( replace( bins.amountPaid,'.','' ),',','.' )  AS DECIMAL( 13,2 ) ) ) as previous_balance
+        $sql = "SELECT SUM(
+                case bins.amountPaid when NULL then 
+                     CAST( replace( replace( bins.amount,'.','' ),',','.' )  AS DECIMAL( 13,2 ) )
+                else 
+                    CAST( replace( replace( bins.amountPaid,'.','' ),',','.' )  AS DECIMAL( 13,2 ) ) 
+                end
+                ) as previous_balance
                 FROM bill 
                 inner join bill_installments as bins on bins.bill_id = bill.id
                 WHERE YEAR(bins.dueDateAt) < '" . $params['year'] . "' AND bins.amountPaid IS NOT NULL ORDER BY bins.dueDateAt ASC";
