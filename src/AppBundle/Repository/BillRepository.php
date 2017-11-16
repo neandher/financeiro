@@ -155,19 +155,29 @@ class BillRepository extends AbstractEntityRepository
 
     public function balancePreviousMonth($params)
     {
+        $where = "bill.id > 0 ";
+
+        if (!empty($params['y'])) {
+            $where .= " and YEAR(bins.dueDateAt) < '" . $params['y'] . "' ";
+        }
+
+        if (!empty($params['bank'])) {
+            $where .= " and bank.id = '" . $params['bank'] . "' ";
+        }
+
         $conn = $this->getEntityManager()
             ->getConnection();
 
         $sql = "SELECT SUM(
-                case bins.amountPaid when NULL then 
-                     CAST( replace( replace( bins.amount,'.','' ),',','.' )  AS DECIMAL( 13,2 ) )
-                else 
+                if( bins.amountPaid IS NULL,
+                    CAST( replace( replace( bins.amount,'.','' ),',','.' )  AS DECIMAL( 13,2 ) ),
                     CAST( replace( replace( bins.amountPaid,'.','' ),',','.' )  AS DECIMAL( 13,2 ) ) 
-                end
+                  )
                 ) as previous_balance
                 FROM bill 
                 inner join bill_installments as bins on bins.bill_id = bill.id
-                WHERE YEAR(bins.dueDateAt) < '" . $params['year'] . "' AND bins.amountPaid IS NOT NULL ORDER BY bins.dueDateAt ASC";
+                inner join bank on bank.id = bill.bank_id
+                WHERE " . $where . " ORDER BY bins.dueDateAt ASC";
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -179,12 +189,12 @@ class BillRepository extends AbstractEntityRepository
     {
         $where = "bill.id > 0 ";
 
-        if(!empty($params['y'])){
-            $where .= " and YEAR(bins.dueDateAt) = '".$params['y']."' ";
+        if (!empty($params['y'])) {
+            $where .= " and YEAR(bins.dueDateAt) = '" . $params['y'] . "' ";
         }
 
-        if(!empty($params['bank'])){
-            $where .= " and bank.id = '".$params['bank']."' ";
+        if (!empty($params['bank'])) {
+            $where .= " and bank.id = '" . $params['bank'] . "' ";
         }
 
         $conn = $this->getEntityManager()
@@ -201,7 +211,7 @@ class BillRepository extends AbstractEntityRepository
                 inner join bill_status as bist on bist.id = bill.bill_status_id
                 inner join bank on bank.id = bill.bank_id
                 inner join bill_installments as bins on bins.bill_id = bill.id
-                WHERE ".$where."
+                WHERE " . $where . "
                 GROUP BY bill.id,bill.description,bipl.id,bipl.description,biplc.id,bica.id,bins.dueDateAt,bist.referency
                 ORDER BY bins.dueDateAt ASC,biplc.description ASC,bipl.description ASC";
 
