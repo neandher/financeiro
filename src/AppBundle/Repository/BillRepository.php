@@ -234,6 +234,8 @@ class BillRepository extends AbstractEntityRepository
             ->addSelect('billCategory')
             ->innerJoin('bill.billPlan', 'billPlan')
             ->addSelect('billPlan')
+            ->innerJoin('bill.bank', 'bank')
+            ->addSelect('bank')
             ->innerJoin('bill.billInstallments', 'billInstallments')
             ->addSelect('billInstallments');
 
@@ -243,6 +245,10 @@ class BillRepository extends AbstractEntityRepository
 
         if (!empty($params['billPlan'])) {
             $qb->andWhere('billPlan.id = :plan')->setParameter(':plan', $params['billPlan']);
+        }
+
+        if (!empty($params['billBank'])) {
+            $qb->andWhere('bank.id = :bank')->setParameter(':bank', $params['billBank']);
         }
 
         if (!empty($params['billStatus'])) {

@@ -248,6 +248,7 @@
                                                 data-bill-status="paid"
                                                 data-bill-month="{{ i }}"
                                                 data-bill-year="{{ params.year }}"
+                                                data-bill-bank="{% if params.bank is defined %}{{ params.bank }}{% endif %}"
                                         >
                                             {{ bill_plan[i]['total_paid']|number_format(2,',','.') }}
                                         </span>
@@ -262,6 +263,7 @@
                                                             data-bill-status="not_paid"
                                                             data-bill-month="{{ i }}"
                                                             data-bill-year="{{ params.year }}"
+                                                            data-bill-bank="{% if params.bank is defined %}{{ params.bank }}{% endif %}"
                                                     >
                                             {{ bill_plan[i]['total_not_paid']|number_format(2,',','.') }}
                                         </span>
@@ -280,6 +282,7 @@
                                                             data-bill-status="not_paid"
                                                             data-bill-month="{{ i }}"
                                                             data-bill-year="{{ params.year }}"
+                                                            data-bill-bank="{% if params.bank is defined %}{{ params.bank }}{% endif %}"
                                                     >
                                                     {{ bill_plan[i]['total_not_paid']|number_format(2,',','.') }}
                                                     </span>
@@ -297,6 +300,7 @@
                                                             data-bill-status="paid"
                                                             data-bill-month="{{ i }}"
                                                             data-bill-year="{{ params.year }}"
+                                                            data-bill-bank="{% if params.bank is defined %}{{ params.bank }}{% endif %}"
                                                     >
                                                     {{ bill_plan[i]['total_paid']|number_format(2,',','.') }}
                                                     </span>
