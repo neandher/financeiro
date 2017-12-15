@@ -253,7 +253,8 @@ class BillRepository extends AbstractEntityRepository
             ->innerJoin('bill.bank', 'bank')
             ->addSelect('bank')
             ->innerJoin('bill.billInstallments', 'billInstallments')
-            ->addSelect('billInstallments');
+            ->addSelect('billInstallments')
+            ->addOrderBy('billInstallments.paymentDateAt', 'ASC');
 
         if (!empty($params['billCategory'])) {
             $qb->where('billCategory.id = :category')->setParameter(':category', $params['billCategory']);
